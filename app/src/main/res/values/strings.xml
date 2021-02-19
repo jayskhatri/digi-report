@@ -1,0 +1,65 @@
+<resources>
+    <!--app name-->
+    <string name="app_name">DigiReport</string>
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Titles-->
+    <string name="text_add_medical">Add your Medical History</string>
+    <string name="text_store_medical">Store your medical reports</string>
+    <string name="text_get_data_anytime">Get your data anytime</string>
+    <string name="text_welcome">Welcome</string>
+    <string name="text_signin_to_continue">Sign in to continue</string>
+    <string name="text_signin_here">Sign In here</string>
+    <string name="text_tnc">Terms and Conditions</string>
+    <string name="text_name">Name</string>
+    <string name="text_email">Email Address</string>
+    <string name="text_mobile">Mobile number</string>
+    <string name="text_pwd">Password</string>
+    <string name="text_verification">Verification</string>
+    <string name="text_dashboard">Dashboard</string>
+    <string name="text_my_reports">My reports</string>
+    <string name="text_add_reports">Add reports</string>
+    <string name="text_search">Search</string>
+    <string name="text_medical_reports">Medical Reports</string>
+    <string name="text_feedback">Feedback</string>
+    <string name="text_help">Help</string>
+    <string name="text_acc_settings">My Account</string>
+    <string name="text_logout">Log out</string>
+
+    <!-- Questions-->
+    <string name="text_already_signed_up">Already signed up?</string>
+
+    <!-- Description-->
+    <string name="text_accept_tnc">By signing in you accept our </string>
+    <string name="text_insert_code_here">Insert your code here</string>
+    <string name="desc_dont_have_an_acc">Don\'t have an account?</string>
+    <string name="desc_enter_cred">Enter Credentials here!</string>
+
+    <!-- Buttons-->
+    <string name="text_next">Next</string>
+    <string name="text_skip">Skip</string>
+    <string name="text_signup">Sign up</string>
+    <string name="text_signin">Sign In</string>
+    <string name="text_continue">Continue</string>
+    <string name="text_change_num">Change Number</string>
+    <string name="text_resent_code">Resent code</string>
+    <string name="text_upload_report">Upload Report</string>
+    <string name="text_get_started">Get started</string>
+    <string name="desc_enter_following_details">Enter following Details</string>
+    <string name="text_sign_up_here">Sign Up here</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_dashboard">Dashboard</string>
+    <string name="menu_add_reports">Add Reports</string>
+    <string name="menu_my_reports">My Reports</string>
+    <string name="menu_my_acc">My Account</string>
+    <string name="text_report_name">Report Name</string>
+
+</resources>

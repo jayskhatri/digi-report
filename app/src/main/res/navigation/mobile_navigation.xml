@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_dashboard"
+        android:name="com.digitalpathology.digi_report.ui.home.HomeFragment"
+        android:label="@string/menu_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/nav_add_reports"
+        android:name="com.digitalpathology.digi_report.ui.add_report.AddReports"
+        android:label="@string/menu_add_reports"
+        tools:layout="@layout/fragment_add_reports" />
+
+    <fragment
+        android:id="@+id/nav_my_reports"
+        android:name="com.digitalpathology.digi_report.ui.my_reports.MyReportsFragment"
+        android:label="@string/text_my_reports"
+        tools:layout="@layout/fragment_my_reports" />
+
+    <fragment
+        android:id="@+id/nav_my_acc"
+        android:name="com.digitalpathology.digi_report.ui.my_acc.MyAccountFragment"
+        android:label="@string/menu_my_acc"
+        tools:layout="@layout/fragment_my_account" />
+</navigation>
