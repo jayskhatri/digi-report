@@ -18,8 +18,8 @@
         app:layout_constraintRight_toRightOf="parent">
 
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/ic_app_icon_blue"/>
 
         <TextView
