@@ -24,6 +24,7 @@
             android:layout_height="match_parent"
             android:inputType="text"
             android:hint="@string/text_search"
+            android:textColor="@color/colorPrimaryDark"
             android:textColorHint="@color/grey"
             android:drawablePadding="10dp"
             android:drawableRight="@drawable/ic_search_icon"/>

@@ -77,6 +77,7 @@
             android:layout_height="match_parent"
             android:inputType="text"
             android:hint="@string/text_name"
+            android:textColor="@color/colorPrimaryDark"
             android:textColorHint="@color/grey"
             android:drawablePadding="10dp"
             android:drawableLeft="@drawable/ic_account_circle"/>
@@ -101,6 +102,7 @@
             android:inputType="textEmailAddress"
             android:hint="@string/text_email"
             android:textColorHint="@color/grey"
+            android:textColor="@color/colorPrimaryDark"
             android:drawablePadding="10dp"
             android:drawableLeft="@drawable/ic_email_icon"/>
 
@@ -121,6 +123,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="text"
+            android:textColor="@color/colorPrimaryDark"
             android:hint="@string/text_mobile"
             android:textColorHint="@color/grey" />
 
@@ -141,6 +144,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="text"
+            android:textColor="@color/colorPrimaryDark"
             android:hint="@string/text_pwd"
             android:textColorHint="@color/grey"
             android:drawablePadding="10dp"

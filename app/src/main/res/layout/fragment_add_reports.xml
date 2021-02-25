@@ -24,6 +24,7 @@
             android:layout_height="match_parent"
             android:inputType="text"
             android:hint="@string/text_report_name"
+            android:textColor="@color/colorPrimaryDark"
             android:textColorHint="@color/grey"
             android:drawablePadding="10dp"
             android:drawableLeft="@drawable/ic_file_icon24"/>
@@ -47,6 +48,7 @@
             android:layout_height="match_parent"
             android:inputType="text"
             android:hint="date"
+            android:textColor="@color/colorPrimaryDark"
             android:textColorHint="@color/grey"
             android:drawablePadding="10dp"
             android:drawableLeft="@drawable/ic_calendar_icon"/>
