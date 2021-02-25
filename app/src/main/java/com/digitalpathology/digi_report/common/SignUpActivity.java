@@ -10,17 +10,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.digitalpathology.digi_report.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SignUpActivity extends AppCompatActivity {
 
     private EditText name, email, phone, pwd;
     private TextView signinhere;
     private CardView signup;
+    private FirebaseAuth mAuth;
+    private ValidationChecker validationChecker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        mAuth = FirebaseAuth.getInstance();
+        validationChecker = new ValidationChecker();
 
         //hooks
         name = findViewById(R.id.edittext_su_name);
@@ -40,3 +46,4 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 }
+
