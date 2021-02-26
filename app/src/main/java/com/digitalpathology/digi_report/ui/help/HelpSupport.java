@@ -1,4 +1,4 @@
-package com.digitalpathology.digi_report.ui;
+package com.digitalpathology.digi_report.ui.help;
 
 import androidx.lifecycle.ViewModelProvider;
 

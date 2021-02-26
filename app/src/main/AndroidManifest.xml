@@ -14,15 +14,17 @@
         <activity
             android:name=".DashboardActivity"
             android:label="@string/title_activity_dashboard"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
-        <activity android:name=".common.LoginActivity" />
-        <activity android:name=".common.OnBoarding" />
-        <activity android:name=".common.SignUpActivity" />
-        <activity android:name=".SplashActivity">
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".common.LoginActivity" />
+        <activity android:name=".common.OnBoarding" />
+        <activity android:name=".common.SignUpActivity" />
+        <activity android:name=".SplashActivity">
+
         </activity>
     </application>
 
