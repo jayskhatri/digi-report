@@ -1,13 +1,18 @@
 package com.digitalpathology.digi_report;
 
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.widget.ImageView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -19,17 +24,37 @@ import androidx.appcompat.widget.Toolbar;
 public class DashboardActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-
+    private ImageView drawerBtn, homeBtn, accSettingsBtn;
+ 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        //hooks
+        homeBtn = findViewById(R.id.btn_home);
+        accSettingsBtn = findViewById(R.id.btn_user_acc);
+
+        //reloading dashboard activity
+        homeBtn.setOnClickListener(v -> {
+            startActivity(new Intent(DashboardActivity.this, DashboardActivity.class));
+            finish();
+        });
+
+        //opening acc settings
+        accSettingsBtn.setOnClickListener(v -> {
+
+        });
+
+        //code which gives hamburger icon
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_menu28);
-//        ((AppCompatActivity)this).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu28);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        FloatingActionButton fab = findViewById(R.id.fab);
+
+        //code to change a hamburger icon
+        toolbar.post(() -> {
+            Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu28, null);
+            toolbar.setNavigationIcon(d);
+        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -47,8 +72,8 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.dashboard, menu);
-        return true;
+//        getMenuInflater().inflate(R.menu.dashboard, menu);
+        return false;
     }
 
     @Override
