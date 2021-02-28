@@ -1,7 +1,10 @@
 package com.digitalpathology.digi_report.ui.add_report;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -33,6 +36,14 @@ public class AddReports extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(AddReportsViewModel.class);
         // TODO: Use the ViewModel
+
+        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        //code to change a hamburger icon
+        toolbar.post(() -> {
+            Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu28, null);
+            toolbar.setNavigationIcon(d);
+        });
+
     }
 
 }

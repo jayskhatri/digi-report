@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.digitalpathology.digi_report.HelperClasses.SliderAdapter;
+import com.digitalpathology.digi_report.helper_classes.SliderAdapter;
 import com.digitalpathology.digi_report.R;
 
 public class OnBoarding extends AppCompatActivity {

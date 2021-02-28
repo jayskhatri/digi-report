@@ -1,4 +1,4 @@
-package com.digitalpathology.digi_report.HelperClasses;
+package com.digitalpathology.digi_report.helper_classes;
 
 import android.content.Context;
 import android.view.LayoutInflater;

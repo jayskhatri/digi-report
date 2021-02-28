@@ -1,4 +1,4 @@
-package com.digitalpathology.digi_report.Object;
+package com.digitalpathology.digi_report.object;
 
 class User {
 
