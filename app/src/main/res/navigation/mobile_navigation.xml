@@ -24,6 +24,12 @@
         tools:layout="@layout/fragment_my_reports" />
 
     <fragment
+        android:id="@+id/nav_feedback"
+        android:name="com.digitalpathology.digi_report.ui.feedback.FeedbackFragment"
+        android:label="@string/text_feedback"
+        tools:layout="@layout/fragment_feedback" />
+
+    <fragment
         android:id="@+id/nav_help"
         android:name="com.digitalpathology.digi_report.ui.help.HelpSupport"
         android:label="@string/text_help"

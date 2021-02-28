@@ -5,11 +5,13 @@ class User {
     String name;
     String email;
     String phone;
+    Integer numberOfReportsUploaded;
 
-    public User(String name, String email, String phone) {
+    public User(String name, String email, String phone, Integer numberOfReportsUploaded) {
         this.name = name;
         this.email = email;
         this.phone = phone;
+        this.numberOfReportsUploaded = numberOfReportsUploaded;
     }
 
     public String getName() {
@@ -34,6 +36,14 @@ class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Integer getNumberOfReportsUploaded() {
+        return numberOfReportsUploaded;
+    }
+
+    public void setNumberOfReportsUploaded(Integer numberOfReportsUploaded) {
+        this.numberOfReportsUploaded = numberOfReportsUploaded;
     }
 
     @Override

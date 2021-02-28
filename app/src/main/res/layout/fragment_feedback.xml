@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/startup_background_color"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ui.feedback.FeedbackFragment">
+
+    <TextView
+        android:id="@+id/title_leave_feedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Leave your feedback for DigiReport"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:layout_margin="10dp"
+        android:fontFamily="@font/circular_std_black"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/ll_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/title_leave_feedback"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DigiReport has stored "
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:fontFamily="@font/circular_std_book" />
+
+        <TextView
+            android:id="@+id/total_saved_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10"
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:fontFamily="@font/circular_std_book" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" reports for you"
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:fontFamily="@font/circular_std_book" />
+
+    </LinearLayout>
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/startup_background_color"
+        android:numStars="5"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_msg" />
+
+    <EditText
+        android:id="@+id/edittext_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:layout_marginTop="30dp"
+        android:hint="@string/text_write_your_feedback"
+        android:textColorHint="@color/grey"
+        android:background="@color/white"
+        android:padding="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp"
+        android:layout_margin="20dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@id/edittext_feedback"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/btn_submit"
+            android:padding="5dp"
+            android:textColor="@color/white"
+            android:textSize="28sp"
+            android:fontFamily="@font/circular_std_black"
+            android:gravity="center_horizontal" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_thank_you_for_using_digireport"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp"
+        android:layout_marginBottom="15dp"
+        android:fontFamily="@font/circular_std_medium"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
