@@ -24,7 +24,7 @@ import androidx.appcompat.widget.Toolbar;
 public class DashboardActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private ImageView drawerBtn, homeBtn, accSettingsBtn;
+    private ImageView homeBtn, accSettingsBtn;
  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class DashboardActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_dashboard, R.id.nav_add_new_reports, R.id.nav_my_reports, R.id.nav_feedback, R.id.nav_my_acc)
+                R.id.nav_dashboard, R.id.nav_add_reports, R.id.nav_my_reports, R.id.nav_help, R.id.nav_acc_settings)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

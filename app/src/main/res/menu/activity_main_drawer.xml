@@ -4,12 +4,16 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+<!--        <item-->
+<!--            android:id="@+id/nav_dashboard"-->
+<!--            android:icon="@drawable/ic_add_report_icon"-->
+<!--            android:title="@string/menu_dashboard" />-->
         <item
-            android:id="@+id/nav_add_new_reports"
+            android:id="@+id/nav_add_reports"
             android:icon="@drawable/ic_add_report_icon"
             android:title="@string/menu_add_reports" />
         <item
-            android:id="@+id/nav_med_reports"
+            android:id="@+id/nav_my_reports"
             android:icon="@drawable/ic_file_icon24"
             android:title="@string/text_medical_reports" />
         <item
