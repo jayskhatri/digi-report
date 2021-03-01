@@ -70,5 +70,6 @@
     <string name="text_write_your_feedback">Write your Feedback</string>
     <string name="btn_submit">Submit</string>
     <string name="text_thank_you_for_using_digireport">Thank you for using DigiReport!</string>
+    <string name="text_leave_your_feedback_for_digireport">Leave your feedback for DigiReport</string>
 
 </resources>
