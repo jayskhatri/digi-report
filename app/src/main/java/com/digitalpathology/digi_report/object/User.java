@@ -1,6 +1,6 @@
 package com.digitalpathology.digi_report.object;
 
-class User {
+public class User {
 
     String name;
     String email;
