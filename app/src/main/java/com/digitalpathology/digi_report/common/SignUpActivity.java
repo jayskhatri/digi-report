@@ -133,6 +133,7 @@ public class SignUpActivity extends AppCompatActivity {
                             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplication());
                             SharedPreferences.Editor editor = pref.edit();
                             editor.putString(String.valueOf(R.string.shared_pref_user_name), sfullName);
+                            editor.putString(String.valueOf(R.string.shared_pref_user_email), semail);
                             editor.commit();
 
                             User dbuser = new User(user.getUid(), sfullName, semail, sphone);
@@ -186,6 +187,7 @@ public class SignUpActivity extends AppCompatActivity {
         Log.d(TAG, "current User");
         if(currentUser!=null) {
             Intent i = new Intent(SignUpActivity.this, DashboardActivity.class);
+//            i.putExtra("CURRENT_USER", currentUser);
             startActivity(i);
             finish();
         }

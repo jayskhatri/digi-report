@@ -3,6 +3,7 @@ package com.digitalpathology.digi_report.ui.my_acc;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +15,23 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.digitalpathology.digi_report.R;
 import com.digitalpathology.digi_report.common.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MyAccountFragment extends Fragment {
 
     private MyAccountViewModel myAccountViewModel;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TextView username, useremail;
+
+    private final String TAG = "MyAccountFragment";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -63,9 +69,30 @@ public class MyAccountFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        /**
+         * Logic for updating the user name and user email inside the my account screen
+         */
+
         // getting user
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        username.setText(currentUser.getDisplayName());
-        useremail.setText(currentUser.getEmail());
+        //read user data from firestore
+        DocumentReference docRef = db.collection("users").document(currentUser.getUid());
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+//                    totalReports.setText(String.valueOf(document.get("numberOfReportsUploaded")));
+//                    user = new User(String.valueOf(document.get("uid")), String.valueOf(document.get("name")), String.valueOf(document.get("email")),  String.valueOf(document.get("phone")));
+                        useremail.setText(String.valueOf(document.get("email")));
+                        username.setText(String.valueOf(document.get("name")));
+                } else {
+                    Log.d(TAG, "user does not exist");
+                }
+            } else {
+                Log.d(TAG, "get failed with ", task.getException());
+            }
+        });
     }
 }

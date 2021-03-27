@@ -27,7 +27,7 @@
         android:layout_gravity="center_vertical"
         android:orientation="vertical">
         <TextView
-            android:id="@+id/username"
+            android:id="@+id/header_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
@@ -40,7 +40,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <TextView
-            android:id="@+id/useremail"
+            android:id="@+id/header_useremail"
             android:layout_width="wrap_content"
             android:textColor="@color/colorPrimaryDark"
             android:layout_height="wrap_content"

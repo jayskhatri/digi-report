@@ -1,15 +1,24 @@
 package com.digitalpathology.digi_report;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.content.res.ResourcesCompat;
@@ -25,7 +34,17 @@ public class DashboardActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ImageView homeBtn, accSettingsBtn;
- 
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private TextView headerUserName, headerUserEmail;
+
+    private final String TAG = "DashboardActivity";
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +77,47 @@ public class DashboardActivity extends AppCompatActivity {
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+        //header view text
+        View headerView = navigationView.getHeaderView(0);
+        headerUserName = headerView.findViewById(R.id.header_username);
+        headerUserEmail = headerView.findViewById(R.id.header_useremail);
+
+        //setting username and useremail
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplication());
+        String fullname = pref.getString(String.valueOf(R.string.shared_pref_user_name), "null");
+        String email = pref.getString(String.valueOf(R.string.shared_pref_user_email), "null");
+        if(fullname.contentEquals("null") || email.contentEquals("null")){
+            // getting user
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            //read user data from firestore
+            DocumentReference docRef = db.collection("users").document(currentUser.getUid());
+            docRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        headerUserEmail.setText(String.valueOf(document.get("email")));
+                        headerUserName.setText(String.valueOf(document.get("name")));
+
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString(String.valueOf(R.string.shared_pref_user_name), String.valueOf(document.get("name")));
+                        editor.putString(String.valueOf(R.string.shared_pref_user_email), String.valueOf(document.get("email")));
+                        editor.commit();
+
+                    } else {
+                        Log.d(TAG, "user does not exist");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            });
+        }else{
+            headerUserName.setText(fullname);
+            headerUserEmail.setText(email);
+        }
+
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
