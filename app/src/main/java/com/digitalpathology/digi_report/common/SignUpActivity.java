@@ -95,7 +95,7 @@ public class SignUpActivity extends AppCompatActivity {
                 return false;
             }
             if (password.getText().toString().length() < 6) {
-                email.setError("Password should be greater than 6 character");
+                pwd.setError("Password should be greater than 6 character");
                 return false;
             }
         }else {
