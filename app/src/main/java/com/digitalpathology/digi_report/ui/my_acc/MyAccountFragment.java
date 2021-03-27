@@ -1,5 +1,6 @@
 package com.digitalpathology.digi_report.ui.my_acc;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,12 +11,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.digitalpathology.digi_report.R;
+import com.digitalpathology.digi_report.common.LoginActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MyAccountFragment extends Fragment {
 
@@ -39,6 +43,14 @@ public class MyAccountFragment extends Fragment {
         toolbar.post(() -> {
             Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu28, null);
             toolbar.setNavigationIcon(d);
+        });
+
+        //logout btn
+        CardView logoutBtn = getActivity().findViewById(R.id.btn_logout);
+        logoutBtn.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            getActivity().finish();
         });
     }
 }

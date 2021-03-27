@@ -93,7 +93,7 @@
         app:layout_constraintRight_toRightOf="parent"/>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/btn_signup"
+        android:id="@+id/btn_add_report"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="20dp"

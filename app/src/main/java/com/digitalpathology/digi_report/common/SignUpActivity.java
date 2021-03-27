@@ -18,12 +18,19 @@ import android.widget.Toast;
 
 import com.digitalpathology.digi_report.DashboardActivity;
 import com.digitalpathology.digi_report.R;
+import com.digitalpathology.digi_report.object.User;
 import com.digitalpathology.digi_report.utils.ConnectionDetector;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -31,6 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
     private TextView signinhere;
     private CardView signup;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final String TAG = "SignUpActivity";
 
     private ConnectionDetector connectionDetector;
@@ -61,7 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         signup.setOnClickListener(v -> {
             if(validateFields(name, email, pwd)){
-                signUP(name.getText().toString(), email.getText().toString(), pwd.getText().toString());
+                signUP(name.getText().toString(), email.getText().toString(), pwd.getText().toString(), phone.getText().toString());
             }else {
                 Toast.makeText(SignUpActivity.this, "Jay rehne de", Toast.LENGTH_LONG).show();
             }
@@ -113,7 +121,7 @@ public class SignUpActivity extends AppCompatActivity {
         return true;
     }
 
-    void signUP(final String sfullName, String semail, String spassword){
+    void signUP(final String sfullName, String semail, String spassword, String sphone){
         if(connectionDetector.isInternetAvailble()) {
             mAuth.createUserWithEmailAndPassword(semail, spassword)
                     .addOnCompleteListener(this, task -> {
@@ -126,6 +134,9 @@ public class SignUpActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = pref.edit();
                             editor.putString(String.valueOf(R.string.shared_pref_user_name), sfullName);
                             editor.commit();
+
+                            User dbuser = new User(user.getUid(), sfullName, semail, sphone);
+                            db.collection("users").document(user.getUid()).set(dbuser);
 
                             updateUI(user);
                             finish();

@@ -2,16 +2,27 @@ package com.digitalpathology.digi_report.object;
 
 public class User {
 
+    String uid;
     String name;
     String email;
     String phone;
-    Integer numberOfReportsUploaded;
+    int numberOfReportsUploaded;
+    MedicalReport medreport;
 
-    public User(String name, String email, String phone, Integer numberOfReportsUploaded) {
+    public User(String uid, String name, String email, String phone) {
+        this.uid = uid;
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.numberOfReportsUploaded = numberOfReportsUploaded;
+        this.numberOfReportsUploaded = 0;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getName() {
@@ -38,12 +49,16 @@ public class User {
         this.phone = phone;
     }
 
-    public Integer getNumberOfReportsUploaded() {
+    public int getNumberOfReportsUploaded() {
         return numberOfReportsUploaded;
     }
 
-    public void setNumberOfReportsUploaded(Integer numberOfReportsUploaded) {
+    public void setNumberOfReportsUploaded(int numberOfReportsUploaded) {
         this.numberOfReportsUploaded = numberOfReportsUploaded;
+    }
+
+    public void addreport(){
+        this.setNumberOfReportsUploaded(this.getNumberOfReportsUploaded() + 1);
     }
 
     @Override
