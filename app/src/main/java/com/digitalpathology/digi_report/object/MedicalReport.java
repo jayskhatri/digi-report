@@ -26,6 +26,7 @@ public class MedicalReport {
 
     public MedicalReport(String reportName, String patientName, String refferedBy, String reportDate, int age, String sex,
                          String address, int refno, int casenumber, String uploadDate, HaemogramReport haemogramReport,
+                         BloodSugrarLevel bloodSugrarLevel, RenalFunctionTests renalFunctionTests, LiverFunctionTest liverFunctionTest,
                          String conclusion, String advise, String bloodGroup, String pathologistName) {
         this.reportName = reportName;
         this.patientName = patientName;
@@ -38,6 +39,9 @@ public class MedicalReport {
         this.casenumber = casenumber;
         this.uploadDate = uploadDate;
         this.haemogramReport = haemogramReport;
+        this.bloodSugrarLevel = bloodSugrarLevel;
+        this.renalFunctionTests = renalFunctionTests;
+        this.liverFunctionTest = liverFunctionTest;
         this.conclusion = conclusion;
         this.advise = advise;
         this.bloodGroup = bloodGroup;

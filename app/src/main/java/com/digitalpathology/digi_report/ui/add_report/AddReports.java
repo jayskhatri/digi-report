@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,22 +30,32 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.digitalpathology.digi_report.R;
 import com.digitalpathology.digi_report.object.MedicalReport;
+import com.digitalpathology.digi_report.object.Reports.BloodSugrarLevel;
 import com.digitalpathology.digi_report.object.Reports.HaemogramReport;
+import com.digitalpathology.digi_report.object.Reports.LiverFunctionTest;
+import com.digitalpathology.digi_report.object.Reports.RenalFunctionTests;
 import com.digitalpathology.digi_report.object.User;
+import com.digitalpathology.digi_report.utils.ConnectionDetector;
 import com.digitalpathology.digi_report.utils.RandomValGen;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -57,7 +69,9 @@ public class AddReports extends Fragment {
     private EditText reportname, reportdate;
     private MedicalReport medicalReport;
     private User user;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private ConnectionDetector connectionDetector;
+    private FirebaseFirestore clouddb = FirebaseFirestore.getInstance();
+    private DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
 
     private static final int PICK_IMAGE = 1;
     private final static String TAG = "AddReports";
@@ -84,6 +98,7 @@ public class AddReports extends Fragment {
         uploadedPic = getActivity().findViewById(R.id.pic);
         reportdate = getActivity().findViewById(R.id.edittext_report_date);
         reportname = getActivity().findViewById(R.id.edittext_report_name);
+        connectionDetector = new ConnectionDetector(getActivity());
 
         //code to change a hamburger icon
         toolbar.post(() -> {
@@ -97,7 +112,7 @@ public class AddReports extends Fragment {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //read user data from firestore
-        DocumentReference docRef = db.collection("users").document(currentUser.getUid());
+        DocumentReference docRef = clouddb.collection("users").document(currentUser.getUid());
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
@@ -130,7 +145,24 @@ public class AddReports extends Fragment {
                 case 0:
                     if (resultCode == RESULT_OK && data != null) {
                         Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
-                        uploadedPic.setImageBitmap(selectedImage);
+
+                        //Logic to enlarge the image
+                        int currentBitmapWidth = selectedImage.getWidth();
+                        int currentBitmapHeight = selectedImage.getHeight();
+
+                        int ivWidth = uploadedPic.getWidth();
+                        int ivHeight = uploadedPic.getHeight();
+
+                        int newWidth = ivWidth;
+                        int newHeight = (int) Math.floor((double) currentBitmapHeight *( (double) newWidth / (double) currentBitmapWidth));
+
+                        Bitmap newbitMap = Bitmap.createScaledBitmap(selectedImage, newWidth, newHeight, true);
+                        uploadedPic.setImageBitmap(newbitMap);
+
+                        //uploadedPic.setImageBitmap(selectedImage);
+                        //scaleImage(uploadedPic);
+
+                        uploadBtn.setVisibility(View.GONE);
                     }
 
                     break;
@@ -146,7 +178,9 @@ public class AddReports extends Fragment {
 
                                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                                 String picturePath = cursor.getString(columnIndex);
+                                uploadBtn.setVisibility(View.GONE);
                                 uploadedPic.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+//                                scaleImage(uploadedPic);
                                 cursor.close();
                             }
                         }
@@ -181,21 +215,110 @@ public class AddReports extends Fragment {
     }
 
     private void addReport(User user, FirebaseUser firebaseUser){
+        // TODO: API Process
         /**
          * api process will be done here, it will give everything except the reportname and date
          * For now we are adding dummy data
          */
-        RandomValGen randomValGen  = new RandomValGen();
+        if(connectionDetector.isInternetAvailble()) {
+            RandomValGen randomValGen = new RandomValGen();
 
-        HaemogramReport haemogramReport = new HaemogramReport(randomValGen.betMinMax(14, 18), randomValGen.betMinMax(4.5f, 5.5f), randomValGen.betMinMax(4000, 10000),
-                randomValGen.betMinMax(1.5f, 4.5f),"gm%", "mill/cmm", "/cmm", "Lakh/cmm");
+            HaemogramReport haemogramReport = new HaemogramReport(randomValGen.betMinMax(14, 18), randomValGen.betMinMax(4.5f, 5.5f), randomValGen.betMinMax(4000, 10000),
+                    randomValGen.betMinMax(1.5f, 4.5f), "gm%", "mill/cmm", "/cmm", "Lakh/cmm");
 
-        long tsLong = System.currentTimeMillis()/1000;
-        String ts = Long.toString(tsLong);
-        medicalReport = new MedicalReport(reportname.getText().toString(), "patientname", "refferedby", reportdate.getText().toString(),
-                18, "sex","address", 1203, 1234, ts, haemogramReport, "conclusion", "advise", "bloodGroup", "pathologistname");
+            BloodSugrarLevel bloodSugrarLevel = new BloodSugrarLevel(randomValGen.betMinMax(70, 140), "mg/dl", randomValGen.betMinMax(0, 0.8f), "mmol/L");
 
-        db.collection("users").document(firebaseUser.getUid()).set(user);
-        db.collection("users").document(firebaseUser.getUid()).collection("reports").document("reports"+user.getNumberOfReportsUploaded()).set(medicalReport);
+            RenalFunctionTests renalFunctionTests = new RenalFunctionTests(randomValGen.betMinMax(15, 40), randomValGen.betMinMax(8, 23), randomValGen.betMinMax(0.9f, 1.5f), randomValGen.betMinMax(2.5f, 7), "mg/dl");
+
+            LiverFunctionTest liverFunctionTest = new LiverFunctionTest(randomValGen.betMinMax(0.0f, 1.0f), randomValGen.betMinMax(0.0f, 0.25f),
+                    randomValGen.betMinMax(0.0f, 0.75f), randomValGen.betMinMax(0, 40), randomValGen.betMinMax(37, 147), randomValGen.betMinMax(0, 40),
+                    randomValGen.betMinMax(6, 7.8f), randomValGen.betMinMax(3.5f, 5.0f), randomValGen.betMinMax(2.5f, 2.8f), 1.3f,
+                    "mg/dl", "gm/dl", "IU/L", "IU/L", "IU/L");
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault());
+            String ts = sdf.format(new Date());
+
+            medicalReport = new MedicalReport(reportname.getText().toString(), "patientname", "refferedby", reportdate.getText().toString(),
+                    18, "sex", "address", 1203, 1234, ts, haemogramReport, bloodSugrarLevel, renalFunctionTests, liverFunctionTest, "conclusion", "advise", "bloodGroup", "pathologistname");
+
+            //adding report to cloud firestore
+            clouddb.collection("users").document(firebaseUser.getUid()).set(user);
+            clouddb.collection("users").document(firebaseUser.getUid()).collection("reports").document("reports" + user.getNumberOfReportsUploaded()).set(medicalReport);
+
+            //adding report to firebase realtime database
+            databaseRef.child(firebaseUser.getUid()).child("/reports").child(String.valueOf(user.getNumberOfReportsUploaded())).setValue(medicalReport);
+        }else{
+            Toast.makeText(getActivity(), "Check your internet", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // trying to enlarge the image
+    private void scaleImage(ImageView view) throws NoSuchElementException  {
+        // Get bitmap from the the ImageView.
+        Bitmap bitmap = null;
+
+        try {
+            Drawable drawing = view.getDrawable();
+            bitmap = ((BitmapDrawable) drawing).getBitmap();
+        } catch (NullPointerException e) {
+            throw new NoSuchElementException("No drawable on given view");
+        } catch (ClassCastException e) {
+            // Check bitmap is Ion drawable
+//            bitmap = Ion.with(view).getBitmap();
+            Log.i(TAG, "hey jay");
+        }
+
+        // Get current dimensions AND the desired bounding box
+        int width = 0;
+
+        try {
+            width = bitmap.getWidth();
+        } catch (NullPointerException e) {
+            throw new NoSuchElementException("Can't find bitmap on given view/drawable");
+        }
+
+        int height = bitmap.getHeight();
+        int bounding = dpToPx(250);
+        Log.i("Test", "original width = " + Integer.toString(width));
+        Log.i("Test", "original height = " + Integer.toString(height));
+        Log.i("Test", "bounding = " + Integer.toString(bounding));
+
+        // Determine how much to scale: the dimension requiring less scaling is
+        // closer to the its side. This way the image always stays inside your
+        // bounding box AND either x/y axis touches it.
+        float xScale = ((float) bounding) / width;
+        float yScale = ((float) bounding) / height;
+        float scale = (xScale <= yScale) ? xScale : yScale;
+        Log.i("Test", "xScale = " + Float.toString(xScale));
+        Log.i("Test", "yScale = " + Float.toString(yScale));
+        Log.i("Test", "scale = " + Float.toString(scale));
+
+        // Create a matrix for the scaling and add the scaling data
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale, scale);
+
+        // Create a new bitmap and convert it to a format understood by the ImageView
+        Bitmap scaledBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        width = scaledBitmap.getWidth(); // re-use
+        height = scaledBitmap.getHeight(); // re-use
+        BitmapDrawable result = new BitmapDrawable(scaledBitmap);
+        Log.i("Test", "scaled width = " + Integer.toString(width));
+        Log.i("Test", "scaled height = " + Integer.toString(height));
+
+        // Apply the scaled bitmap
+        view.setImageDrawable(result);
+
+        // Now change ImageView's dimensions to match the scaled image
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
+        params.width = width;
+        params.height = height;
+        view.setLayoutParams(params);
+
+        Log.i("Test", "done");
+    }
+
+    private int dpToPx(int dp) {
+        float density = getActivity().getResources().getDisplayMetrics().density;
+        return Math.round((float)dp * density);
     }
 }
