@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/view"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="5dp"
+    android:background="@color/startup_background_color"
+    android:layout_height="100dp">
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_margin="5dp"-->
+<!--        android:orientation="vertical">-->
+        <TextView
+            android:id="@+id/report_uploaddate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/grey"
+            android:text="18/02/2020"
+            android:padding="8dp"
+            android:fontFamily="@font/circular_std_medium"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/report_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:text="Oncologist"
+                android:padding="10dp"
+                android:fontFamily="@font/circular_std_black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+                <ImageView
+                    android:id="@+id/btn_view_report"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_view_icon"/>
+                <ImageView
+                    android:id="@+id/btn_download_report"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_download_icon"/>
+                <ImageView
+                    android:id="@+id/btn_delete_report"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_view_icon"/>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+<!--    </LinearLayout>-->
+</LinearLayout>

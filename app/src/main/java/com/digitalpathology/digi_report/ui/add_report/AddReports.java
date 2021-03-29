@@ -118,7 +118,7 @@ public class AddReports extends Fragment {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
                     Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                    user = new User(String.valueOf(document.get("uid")), String.valueOf(document.get("name")), String.valueOf(document.get("email")),  String.valueOf(document.get("phone")));
+                    user = new User(String.valueOf(document.get("uid")), String.valueOf(document.get("name")), String.valueOf(document.get("email")),  String.valueOf(document.get("phone")), Integer.parseInt(String.valueOf(document.get("numberOfReportsUploaded"))));
 
                 } else {
                     Log.d(TAG, "user does not exist");

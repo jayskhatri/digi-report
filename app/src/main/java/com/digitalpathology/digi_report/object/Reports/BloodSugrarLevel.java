@@ -8,6 +8,9 @@ public class BloodSugrarLevel {
     float urineSugarResult;
     String urineSugarUnit;
 
+    public BloodSugrarLevel() {
+    }
+
     public BloodSugrarLevel(float bloodSugarResult, String bloodSugarUnit, float urineSugarResult, String urineSugarUnit) {
         this.bloodSugarResult = bloodSugarResult;
         this.bloodSugarUnit = bloodSugarUnit;

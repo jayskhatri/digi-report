@@ -7,6 +7,9 @@ public class HaemogramReport {
     float hb, rbc, wbc, platelets;
     String hbUnit, rbcUnit, wbcUnit, plateletsUnit;
 
+    public HaemogramReport() {
+    }
+
     public HaemogramReport(float hb, float rbc, float wbc, float platelets, String hbUnit, String rbcUnit, String wbcUnit, String plateletsUnit) {
         this.hb = hb;
         this.rbc = rbc;

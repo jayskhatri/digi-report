@@ -7,12 +7,6 @@
     tools:context=".ui.my_reports.MyReportsFragment"
     android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="2dp"
-        android:id="@+id/recycler_view_med_list"/>
-
     <TextView
         android:id="@+id/text_view_no_med_report"
         android:layout_width="match_parent"
@@ -23,4 +17,10 @@
         android:textSize="17sp"
         android:visibility="gone"
         android:text="Error in loading Reports" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="2dp"
+        android:id="@+id/recycler_view_med_list"/>
 </LinearLayout>

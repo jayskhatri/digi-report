@@ -9,12 +9,12 @@ public class User {
     int numberOfReportsUploaded;
     MedicalReport medreport;
 
-    public User(String uid, String name, String email, String phone) {
+    public User(String uid, String name, String email, String phone, int numberOfReportsUploaded) {
         this.uid = uid;
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.numberOfReportsUploaded = 0;
+        this.numberOfReportsUploaded = numberOfReportsUploaded;
     }
 
     public String getUid() {

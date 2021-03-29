@@ -6,6 +6,9 @@ public class LiverFunctionTest {
     float SAlkalinePhosphatse, SGOT, serumPotiTotal, serumPotiAlbumin, serumPotiGlobulins, serumPotiAGRatio;
     String SBilirubinUnit, serumProtiUnit, sgptUnit, sgotUnit, SAlkalinePhosphatseUnit;
 
+    public LiverFunctionTest() {
+    }
+
     public LiverFunctionTest(float SBilirubinTotal, float SBilirubinDirect, float SBilirubinIndirect, float SGPT,
                              float SAlkalinePhosphatse, float SGOT, float serumPotiTotal, float serumPotiAlbumin,
                              float serumPotiGlobulins, float serumPotiAGRatio, String SBilirubinUnit, String serumProtiUnit,

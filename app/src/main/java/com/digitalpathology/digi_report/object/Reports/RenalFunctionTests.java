@@ -8,6 +8,9 @@ public class RenalFunctionTests {
      */
     String commonUnit;
 
+    public RenalFunctionTests() {
+    }
+
     public RenalFunctionTests(float bloodUrea, float bloodUreaNitrogen, float serumCreatinine, float serumUricAcid, String commonUnit) {
         this.bloodUrea = bloodUrea;
         this.bloodUreaNitrogen = bloodUreaNitrogen;

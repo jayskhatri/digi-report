@@ -24,6 +24,8 @@ public class MedicalReport {
     String bloodGroup;
     String pathologistName;
 
+    public MedicalReport() {    }
+
     public MedicalReport(String reportName, String patientName, String refferedBy, String reportDate, int age, String sex,
                          String address, int refno, int casenumber, String uploadDate, HaemogramReport haemogramReport,
                          BloodSugrarLevel bloodSugrarLevel, RenalFunctionTests renalFunctionTests, LiverFunctionTest liverFunctionTest,

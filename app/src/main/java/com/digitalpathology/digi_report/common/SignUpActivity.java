@@ -136,7 +136,7 @@ public class SignUpActivity extends AppCompatActivity {
                             editor.putString(String.valueOf(R.string.shared_pref_user_email), semail);
                             editor.commit();
 
-                            User dbuser = new User(user.getUid(), sfullName, semail, sphone);
+                            User dbuser = new User(user.getUid(), sfullName, semail, sphone, 0);
                             db.collection("users").document(user.getUid()).set(dbuser);
 
                             updateUI(user);
