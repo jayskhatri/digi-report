@@ -1,5 +1,6 @@
 package com.digitalpathology.digi_report.ui.my_reports;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +20,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.digitalpathology.digi_report.DashboardActivity;
 import com.digitalpathology.digi_report.adapter.ReportAdapter;
+import com.digitalpathology.digi_report.common.LoginActivity;
 import com.digitalpathology.digi_report.object.*;
 import com.digitalpathology.digi_report.R;
 import com.digitalpathology.digi_report.utils.ConnectionDetector;
@@ -44,7 +47,8 @@ public class MyReportsFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
-    private TextView noReports;
+    private TextView noReports, loadError;
+    private User user;
 
     private ConnectionDetector connectionDetector;
     private FirebaseFirestore clouddb = FirebaseFirestore.getInstance();
@@ -73,17 +77,23 @@ public class MyReportsFragment extends Fragment {
 
         recyclerView = getActivity().findViewById(R.id.recycler_view_med_list);
         noReports = (TextView) getActivity().findViewById(R.id.text_view_no_med_report);
+        loadError = getActivity().findViewById(R.id.text_view_error_in_loading);
         connectionDetector = new ConnectionDetector(getActivity());
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
 
+        //Reading the uploaded reports
+        readReports();
+    }
+
+    private void readReports(){
         if(connectionDetector.isInternetAvailble()) {
             FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
             //read user data from firestore
             CollectionReference collectionRef = clouddb.collection("users").document(currentUser.getUid()).collection("reports");
-            collectionRef.get().addOnCompleteListener(task -> {
+            collectionRef.orderBy("uploadDate").get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     ArrayList<MedicalReport> reports = new ArrayList<>();
 
@@ -100,11 +110,14 @@ public class MyReportsFragment extends Fragment {
                         mAdapter = new ReportAdapter(reports);
                         recyclerView.setAdapter(mAdapter);
                         noReports.setVisibility(View.GONE);
-                    } else {
+                    } else if(reports.size() == 0){
+                        recyclerView.setVisibility(View.GONE);
+                        noReports.setVisibility(View.VISIBLE);
+                    }else {
                         Log.d(TAG, "report does not exist");
 
                         recyclerView.setVisibility(View.GONE);
-                        noReports.setVisibility(View.VISIBLE);
+                        loadError.setVisibility(View.VISIBLE);
                     }
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
@@ -113,7 +126,5 @@ public class MyReportsFragment extends Fragment {
         }else {
             Toast.makeText(getActivity(), "Internet Not Available", Toast.LENGTH_SHORT).show();
         }
-
-
     }
 }

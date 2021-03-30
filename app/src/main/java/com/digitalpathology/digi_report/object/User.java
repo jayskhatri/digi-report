@@ -61,6 +61,10 @@ public class User {
         this.setNumberOfReportsUploaded(this.getNumberOfReportsUploaded() + 1);
     }
 
+    public void removereport(){
+        this.setNumberOfReportsUploaded(this.getNumberOfReportsUploaded() -1);
+    }
+
     @Override
     public String toString() {
         return "User{" +

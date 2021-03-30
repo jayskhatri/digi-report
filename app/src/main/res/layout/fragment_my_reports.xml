@@ -16,6 +16,17 @@
         android:textColor="@color/colorPrimary"
         android:textSize="17sp"
         android:visibility="gone"
+        android:text="No reports available" />
+
+    <TextView
+        android:id="@+id/text_view_error_in_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="17sp"
+        android:visibility="gone"
         android:text="Error in loading Reports" />
 
     <androidx.recyclerview.widget.RecyclerView
