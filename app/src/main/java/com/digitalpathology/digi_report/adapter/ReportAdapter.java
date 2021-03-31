@@ -1,5 +1,6 @@
 package com.digitalpathology.digi_report.adapter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.digitalpathology.digi_report.R;
 import com.digitalpathology.digi_report.common.LoginActivity;
+import com.digitalpathology.digi_report.common.ViewReportActivity;
 import com.digitalpathology.digi_report.object.MedicalReport;
 import com.digitalpathology.digi_report.object.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,6 +34,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
     private FirebaseFirestore clouddb = FirebaseFirestore.getInstance();
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private User user;
+    private Context context;
     private final String TAG = "ReportAdapter";
 
     @NonNull
@@ -52,6 +55,12 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
         holder.deleteReportBtn.setOnClickListener(v -> {
             removeItem(position, user);
         });
+
+        holder.viewReportBtn.setOnClickListener(v -> {
+            Intent i = new Intent(context, ViewReportActivity.class);
+            i.putExtra("id", report.getId());
+            context.startActivity(i);
+        });
     }
 
     @Override
@@ -61,20 +70,22 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView uploadDate, reportName;
-        public ImageView deleteReportBtn;
+        public ImageView deleteReportBtn, viewReportBtn;
 
         public MyViewHolder(View view) {
             super(view);
             uploadDate = view.findViewById(R.id.report_uploaddate);
             reportName = view.findViewById(R.id.report_name);
             deleteReportBtn = view.findViewById(R.id.btn_delete_report);
+            viewReportBtn = view.findViewById(R.id.btn_view_report);
         }
     }
 
 
 
-    public ReportAdapter(List<MedicalReport> medicalReports) {
+    public ReportAdapter(List<MedicalReport> medicalReports, Context c) {
         this.reports = medicalReports;
+        this.context = c;
         //setting up user
         //read user data from firestore
         DocumentReference docRef = clouddb.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());

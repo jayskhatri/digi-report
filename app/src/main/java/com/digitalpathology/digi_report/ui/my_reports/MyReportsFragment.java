@@ -107,7 +107,7 @@ public class MyReportsFragment extends Fragment {
                         //                    user = new User(String.valueOf(document.get("uid")), String.valueOf(document.get("name")), String.valueOf(document.get("email")),  String.valueOf(document.get("phone")));
 
                         recyclerView.setVisibility(View.VISIBLE);
-                        mAdapter = new ReportAdapter(reports);
+                        mAdapter = new ReportAdapter(reports, getActivity());
                         recyclerView.setAdapter(mAdapter);
                         noReports.setVisibility(View.GONE);
                     } else if(reports.size() == 0){

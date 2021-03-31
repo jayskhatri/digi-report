@@ -62,8 +62,8 @@
     <string name="menu_my_reports">My Reports</string>
     <string name="menu_my_acc">My Account</string>
     <string name="text_report_name">Report Name</string>
-    
-    
+
+
     <string name="shared_pref_first_time_user">IS_FIRST_TIME_USER</string>
     <string name="shared_pref_user_name">USER_NAME</string>
     <string name="shared_pref_user_email">USER_EMAIL</string>
