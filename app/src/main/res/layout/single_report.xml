@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:layout_margin="5dp"
     android:background="@color/startup_background_color"
-    android:layout_height="100dp">
+    android:layout_height="85dp">
 
 <!--    <LinearLayout-->
 <!--        android:layout_width="match_parent"-->
@@ -58,6 +58,13 @@
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_view_icon"/>
                 <ImageView
+                    android:id="@+id/btn_share_report"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_share"/>
+                <ImageView
                     android:id="@+id/btn_download_report"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -70,7 +77,7 @@
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_view_icon"/>
+                    android:src="@drawable/ic_bin_icon"/>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 

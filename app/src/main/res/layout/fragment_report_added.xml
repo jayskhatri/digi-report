@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/startup_background_color"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_report_added"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="Report added!"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:padding="10dp"
+        android:layout_marginStart="10dp"
+        android:drawablePadding="10dp"
+        android:fontFamily="@font/circular_std_book"
+        android:drawableLeft="@drawable/ic_sign_of_right" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="5dp"
+        android:layout_margin="20dp"
+        android:padding="20dp"
+        app:cardBackgroundColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/tv_report_added"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <TextView
+            android:id="@+id/upload_date"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="20/20/2020"
+            android:padding="15dp"
+            android:textSize="28sp"
+            android:layout_gravity="start"
+            android:textColor="@color/black"
+            android:fontFamily="@font/circular_std_black"
+            android:gravity="start" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_title_report_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Report Name"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintTop_toBottomOf="@id/cv_date"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="24sp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/act_report_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/tv_title_report_name"
+        app:layout_constraintTop_toBottomOf="@id/cv_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Blood report"
+        android:textColor="@color/black"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:textSize="24sp"
+        android:gravity="start"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/btn_add_another_report"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/design_report_added"
+        android:paddingBottom="20dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_report_name"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/btn_add_another_report"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp"
+        android:layout_margin="20dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/text_add_another_report"
+            android:padding="5dp"
+            android:textColor="@color/white"
+            android:textSize="28sp"
+            android:fontFamily="@font/circular_std_black"
+            android:gravity="center_horizontal" />
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

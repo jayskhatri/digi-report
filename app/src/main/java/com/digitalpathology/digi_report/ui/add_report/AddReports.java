@@ -3,6 +3,7 @@ package com.digitalpathology.digi_report.ui.add_report;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -30,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.digitalpathology.digi_report.R;
@@ -39,6 +41,7 @@ import com.digitalpathology.digi_report.object.Reports.HaemogramReport;
 import com.digitalpathology.digi_report.object.Reports.LiverFunctionTest;
 import com.digitalpathology.digi_report.object.Reports.RenalFunctionTests;
 import com.digitalpathology.digi_report.object.User;
+import com.digitalpathology.digi_report.ui.report_added.ReportAddedFragment;
 import com.digitalpathology.digi_report.utils.ConnectionDetector;
 import com.digitalpathology.digi_report.utils.RandomValGen;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -133,7 +136,6 @@ public class AddReports extends Fragment {
             //increasing total number of reports
             user.addreport();
             //TODO: We have to check for the report image, report name, report date
-
             addReport(user, currentUser);
         });
     }
@@ -247,6 +249,12 @@ public class AddReports extends Fragment {
 
             //adding report to firebase realtime database
             databaseRef.child(firebaseUser.getUid()).child("/reports").child("/"+medicalReport.getId()).setValue(medicalReport);
+            Fragment fragment = new ReportAddedFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("REPORT_NAME", reportname.getText().toString());
+            bundle.putString("REPORT_DATE", todayDate());
+            fragment.setArguments(bundle);
+            loadFragment(fragment);
         }else{
             Toast.makeText(getActivity(), "Check your internet", Toast.LENGTH_SHORT).show();
         }
@@ -255,5 +263,24 @@ public class AddReports extends Fragment {
     private int dpToPx(int dp) {
         float density = getActivity().getResources().getDisplayMetrics().density;
         return Math.round((float)dp * density);
+    }
+
+    private String todayDate(){
+        String strDateFormat = "E, dd MMM yyyy, hh:mm:ss a";
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat(strDateFormat);
+        return df.format(date);
+    }
+
+    private boolean loadFragment(Fragment fragment) {
+        //switching fragment
+        if (fragment != null) {
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.nav_host_fragment, fragment)
+                    .commit();
+            return true;
+        }
+        return false;
     }
 }
