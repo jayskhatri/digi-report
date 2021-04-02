@@ -7,7 +7,9 @@ import androidx.cardview.widget.CardView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -16,12 +18,16 @@ import android.widget.Toast;
 
 import com.digitalpathology.digi_report.DashboardActivity;
 import com.digitalpathology.digi_report.R;
+import com.digitalpathology.digi_report.object.User;
 import com.digitalpathology.digi_report.utils.ConnectionDetector;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -30,6 +36,8 @@ public class LoginActivity extends AppCompatActivity {
     private CardView signin;
     private ConnectionDetector connectionDetector;
     private FirebaseAuth mAuth;
+    private User user;
+    private FirebaseFirestore clouddb = FirebaseFirestore.getInstance();
     private final String TAG = "LoginActivity";
 
     @Override
@@ -112,9 +120,33 @@ public class LoginActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInWithEmail:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
+                                FirebaseUser currentUser = mAuth.getCurrentUser();
                                 dialog.dismiss();
-                                updateUI(user);
+
+                                /** this may cause a problem because, task1 inside task */
+
+                                //read user data from firestore
+                                DocumentReference docRef = clouddb.collection("users").document(currentUser.getUid());
+                                docRef.get().addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        DocumentSnapshot document = task1.getResult();
+                                        if (document.exists()) {
+                                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                            user = new User(String.valueOf(document.get("uid")), String.valueOf(document.get("name")), String.valueOf(document.get("email")),  String.valueOf(document.get("phone")), Integer.parseInt(String.valueOf(document.get("numberOfReportsUploaded"))));
+                                            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplication());
+                                            SharedPreferences.Editor editor = pref.edit();
+                                            editor.putString(String.valueOf(R.string.shared_pref_user_name), user.getName());
+                                            editor.putString(String.valueOf(R.string.shared_pref_user_email), user.getEmail());
+                                            editor.commit();
+                                        } else {
+                                            Log.d(TAG, "user does not exist");
+                                        }
+                                    } else {
+                                        Log.d(TAG, "get failed with ", task1.getException());
+                                    }
+                                });
+
+                                updateUI(currentUser);
                                 finish();
                             } else {
                                 // If sign in fails, display a message to the user.
