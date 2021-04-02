@@ -46,12 +46,16 @@
                 android:id="@+id/edittext_report_date"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="text"
-                android:hint="date"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorHint="@color/grey"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:drawableLeft="@drawable/ic_calendar_icon"
                 android:drawablePadding="10dp"
-                android:drawableLeft="@drawable/ic_calendar_icon"/>
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="date"
+                android:inputType="text"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorHint="@color/grey" />
 
         </androidx.cardview.widget.CardView>
 

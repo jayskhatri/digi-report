@@ -3,18 +3,15 @@ package com.digitalpathology.digi_report.ui.add_report;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,10 +25,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.digitalpathology.digi_report.R;
@@ -44,8 +41,6 @@ import com.digitalpathology.digi_report.object.User;
 import com.digitalpathology.digi_report.ui.report_added.ReportAddedFragment;
 import com.digitalpathology.digi_report.utils.ConnectionDetector;
 import com.digitalpathology.digi_report.utils.RandomValGen;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -58,19 +53,18 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.NoSuchElementException;
-import java.util.Random;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
-public class AddReports extends Fragment {
+public class AddReports extends Fragment implements DatePickerDialog.OnDateSetListener {
 
     private AddReportsViewModel mViewModel;
     private LinearLayout uploadBtn;
     private ImageView uploadedPic;
     private EditText reportname, reportdate;
     private MedicalReport medicalReport;
+    private CardView cvReportDate;
     private User user;
     private ConnectionDetector connectionDetector;
     private FirebaseFirestore clouddb = FirebaseFirestore.getInstance();
@@ -101,7 +95,22 @@ public class AddReports extends Fragment {
         uploadedPic = getActivity().findViewById(R.id.pic);
         reportdate = getActivity().findViewById(R.id.edittext_report_date);
         reportname = getActivity().findViewById(R.id.edittext_report_name);
+        cvReportDate = getActivity().findViewById(R.id.cv_report_date);
         connectionDetector = new ConnectionDetector(getActivity());
+
+        DatePickerDialog.OnDateSetListener datepickerlistener = (view, year, month, dayOfMonth) -> reportdate.setText("" + dayOfMonth + "/" + month + "/" + year);
+
+        //date choose2
+        reportdate.setOnClickListener(v -> {
+//          DialogFragment datepicker = new DatePickerFragment();
+//          datepicker.show(getActivity().getSupportFragmentManager(), "date picker");
+            Calendar calendar = Calendar.getInstance();
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), datepickerlistener, calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.setCancelable(false);
+//            datePickerDialog.setTitle("Select date");
+            datePickerDialog.show();
+        });
 
         //code to change a hamburger icon
         toolbar.post(() -> {
@@ -282,5 +291,18 @@ public class AddReports extends Fragment {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month+1);
+        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+        reportdate.setText(sdf.format(c.getTime()));
     }
 }
