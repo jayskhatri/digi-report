@@ -60,10 +60,10 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
         });
 
         holder.viewReportBtn.setOnClickListener(v -> {
-//            Intent i = new Intent(context, ViewReportActivity.class);
-//            i.putExtra("id", report.getId());
-//            context.startActivity(i);
-            loadFragment(new MyReportsFragment());
+            Intent i = new Intent(context, ViewReportActivity.class);
+            i.putExtra("id", report.getId());
+            context.startActivity(i);
+//            loadFragment(new MyReportsFragment());
         });
     }
 

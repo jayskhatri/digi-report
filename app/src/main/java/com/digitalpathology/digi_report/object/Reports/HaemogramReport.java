@@ -53,7 +53,39 @@ public class HaemogramReport {
         this.platelets = platelets;
     }
 
-//    public boolean rangeCheck(){
+    public String getHbUnit() {
+        return hbUnit;
+    }
+
+    public void setHbUnit(String hbUnit) {
+        this.hbUnit = hbUnit;
+    }
+
+    public String getRbcUnit() {
+        return rbcUnit;
+    }
+
+    public void setRbcUnit(String rbcUnit) {
+        this.rbcUnit = rbcUnit;
+    }
+
+    public String getWbcUnit() {
+        return wbcUnit;
+    }
+
+    public void setWbcUnit(String wbcUnit) {
+        this.wbcUnit = wbcUnit;
+    }
+
+    public String getPlateletsUnit() {
+        return plateletsUnit;
+    }
+
+    public void setPlateletsUnit(String plateletsUnit) {
+        this.plateletsUnit = plateletsUnit;
+    }
+
+    //    public boolean rangeCheck(){
 //        RangeValidator rangeValidator = new RangeValidator();
 //        return rangeValidator.bloodCounts(hb, hbUnit, rbc, rbcUnit, wbc, wbcUnit, platelets, plateletsUnit, sex);
 //    }
