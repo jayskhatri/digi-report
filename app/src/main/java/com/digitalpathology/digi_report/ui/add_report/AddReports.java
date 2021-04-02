@@ -108,7 +108,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
             DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), datepickerlistener, calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
             datePickerDialog.setCancelable(false);
-//            datePickerDialog.setTitle("Select date");
+            datePickerDialog.setTitle("Select date");
             datePickerDialog.show();
         });
 
