@@ -73,4 +73,50 @@
     <string name="text_leave_your_feedback_for_digireport">Leave your feedback for DigiReport</string>
     <string name="text_add_another_report">Add another Report</string>
 
+
+<!--    Reports terminology-->
+    <string name="report_haemogram">Haemogram Report</string>
+    <string name="report_blood_counts">Blood Counts</string>
+    <string name="report_hb">Haemoglobin</string>
+    <string name="report_rbc">RBC</string>
+    <string name="report_wbc">WBC</string>
+    <string name="report_platelet">Platelets</string>
+    <string name="report_diff_counts">Differential Counts</string>
+    <string name="report_polymorphs">Polymorphs</string>
+    <string name="report_lymphocytes">Lymphocytes</string>
+    <string name="report_eosinophils">Eosinophils</string>
+    <string name="report_monocytes">Monocytes</string>
+    <string name="report_basophils">Basophils</string>
+    <string name="report_blood_indices">Blood Indices</string>
+    <string name="report_mcv">MCV</string>
+    <string name="report_mch">MCH</string>
+    <string name="report_mchc">MCHC</string>
+    <string name="report_rdw">RDW</string>
+    <string name="report_advise">Conclusion Advise</string>
+    <string name="report_blood_group">Blood Group</string>
+
+    <string name="report_blood_sugar_level">Blood Sugar Level</string>
+    <string name="report_blood_sugar">Blood Sugar</string>
+    <string name="report_urine_sugar">Urine sugar</string>
+    <string name="report_pathologist">Pathologist</string>
+    
+    <string name="report_renal_function">Renal Function Tests</string>
+    <string name="report_blood_urea">Blood Urea</string>
+    <string name="report_blood_urea_nitrogen">Blood Urea Nitrogen</string>
+    <string name="report_serum_creatinine">Serum Creatinine</string>
+    <string name="report_serum_uric_acid">Serum Uric Acid</string>
+    
+    <string name="report_liver_function_test">Liver Function Test</string>
+    <string name="report_s_bilirubin">S. Bilirubin</string>
+    <string name="report_s_bilirubin_direct">Direct</string>
+    <string name="report_s_bilirubin_total">Total</string>
+    <string name="report_s_bilirubin_indirect">Indirect</string>
+    <string name="report_sgpt">S.G.P.T.(ALT)</string>
+    <string name="report_s_alkaline">Alkaline Phosphatase</string>
+    <string name="report_sgot">SGOT (AST)</string>
+    <string name="report_serum_proteins">Serum Proteins</string>
+    <string name="report_serum_proteins_total">Total</string>
+    <string name="report_serum_proteins_albumin">Albumin</string>
+    <string name="report_serum_proteins_globulins">Globulins</string>
+    <string name="report_serum_proteins_agratio">A/G Ratio</string>
 </resources>

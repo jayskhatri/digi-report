@@ -11,13 +11,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.digitalpathology.digi_report.DashboardActivity;
 import com.digitalpathology.digi_report.R;
 import com.digitalpathology.digi_report.common.LoginActivity;
 import com.digitalpathology.digi_report.common.ViewReportActivity;
 import com.digitalpathology.digi_report.object.MedicalReport;
 import com.digitalpathology.digi_report.object.User;
+import com.digitalpathology.digi_report.ui.my_reports.MyReportsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -57,9 +60,10 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
         });
 
         holder.viewReportBtn.setOnClickListener(v -> {
-            Intent i = new Intent(context, ViewReportActivity.class);
-            i.putExtra("id", report.getId());
-            context.startActivity(i);
+//            Intent i = new Intent(context, ViewReportActivity.class);
+//            i.putExtra("id", report.getId());
+//            context.startActivity(i);
+            loadFragment(new MyReportsFragment());
         });
     }
 
@@ -120,6 +124,18 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
                     notifyItemRangeChanged(position, reports.size());
                     Log.i(TAG,"data removed");
                 });
+    }
+
+    private boolean loadFragment(Fragment fragment) {
+        //switching fragment
+        if (fragment != null) {
+            ((DashboardActivity)context).getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.nav_host_fragment, fragment)
+                    .commit();
+            return true;
+        }
+        return false;
     }
 
 }

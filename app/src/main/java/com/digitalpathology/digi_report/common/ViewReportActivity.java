@@ -17,13 +17,13 @@ public class ViewReportActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_report);
+        setContentView(R.layout.view_report_fragment);
 
         Intent i = getIntent();
         int id = i.getIntExtra("id", -1);
 
         //hooks
-        progressBar = findViewById(R.id.progress_bar);
+//        progressBar = findViewById(R.id.progress_bar);
 
         Log.d(TAG, "id: "+ id);
 
