@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ public class ReportAddedFragment extends Fragment {
     private String reportDate;
     private TextView reportname, reportdate;
     private CardView addAnotherReport;
+
+    private static final String TAG = "ReportAddedFragment";
 
     public ReportAddedFragment() {
         // Required empty public constructor
@@ -76,10 +79,10 @@ public class ReportAddedFragment extends Fragment {
 
     private boolean loadFragment(Fragment fragment) {
         //switching fragment
+        Log.d(TAG,"it's getting called");
         if (fragment != null) {
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .addToBackStack(null)
                     .replace(R.id.nav_host_fragment, fragment)
                     .commit();
             return true;

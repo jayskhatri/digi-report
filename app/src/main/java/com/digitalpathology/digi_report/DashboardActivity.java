@@ -151,6 +151,7 @@ public class DashboardActivity extends AppCompatActivity {
         if (fragment != null) {
             getSupportFragmentManager()
                     .beginTransaction()
+                    .addToBackStack(null)
                     .replace(R.id.nav_host_fragment, fragment)
                     .commit();
             return true;

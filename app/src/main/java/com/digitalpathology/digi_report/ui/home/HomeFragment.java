@@ -58,6 +58,7 @@ public class HomeFragment extends Fragment {
         if (fragment != null) {
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
+                    .addToBackStack(null)
                     .replace(R.id.nav_host_fragment, fragment)
                     .commit();
             return true;
