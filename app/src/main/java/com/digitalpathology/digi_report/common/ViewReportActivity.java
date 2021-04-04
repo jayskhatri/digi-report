@@ -36,6 +36,7 @@ public class ViewReportActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private final String TAG = "ViewReportActivity";
 
+    private TextView reportName, reportDate, patientName, patientAge, patientSex, pathologist, refferedBy, caseNumber;
     private TextView valueHB, valueRBC, valueWBC, valuePlatelets, valueBloodSugar, valueBloodUrea, valueUrineSugar;
     private TextView unitHB, unitRBC, unitWBC, unitPlatelets, unitBloodSugar, unitBloodUrea, unitUrineSugar;
     private TextView valueBloodUreaNitrogen, valueSerumCreatinine, valueSerumUricAcid, valueBiliRubinTotal, valueBiliRubinDirect, valueBiliRubinIndirect;
@@ -60,6 +61,15 @@ public class ViewReportActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         tableLayout = findViewById(R.id.tablelayout);
         tableLayout.setVisibility(View.GONE);
+
+        reportName = findViewById(R.id.tv_report_name);
+        reportDate = findViewById(R.id.tv_report_date);
+        patientName = findViewById(R.id.tv_patient_name);
+        patientAge = findViewById(R.id.tv_age);
+        patientSex = findViewById(R.id.tv_sex);
+        refferedBy = findViewById(R.id.tv_reffered_by);
+        caseNumber = findViewById(R.id.tv_case_number);
+        pathologist = findViewById(R.id.tv_pathologist);
 
         valueHB = findViewById(R.id.value_hb);
         unitHB = findViewById(R.id.unit_hb);
@@ -220,6 +230,16 @@ public class ViewReportActivity extends AppCompatActivity {
     }
 
     private void setupData(MedicalReport medicalReport){
+        Log.d(TAG, "medical report: " + medicalReport.toString());
+        reportName.setText(medicalReport.getReportName());
+        reportDate.setText(medicalReport.getReportDate());
+        patientName.setText(medicalReport.getPatientName());
+        patientAge.setText(String.valueOf(medicalReport.getAge()));
+        patientSex.setText(medicalReport.getSex());
+        pathologist.setText(medicalReport.getPathologistName());
+        refferedBy.setText(medicalReport.getRefferedBy());
+        caseNumber.setText(String.valueOf(medicalReport.getCasenumber()));
+
         valueHB.setText("" + medicalReport.getHaemogramReport().getHb());
         unitHB.setText("" + medicalReport.getHaemogramReport().getHbUnit());
 

@@ -200,4 +200,28 @@ public class MedicalReport {
         this.pathologistName = pathologistName;
     }
 
+    @Override
+    public String toString() {
+        return "MedicalReport{" +
+                "id=" + id +
+                ", reportName='" + reportName + '\'' +
+                ", patientName='" + patientName + '\'' +
+                ", refferedBy='" + refferedBy + '\'' +
+                ", reportDate='" + reportDate + '\'' +
+                ", age=" + age +
+                ", sex='" + sex + '\'' +
+                ", address='" + address + '\'' +
+                ", refno=" + refno +
+                ", casenumber=" + casenumber +
+                ", uploadDate='" + uploadDate + '\'' +
+                ", haemogramReport=" + haemogramReport +
+                ", bloodSugrarLevel=" + bloodSugrarLevel +
+                ", renalFunctionTests=" + renalFunctionTests +
+                ", liverFunctionTest=" + liverFunctionTest +
+                ", conclusion='" + conclusion + '\'' +
+                ", advise='" + advise + '\'' +
+                ", bloodGroup='" + bloodGroup + '\'' +
+                ", pathologistName='" + pathologistName + '\'' +
+                '}';
+    }
 }

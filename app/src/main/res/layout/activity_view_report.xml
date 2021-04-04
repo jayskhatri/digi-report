@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -7,7 +7,14 @@
     android:background="@color/startup_background_color"
     tools:context=".common.ViewReportActivity">
 
-    <LinearLayout
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -16,6 +23,100 @@
             android:id="@+id/tablelayout"
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
+
+<!--            <TableLayout-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_width="match_parent">-->
+                <TableRow style="@style/CommonHeader">
+                    <TextView android:text="Patient Information"
+                        android:layout_weight="0.2"
+                        style="@style/CommonHeaderText" />
+                </TableRow>
+
+                <TableRow style="@style/BodyRow">
+                    <TextView android:text="Report Name"
+                        style="@style/BodyText"
+                        android:layout_weight="0.5" />
+                    <TextView
+                        android:id="@+id/tv_report_name"
+                        android:text="Cell 1,2"
+                        style="@style/BodyText"
+                        android:layout_weight="0.5" />
+                </TableRow>
+
+                <TableRow style="@style/BodyRow">
+                    <TextView android:text="Report Date"
+                        style="@style/BodyText"
+                        android:layout_weight="0.5" />
+                    <TextView
+                        android:id="@+id/tv_report_date"
+                        android:text="Cell 1,2"
+                        style="@style/BodyText"
+                        android:layout_weight="0.5" />
+                </TableRow>
+
+                <TableRow style="@style/BodyRow">
+                    <TextView android:text="Patient Name"
+                        style="@style/BodyText"
+                        android:layout_weight="0.5" />
+                    <TextView
+                        android:text="Cell 1,2"
+                        android:id="@+id/tv_patient_name"
+                        style="@style/BodyText"
+                        android:layout_weight="0.5" />
+                </TableRow>
+                <TableRow style="@style/BodyRow">
+                    <TextView android:text="Age"
+                        style="@style/BodyText"
+                        android:layout_weight="0.5" />
+                    <TextView
+                        android:text="Cell 1,2"
+                        android:id="@+id/tv_age"
+                        style="@style/BodyText"
+                        android:layout_weight="0.5" />
+                </TableRow>
+                <TableRow style="@style/BodyRow">
+                    <TextView android:text="Sex"
+                        style="@style/BodyText"
+                        android:layout_weight="0.5" />
+                    <TextView
+                        android:text="Cell 1,2"
+                        android:id="@+id/tv_sex"
+                        style="@style/BodyText"
+                        android:layout_weight="0.5" />
+                </TableRow>
+                <TableRow style="@style/BodyRow">
+                    <TextView android:text="Reffered By"
+                        style="@style/BodyText"
+                        android:layout_weight="0.5" />
+                    <TextView
+                        android:text="Cell 1,2"
+                        style="@style/BodyText"
+                        android:id="@+id/tv_reffered_by"
+                        android:layout_weight="0.5" />
+                </TableRow>
+                <TableRow style="@style/BodyRow">
+                    <TextView android:text="Case Number"
+                        style="@style/BodyText"
+                        android:layout_weight="0.5" />
+                    <TextView
+                        android:text="Cell 1,2"
+                        style="@style/BodyText"
+                        android:id="@+id/tv_case_number"
+                        android:layout_weight="0.5" />
+                </TableRow>
+                <TableRow style="@style/BodyRow">
+                    <TextView android:text="Pathologist"
+                        style="@style/BodyText"
+                        android:layout_weight="0.5" />
+                    <TextView
+                        android:text="Cell 1,2"
+                        style="@style/BodyText"
+                        android:id="@+id/tv_pathologist"
+                        android:layout_weight="0.5" />
+                </TableRow>
+<!--            </TableLayout>-->
+
             <TableRow style="@style/CommonHeader">
                 <TextView android:text="Observation"
                     android:layout_weight="0.2"
@@ -606,5 +707,6 @@
             android:visibility="gone" />
 
     </LinearLayout>
+    </ScrollView>
 
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
