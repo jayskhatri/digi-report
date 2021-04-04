@@ -148,7 +148,7 @@
             android:id="@+id/edittext_su_pwd"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="text"
+            android:inputType="textPassword"
             android:textColor="@color/colorPrimaryDark"
             android:hint="@string/text_pwd"
             android:textColorHint="@color/grey"

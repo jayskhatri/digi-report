@@ -100,7 +100,7 @@
             android:id="@+id/edittext_si_pwd"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="text"
+            android:inputType="textPassword"
             android:hint="@string/text_pwd"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHint="@color/grey"
