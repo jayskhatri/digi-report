@@ -12,7 +12,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TableLayout android:layout_height="wrap_content"
+        <TableLayout
+            android:id="@+id/tablelayout"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent">
             <TableRow style="@style/CommonHeader">
                 <TextView android:text="Observation"

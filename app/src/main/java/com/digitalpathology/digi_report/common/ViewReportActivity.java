@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class ViewReportActivity extends AppCompatActivity {
     private TextView valueSGPT, valueAlkPhosphatase, valueSGOT, valueSerumProtiTotal, valueSerumProtiAlbumin, valueSerumProtiGlobulins, valueSerumProtiAGRatio;
     private TextView unitSGPT, unitAlkPhosphatase, unitSGOT, unitSerumProtiTotal, unitSerumProtiAlbumin, unitSerumProtiGlobulins, unitSerumProtiAGRatio;
     private MedicalReport medicalReport;
+    private TableLayout tableLayout;
     private ConnectionDetector connectionDetector;
     private FirebaseFirestore clouddb = FirebaseFirestore.getInstance();
 
@@ -55,6 +57,9 @@ public class ViewReportActivity extends AppCompatActivity {
 
         //hooks
         progressBar = findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.VISIBLE);
+        tableLayout = findViewById(R.id.tablelayout);
+        tableLayout.setVisibility(View.GONE);
 
         valueHB = findViewById(R.id.value_hb);
         unitHB = findViewById(R.id.unit_hb);
@@ -136,7 +141,6 @@ public class ViewReportActivity extends AppCompatActivity {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if(connectionDetector.isInternetAvailble()) {
-            progressBar.setVisibility(View.VISIBLE);
 
             //read user data from firestore
             DocumentReference reportRef = clouddb.collection("users").document(currentUser.getUid()).collection("reports").document(String.valueOf(id));
@@ -197,6 +201,7 @@ public class ViewReportActivity extends AppCompatActivity {
                         Log.d(TAG, "report name: " + medicalReport.getReportName());
 
                         setupData(medicalReport);
+                        tableLayout.setVisibility(View.VISIBLE);
 
                     } else {
                         Log.d(TAG, "report does not exist");
@@ -223,25 +228,59 @@ public class ViewReportActivity extends AppCompatActivity {
 
         valueWBC.setText("" + medicalReport.getHaemogramReport().getWbc());
         unitWBC.setText("" + medicalReport.getHaemogramReport().getWbcUnit());
+
         valuePlatelets.setText("" + medicalReport.getHaemogramReport().getPlatelets());
+        unitPlatelets.setText("" + medicalReport.getHaemogramReport().getPlateletsUnit());
+
 
         valueBloodSugar.setText("" + medicalReport.getBloodSugrarLevel().getBloodSugarResult());
+        unitPlatelets.setText("" + medicalReport.getBloodSugrarLevel().getBloodSugarUnit());
+
         valueUrineSugar.setText("" + medicalReport.getBloodSugrarLevel().getUrineSugarResult());
+        unitUrineSugar.setText("" + medicalReport.getBloodSugrarLevel().getUrineSugarUnit());
+
 
         valueBiliRubinTotal.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinTotal());
+        unitBiliRubinTotal.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinUnit());
+
         valueBiliRubinDirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinDirect());
+        unitBiliRubinDirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinUnit());
+
         valueBiliRubinIndirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinIndirect());
+        unitBiliRubinIndirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinUnit());
+
         valueSGPT.setText("" + medicalReport.getLiverFunctionTest().getSGPT());
+        unitSGPT.setText("" + medicalReport.getLiverFunctionTest().getSgptUnit());
+
         valueSGOT.setText("" + medicalReport.getLiverFunctionTest().getSGOT());
+        unitSGOT.setText("" + medicalReport.getLiverFunctionTest().getSgotUnit());
+
         valueAlkPhosphatase.setText("" + medicalReport.getLiverFunctionTest().getSAlkalinePhosphatse());
+        unitAlkPhosphatase.setText("" + medicalReport.getLiverFunctionTest().getSAlkalinePhosphatseUnit());
+
         valueSerumProtiTotal.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiTotal());
+        unitSerumProtiTotal.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
+
         valueSerumProtiAlbumin.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiAlbumin());
+        unitSerumProtiAlbumin.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
+
         valueSerumProtiGlobulins.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiGlobulins());
+        unitSerumProtiGlobulins.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
+
         valueSerumProtiAGRatio.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiAGRatio());
+        unitSerumProtiAGRatio.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
+
 
         valueBloodUrea.setText("" + medicalReport.getRenalFunctionTests().getBloodUrea());
+        unitBloodUrea.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
+
         valueBloodUreaNitrogen.setText("" + medicalReport.getRenalFunctionTests().getBloodUreaNitrogen());
+        unitBloodUreaNitrogen.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
+
         valueSerumCreatinine.setText("" + medicalReport.getRenalFunctionTests().getSerumCreatinine());
+        unitSerumCreatinine.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
+
         valueSerumUricAcid.setText("" + medicalReport.getRenalFunctionTests().getSerumUricAcid());
+        unitSerumUricAcid.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
     }
 }

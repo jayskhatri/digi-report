@@ -98,7 +98,17 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
         cvReportDate = getActivity().findViewById(R.id.cv_report_date);
         connectionDetector = new ConnectionDetector(getActivity());
 
-        DatePickerDialog.OnDateSetListener datepickerlistener = (view, year, month, dayOfMonth) -> reportdate.setText("" + dayOfMonth + "/" + month + "/" + year);
+        DatePickerDialog.OnDateSetListener datepickerlistener = (view, year, month, dayOfMonth) -> {
+            String myFormat = "dd/MM/yyyy"; //In which you need put here
+            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.YEAR, year);
+            c.set(Calendar.MONTH, month);
+            c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+            reportdate.setText(sdf.format(c.getTime()));
+        };
 
         //date choose2
         reportdate.setOnClickListener(v -> {
@@ -295,14 +305,6 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        String myFormat = "dd/MM/yyyy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, month+1);
-        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-        reportdate.setText(sdf.format(c.getTime()));
     }
 }
