@@ -126,16 +126,4 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
                 });
     }
 
-    private boolean loadFragment(Fragment fragment) {
-        //switching fragment
-        if (fragment != null) {
-            ((DashboardActivity)context).getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.nav_host_fragment, fragment)
-                    .commit();
-            return true;
-        }
-        return false;
-    }
-
 }
