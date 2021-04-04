@@ -1,8 +1,10 @@
 package com.digitalpathology.digi_report.ui.my_acc;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,11 +61,18 @@ public class MyAccountFragment extends Fragment {
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(getActivity(), LoginActivity.class));
             getActivity().finish();
+            removeAllPreferenceData();
         });
 
         username = getActivity().findViewById(R.id.username);
         useremail = getActivity().findViewById(R.id.useremail);
 
+    }
+
+    private void removeAllPreferenceData(){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplication());
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear().commit();
     }
 
     @Override
