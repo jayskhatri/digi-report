@@ -74,7 +74,7 @@
     <string name="text_add_another_report">Add another Report</string>
 
 
-<!--    Reports terminology-->
+    <!--    Reports terminology-->
     <string name="report_haemogram">Haemogram Report</string>
     <string name="report_blood_counts">Blood Counts</string>
     <string name="report_hb">Haemoglobin</string>
@@ -99,13 +99,13 @@
     <string name="report_blood_sugar">Blood Sugar</string>
     <string name="report_urine_sugar">Urine sugar</string>
     <string name="report_pathologist">Pathologist</string>
-    
+
     <string name="report_renal_function">Renal Function Tests</string>
     <string name="report_blood_urea">Blood Urea</string>
     <string name="report_blood_urea_nitrogen">Blood Urea Nitrogen</string>
     <string name="report_serum_creatinine">Serum Creatinine</string>
     <string name="report_serum_uric_acid">Serum Uric Acid</string>
-    
+
     <string name="report_liver_function_test">Liver Function Test</string>
     <string name="report_s_bilirubin">S. Bilirubin</string>
     <string name="report_s_bilirubin_direct">Direct</string>
