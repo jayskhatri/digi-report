@@ -1,6 +1,7 @@
 package com.digitalpathology.digi_report.ui.add_report;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
@@ -21,6 +22,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -455,5 +457,31 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
         }
 
         return true;
+    }
+
+
+    //async class
+    public class GetAddedReportData extends AsyncTask<Bitmap, Context, MedicalReport>{
+
+        private Context c;
+        private AppCompatActivity activity;
+
+        public GetAddedReportData(Context c, AppCompatActivity activity) {
+            this.c = c;
+            this.activity = activity;
+        }
+
+        @Override
+        protected MedicalReport doInBackground(Bitmap... bitmaps) {
+            return null;
+        }
+
+        private AlertDialog createDialog(Context context){
+            LayoutInflater factory = LayoutInflater.from(context);
+            final View dialogView = factory.inflate(R.layout.custom_dialogue,null);
+            final AlertDialog processDialog = new AlertDialog.Builder(context).create();
+            processDialog.setView(dialogView);
+            return processDialog;
+        }
     }
 }
