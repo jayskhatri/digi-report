@@ -150,7 +150,6 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
             }
         });
 
-//        medicalReport = new MedicalReport();
         addReportBtn.setOnClickListener(v -> {
             //increasing total number of reports
             user.addreport();
@@ -245,7 +244,9 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
             RandomValGen randomValGen = new RandomValGen();
 
             HaemogramReport haemogramReport = new HaemogramReport(randomValGen.betMinMax(14, 18), randomValGen.betMinMax(4.5f, 5.5f), randomValGen.betMinMax(4000, 10000),
-                    randomValGen.betMinMax(1.5f, 4.5f), "gm%", "mill/cmm", "/cmm", "Lakh/cmm");
+                    randomValGen.betMinMax(1.5f, 4.5f), "gm%", "mill/cmm", "/cmm", "Lakh/cmm", randomValGen.betMinMax(40f, 70f), randomValGen.betMinMax(20f, 40f),
+                    randomValGen.betMinMax(1f, 6f), randomValGen.betMinMax(2f, 10f), randomValGen.betMinMax(0f,1f), randomValGen.betMinMax(76f, 96f),
+                    randomValGen.betMinMax(27f, 31f), randomValGen.betMinMax(32f, 36f), randomValGen.betMinMax(11.5f, 14f), "%", "fl", "pg", "g/dl", "%");
 
             BloodSugrarLevel bloodSugrarLevel = new BloodSugrarLevel(randomValGen.betMinMax(70, 140), "mg/dl", randomValGen.betMinMax(0, 0.8f), "mmol/L");
 

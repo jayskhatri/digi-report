@@ -83,65 +83,65 @@ public class ViewReportActivity extends AppCompatActivity {
         valuePlatelets = findViewById(R.id.value_platelet);
         unitPlatelets = findViewById(R.id.unit_platelet);
 
-        valueBloodSugar = findViewById(R.id.value_bloodsugar);
-        unitBloodSugar = findViewById(R.id.unit_blood_sugar);
-
-        valueBloodUrea = findViewById(R.id.value_blood_urea);
-        unitBloodUrea = findViewById(R.id.unit_blood_urea);
-
-        valueUrineSugar = findViewById(R.id.value_urine_sugar);
-        unitUrineSugar = findViewById(R.id.unit_urine_sugar);
-
-        valueBloodUreaNitrogen = findViewById(R.id.value_blood_urea_n);
-        unitBloodUreaNitrogen = findViewById(R.id.unit_blood_urea_n);
-
-        valueSerumCreatinine  = findViewById(R.id.value_serum_creatinine);
-        unitSerumCreatinine = findViewById(R.id.unit_serum_creatinine);
-
-        valueSerumUricAcid = findViewById(R.id.value_serum_uric_acid);
-        unitSerumUricAcid = findViewById(R.id.unit_serum_uric_acid);
-
-        valueBiliRubinTotal = findViewById(R.id.value_s_bilirubin_total);
-        unitBiliRubinTotal = findViewById(R.id.unit_s_bilirubin_total);
-
-        valueBiliRubinDirect = findViewById(R.id.value_s_bilirubin_direct);
-        unitBiliRubinDirect = findViewById(R.id.unit_s_bilirubin_direct);
-
-        valueBiliRubinIndirect = findViewById(R.id.value_s_bilirubin_indirect);
-        unitBiliRubinIndirect = findViewById(R.id.unit_s_bilirubin_indirect);
-
-        valueSGPT = findViewById(R.id.value_sgpt);
-        unitSGPT = findViewById(R.id.unit_sgpt);
-
-        valueAlkPhosphatase = findViewById(R.id.value_alkaline_phosphatase);
-        unitAlkPhosphatase = findViewById(R.id.unit_alkaline_phosphatase);
-
-        valueSGOT = findViewById(R.id.value_sgot);
-        unitSGOT = findViewById(R.id.unit_sgot);
-
-        valueSerumProtiTotal = findViewById(R.id.value_serum_proteins_total);
-        unitSerumProtiTotal = findViewById(R.id.unit_serum_proteins_total);
-
-        valueSerumProtiAlbumin = findViewById(R.id.value_serum_proteins_albumin);
-        unitSerumProtiAlbumin = findViewById(R.id.unit_serum_albumin);
-
-        valueSerumProtiGlobulins = findViewById(R.id.value_serum_proteins_globulin);
-        unitSerumProtiGlobulins = findViewById(R.id.unit_serum_proteins_globulin);
-
-        valueSerumProtiAGRatio = findViewById(R.id.value_serum_proteins_ag_ratio);
-        unitSerumProtiAGRatio = findViewById(R.id.unit_serum_proteins_ag_ratio);
-
-        valueBloodUrea = findViewById(R.id.value_blood_urea);
-        unitBloodUrea = findViewById(R.id.unit_blood_urea);
-
-        valueBloodUreaNitrogen = findViewById(R.id.value_blood_urea_n);
-        unitBloodUreaNitrogen = findViewById(R.id.unit_blood_urea_n);
-
-        valueSerumCreatinine = findViewById(R.id.value_serum_creatinine);
-        unitSerumCreatinine = findViewById(R.id.unit_serum_creatinine);
-
-        valueSerumUricAcid = findViewById(R.id.value_serum_uric_acid);
-        unitSerumUricAcid = findViewById(R.id.unit_serum_uric_acid);
+//        valueBloodSugar = findViewById(R.id.value_bloodsugar);
+//        unitBloodSugar = findViewById(R.id.unit_blood_sugar);
+//
+//        valueBloodUrea = findViewById(R.id.value_blood_urea);
+//        unitBloodUrea = findViewById(R.id.unit_blood_urea);
+//
+//        valueUrineSugar = findViewById(R.id.value_urine_sugar);
+//        unitUrineSugar = findViewById(R.id.unit_urine_sugar);
+//
+//        valueBloodUreaNitrogen = findViewById(R.id.value_blood_urea_n);
+//        unitBloodUreaNitrogen = findViewById(R.id.unit_blood_urea_n);
+//
+//        valueSerumCreatinine  = findViewById(R.id.value_serum_creatinine);
+//        unitSerumCreatinine = findViewById(R.id.unit_serum_creatinine);
+//
+//        valueSerumUricAcid = findViewById(R.id.value_serum_uric_acid);
+//        unitSerumUricAcid = findViewById(R.id.unit_serum_uric_acid);
+//
+//        valueBiliRubinTotal = findViewById(R.id.value_s_bilirubin_total);
+//        unitBiliRubinTotal = findViewById(R.id.unit_s_bilirubin_total);
+//
+//        valueBiliRubinDirect = findViewById(R.id.value_s_bilirubin_direct);
+//        unitBiliRubinDirect = findViewById(R.id.unit_s_bilirubin_direct);
+//
+//        valueBiliRubinIndirect = findViewById(R.id.value_s_bilirubin_indirect);
+//        unitBiliRubinIndirect = findViewById(R.id.unit_s_bilirubin_indirect);
+//
+//        valueSGPT = findViewById(R.id.value_sgpt);
+//        unitSGPT = findViewById(R.id.unit_sgpt);
+//
+//        valueAlkPhosphatase = findViewById(R.id.value_alkaline_phosphatase);
+//        unitAlkPhosphatase = findViewById(R.id.unit_alkaline_phosphatase);
+//
+//        valueSGOT = findViewById(R.id.value_sgot);
+//        unitSGOT = findViewById(R.id.unit_sgot);
+//
+//        valueSerumProtiTotal = findViewById(R.id.value_serum_proteins_total);
+//        unitSerumProtiTotal = findViewById(R.id.unit_serum_proteins_total);
+//
+//        valueSerumProtiAlbumin = findViewById(R.id.value_serum_proteins_albumin);
+//        unitSerumProtiAlbumin = findViewById(R.id.unit_serum_albumin);
+//
+//        valueSerumProtiGlobulins = findViewById(R.id.value_serum_proteins_globulin);
+//        unitSerumProtiGlobulins = findViewById(R.id.unit_serum_proteins_globulin);
+//
+//        valueSerumProtiAGRatio = findViewById(R.id.value_serum_proteins_ag_ratio);
+//        unitSerumProtiAGRatio = findViewById(R.id.unit_serum_proteins_ag_ratio);
+//
+//        valueBloodUrea = findViewById(R.id.value_blood_urea);
+//        unitBloodUrea = findViewById(R.id.unit_blood_urea);
+//
+//        valueBloodUreaNitrogen = findViewById(R.id.value_blood_urea_n);
+//        unitBloodUreaNitrogen = findViewById(R.id.unit_blood_urea_n);
+//
+//        valueSerumCreatinine = findViewById(R.id.value_serum_creatinine);
+//        unitSerumCreatinine = findViewById(R.id.unit_serum_creatinine);
+//
+//        valueSerumUricAcid = findViewById(R.id.value_serum_uric_acid);
+//        unitSerumUricAcid = findViewById(R.id.unit_serum_uric_acid);
         
         
         connectionDetector = new ConnectionDetector(this);
@@ -193,10 +193,18 @@ public class ViewReportActivity extends AppCompatActivity {
                                 String.valueOf(mapBloodSugar.get("bloodSugarUnit")), Float.parseFloat(String.valueOf(mapBloodSugar.get("urineSugarResult"))),
                                 String.valueOf(mapBloodSugar.get("urineSugarUnit")));
 
-                        //float hb, float rbc, float wbc, float platelets, String hbUnit, String rbcUnit, String wbcUnit, String plateletsUnit
-                        HaemogramReport haemogramReport = new HaemogramReport(Float.parseFloat(String.valueOf(mapHaemo.get("hb"))), Float.parseFloat(String.valueOf(mapHaemo.get("rbc"))),
-                                Float.parseFloat(String.valueOf(mapHaemo.get("wbc"))), Float.parseFloat(String.valueOf(mapHaemo.get("platelets"))), String.valueOf(mapHaemo.get("hbUnit")),
-                                String.valueOf(mapHaemo.get("rbcUnit")), String.valueOf(mapHaemo.get("wbcUnit")), String.valueOf(mapHaemo.get("plateletUnit")));
+                        //float hb, float rbc, float wbc, float platelets, String hbUnit, String rbcUnit, String wbcUnit, String plateletsUnit,
+                        //float polymorphs, float lymphocytes, float eosinophils, float monocytes, float basophils, float mcv, float mch, float mchc,
+                        //float rdw, String diffCountUnits, String mcvUnit, String mchUnit, String mchcUnit, String rdwUnit
+                        HaemogramReport haemogramReport = new HaemogramReport(Float.parseFloat(String.valueOf(mapHaemo.get("hb"))),
+                                Float.parseFloat(String.valueOf(mapHaemo.get("rbc"))), Float.parseFloat(String.valueOf(mapHaemo.get("wbc"))),
+                                Float.parseFloat(String.valueOf(mapHaemo.get("platelets"))), String.valueOf(mapHaemo.get("hbUnit")),
+                                String.valueOf(mapHaemo.get("rbcUnit")), String.valueOf(mapHaemo.get("wbcUnit")),
+                                String.valueOf(mapHaemo.get("plateletUnit")), Float.parseFloat(String.valueOf(mapHaemo.get("polymorphs"))),
+                                Float.parseFloat(String.valueOf(mapHaemo.get("lymphocytes"))), Float.parseFloat(String.valueOf(mapHaemo.get("eosinophils"))), Float.parseFloat(String.valueOf(mapHaemo.get("monocytes"))),
+                                Float.parseFloat(String.valueOf(mapHaemo.get("basophils"))), Float.parseFloat(String.valueOf(mapHaemo.get("mcv"))), Float.parseFloat(String.valueOf(mapHaemo.get("mch"))),
+                                Float.parseFloat(String.valueOf(mapHaemo.get("mchc"))), Float.parseFloat(String.valueOf(mapHaemo.get("rdw"))), String.valueOf(mapHaemo.get("diffCountUnits")),
+                                String.valueOf(mapHaemo.get("mcvUnit")), String.valueOf(mapHaemo.get("mchUnit")), String.valueOf(mapHaemo.get("mchcUnit")), String.valueOf(mapHaemo.get("rdwUnit")));
 
                         //float bloodUrea, float bloodUreaNitrogen, float serumCreatinine, float serumUricAcid, String commonUnit
                         RenalFunctionTests renalFunctionTests = new RenalFunctionTests(Float.parseFloat(String.valueOf(mapRenal.get("bloodUrea"))),
@@ -253,54 +261,54 @@ public class ViewReportActivity extends AppCompatActivity {
         unitPlatelets.setText("" + medicalReport.getHaemogramReport().getPlateletsUnit());
 
 
-        valueBloodSugar.setText("" + medicalReport.getBloodSugrarLevel().getBloodSugarResult());
-        unitPlatelets.setText("" + medicalReport.getBloodSugrarLevel().getBloodSugarUnit());
-
-        valueUrineSugar.setText("" + medicalReport.getBloodSugrarLevel().getUrineSugarResult());
-        unitUrineSugar.setText("" + medicalReport.getBloodSugrarLevel().getUrineSugarUnit());
-
-
-        valueBiliRubinTotal.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinTotal());
-        unitBiliRubinTotal.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinUnit());
-
-        valueBiliRubinDirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinDirect());
-        unitBiliRubinDirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinUnit());
-
-        valueBiliRubinIndirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinIndirect());
-        unitBiliRubinIndirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinUnit());
-
-        valueSGPT.setText("" + medicalReport.getLiverFunctionTest().getSGPT());
-        unitSGPT.setText("" + medicalReport.getLiverFunctionTest().getSgptUnit());
-
-        valueSGOT.setText("" + medicalReport.getLiverFunctionTest().getSGOT());
-        unitSGOT.setText("" + medicalReport.getLiverFunctionTest().getSgotUnit());
-
-        valueAlkPhosphatase.setText("" + medicalReport.getLiverFunctionTest().getSAlkalinePhosphatse());
-        unitAlkPhosphatase.setText("" + medicalReport.getLiverFunctionTest().getSAlkalinePhosphatseUnit());
-
-        valueSerumProtiTotal.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiTotal());
-        unitSerumProtiTotal.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
-
-        valueSerumProtiAlbumin.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiAlbumin());
-        unitSerumProtiAlbumin.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
-
-        valueSerumProtiGlobulins.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiGlobulins());
-        unitSerumProtiGlobulins.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
-
-        valueSerumProtiAGRatio.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiAGRatio());
-        unitSerumProtiAGRatio.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
-
-
-        valueBloodUrea.setText("" + medicalReport.getRenalFunctionTests().getBloodUrea());
-        unitBloodUrea.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
-
-        valueBloodUreaNitrogen.setText("" + medicalReport.getRenalFunctionTests().getBloodUreaNitrogen());
-        unitBloodUreaNitrogen.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
-
-        valueSerumCreatinine.setText("" + medicalReport.getRenalFunctionTests().getSerumCreatinine());
-        unitSerumCreatinine.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
-
-        valueSerumUricAcid.setText("" + medicalReport.getRenalFunctionTests().getSerumUricAcid());
-        unitSerumUricAcid.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
+//        valueBloodSugar.setText("" + medicalReport.getBloodSugrarLevel().getBloodSugarResult());
+//        unitPlatelets.setText("" + medicalReport.getBloodSugrarLevel().getBloodSugarUnit());
+//
+//        valueUrineSugar.setText("" + medicalReport.getBloodSugrarLevel().getUrineSugarResult());
+//        unitUrineSugar.setText("" + medicalReport.getBloodSugrarLevel().getUrineSugarUnit());
+//
+//
+//        valueBiliRubinTotal.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinTotal());
+//        unitBiliRubinTotal.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinUnit());
+//
+//        valueBiliRubinDirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinDirect());
+//        unitBiliRubinDirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinUnit());
+//
+//        valueBiliRubinIndirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinIndirect());
+//        unitBiliRubinIndirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinUnit());
+//
+//        valueSGPT.setText("" + medicalReport.getLiverFunctionTest().getSGPT());
+//        unitSGPT.setText("" + medicalReport.getLiverFunctionTest().getSgptUnit());
+//
+//        valueSGOT.setText("" + medicalReport.getLiverFunctionTest().getSGOT());
+//        unitSGOT.setText("" + medicalReport.getLiverFunctionTest().getSgotUnit());
+//
+//        valueAlkPhosphatase.setText("" + medicalReport.getLiverFunctionTest().getSAlkalinePhosphatse());
+//        unitAlkPhosphatase.setText("" + medicalReport.getLiverFunctionTest().getSAlkalinePhosphatseUnit());
+//
+//        valueSerumProtiTotal.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiTotal());
+//        unitSerumProtiTotal.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
+//
+//        valueSerumProtiAlbumin.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiAlbumin());
+//        unitSerumProtiAlbumin.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
+//
+//        valueSerumProtiGlobulins.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiGlobulins());
+//        unitSerumProtiGlobulins.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
+//
+//        valueSerumProtiAGRatio.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiAGRatio());
+//        unitSerumProtiAGRatio.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
+//
+//
+//        valueBloodUrea.setText("" + medicalReport.getRenalFunctionTests().getBloodUrea());
+//        unitBloodUrea.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
+//
+//        valueBloodUreaNitrogen.setText("" + medicalReport.getRenalFunctionTests().getBloodUreaNitrogen());
+//        unitBloodUreaNitrogen.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
+//
+//        valueSerumCreatinine.setText("" + medicalReport.getRenalFunctionTests().getSerumCreatinine());
+//        unitSerumCreatinine.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
+//
+//        valueSerumUricAcid.setText("" + medicalReport.getRenalFunctionTests().getSerumUricAcid());
+//        unitSerumUricAcid.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
     }
 }

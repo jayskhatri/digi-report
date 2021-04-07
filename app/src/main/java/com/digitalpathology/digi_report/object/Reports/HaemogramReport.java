@@ -4,13 +4,15 @@ import com.digitalpathology.digi_report.object.RangeValidator;
 
 public class HaemogramReport {
 
-    float hb, rbc, wbc, platelets;
-    String hbUnit, rbcUnit, wbcUnit, plateletsUnit;
+    float hb, rbc, wbc, platelets, polymorphs, lymphocytes, eosinophils, monocytes, basophils, mcv, mch, mchc, rdw;
+    String hbUnit, rbcUnit, wbcUnit, plateletsUnit, diffCountUnits, mcvUnit, mchUnit, mchcUnit, rdwUnit;
 
     public HaemogramReport() {
     }
 
-    public HaemogramReport(float hb, float rbc, float wbc, float platelets, String hbUnit, String rbcUnit, String wbcUnit, String plateletsUnit) {
+    public HaemogramReport(float hb, float rbc, float wbc, float platelets, String hbUnit, String rbcUnit, String wbcUnit, String plateletsUnit,
+                           float polymorphs, float lymphocytes, float eosinophils, float monocytes, float basophils, float mcv, float mch, float mchc,
+                           float rdw, String diffCountUnits, String mcvUnit, String mchUnit, String mchcUnit, String rdwUnit) {
         this.hb = hb;
         this.rbc = rbc;
         this.wbc = wbc;
@@ -83,6 +85,118 @@ public class HaemogramReport {
 
     public void setPlateletsUnit(String plateletsUnit) {
         this.plateletsUnit = plateletsUnit;
+    }
+
+    public float getPolymorphs() {
+        return polymorphs;
+    }
+
+    public void setPolymorphs(float polymorphs) {
+        this.polymorphs = polymorphs;
+    }
+
+    public float getLymphocytes() {
+        return lymphocytes;
+    }
+
+    public void setLymphocytes(float lymphocytes) {
+        this.lymphocytes = lymphocytes;
+    }
+
+    public float getEosinophils() {
+        return eosinophils;
+    }
+
+    public void setEosinophils(float eosinophils) {
+        this.eosinophils = eosinophils;
+    }
+
+    public float getMonocytes() {
+        return monocytes;
+    }
+
+    public void setMonocytes(float monocytes) {
+        this.monocytes = monocytes;
+    }
+
+    public float getBasophils() {
+        return basophils;
+    }
+
+    public void setBasophils(float basophils) {
+        this.basophils = basophils;
+    }
+
+    public float getMcv() {
+        return mcv;
+    }
+
+    public void setMcv(float mcv) {
+        this.mcv = mcv;
+    }
+
+    public float getMch() {
+        return mch;
+    }
+
+    public void setMch(float mch) {
+        this.mch = mch;
+    }
+
+    public float getMchc() {
+        return mchc;
+    }
+
+    public void setMchc(float mchc) {
+        this.mchc = mchc;
+    }
+
+    public float getRdw() {
+        return rdw;
+    }
+
+    public void setRdw(float rdw) {
+        this.rdw = rdw;
+    }
+
+    public String getDiffCountUnits() {
+        return diffCountUnits;
+    }
+
+    public void setDiffCountUnits(String diffCountUnits) {
+        this.diffCountUnits = diffCountUnits;
+    }
+
+    public String getMcvUnit() {
+        return mcvUnit;
+    }
+
+    public void setMcvUnit(String mcvUnit) {
+        this.mcvUnit = mcvUnit;
+    }
+
+    public String getMchUnit() {
+        return mchUnit;
+    }
+
+    public void setMchUnit(String mchUnit) {
+        this.mchUnit = mchUnit;
+    }
+
+    public String getMchcUnit() {
+        return mchcUnit;
+    }
+
+    public void setMchcUnit(String mchcUnit) {
+        this.mchcUnit = mchcUnit;
+    }
+
+    public String getRdwUnit() {
+        return rdwUnit;
+    }
+
+    public void setRdwUnit(String rdwUnit) {
+        this.rdwUnit = rdwUnit;
     }
 
     //    public boolean rangeCheck(){
