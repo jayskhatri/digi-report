@@ -338,11 +338,11 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
          .addOnFailureListener(exception -> {
              // Handle unsuccessful uploads
          }).addOnSuccessListener(taskSnapshot -> {
-             storageRef.getDownloadUrl().addOnSuccessListener(uri -> url[0] = uri.toString());
-             dialog.dismiss();
+             storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                 Log.d(TAG, "uri: ::: " + uri.toString());
+             });
         });
-
-        return url[0];
+        return  storageRef.toString();
     }
 
     private void addReport(User user, FirebaseUser firebaseUser){
@@ -372,11 +372,11 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault());
             String ts = sdf.format(new Date());
 
-            medicalReport = new MedicalReport(randomValGen.randomInt(), reportname.getText().toString(), "patientname", "refferedby", reportdate.getText().toString(),
-                    18, "sex", "address", 1203, 1234, ts, haemogramReport, bloodSugrarLevel, renalFunctionTests, liverFunctionTest, "conclusion", "advise", "bloodGroup", "pathologistname");
-
             //upload image
-            uploadImage(uploadedPic, user, firebaseUser);
+            String url = uploadImage(uploadedPic, user, firebaseUser);
+
+            medicalReport = new MedicalReport(randomValGen.randomInt(), url, reportname.getText().toString(), "patientname", "refferedby", reportdate.getText().toString(),
+                    18, "sex", "address", 1203, 1234, ts, haemogramReport, bloodSugrarLevel, renalFunctionTests, liverFunctionTest, "conclusion", "advise", "bloodGroup", "pathologistname");
 
             //adding report to cloud firestore
             clouddb.collection("users").document(firebaseUser.getUid()).set(user);

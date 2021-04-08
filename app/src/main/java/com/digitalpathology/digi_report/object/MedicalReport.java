@@ -4,6 +4,7 @@ import com.digitalpathology.digi_report.object.Reports.*;
 
 public class MedicalReport {
     int id;
+    String url;
     String reportName;
     String patientName;
     String refferedBy;
@@ -27,11 +28,12 @@ public class MedicalReport {
 
     public MedicalReport() {    }
 
-    public MedicalReport(int id, String reportName, String patientName, String refferedBy, String reportDate, int age, String sex,
+    public MedicalReport(int id, String url, String reportName, String patientName, String refferedBy, String reportDate, int age, String sex,
                          String address, int refno, int casenumber, String uploadDate, HaemogramReport haemogramReport,
                          BloodSugrarLevel bloodSugrarLevel, RenalFunctionTests renalFunctionTests, LiverFunctionTest liverFunctionTest,
                          String conclusion, String advise, String bloodGroup, String pathologistName) {
         this.id = id;
+        this.url = url;
         this.reportName = reportName;
         this.patientName = patientName;
         this.refferedBy = refferedBy;
@@ -58,6 +60,14 @@ public class MedicalReport {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getReportName() { return reportName; }
