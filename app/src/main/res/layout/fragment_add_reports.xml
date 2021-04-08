@@ -7,6 +7,17 @@
     android:background="@color/startup_background_color"
     tools:context=".ui.add_report.AddReports">
 
+    <ProgressBar
+        android:id="@+id/progress_bar_adding_report"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="20dp"/>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_report_name"
             android:layout_width="match_parent"

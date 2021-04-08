@@ -3,17 +3,25 @@ package com.digitalpathology.digi_report.ui.add_report;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,10 +33,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.digitalpathology.digi_report.R;
@@ -41,6 +52,11 @@ import com.digitalpathology.digi_report.object.User;
 import com.digitalpathology.digi_report.ui.report_added.ReportAddedFragment;
 import com.digitalpathology.digi_report.utils.ConnectionDetector;
 import com.digitalpathology.digi_report.utils.RandomValGen;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -48,8 +64,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnPausedListener;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -67,10 +92,14 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
     private CardView cvReportDate;
     private User user;
     private ConnectionDetector connectionDetector;
+
     private FirebaseFirestore clouddb = FirebaseFirestore.getInstance();
     private DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storageRef;
 
     private static final int PICK_IMAGE = 1;
+    private static final int REQUEST_PERMISSION = 674;
     private final static String TAG = "AddReports";
 
     public static AddReports newInstance() {
@@ -98,6 +127,8 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
         cvReportDate = getActivity().findViewById(R.id.cv_report_date);
         connectionDetector = new ConnectionDetector(getActivity());
 
+        storageRef = storage.getReferenceFromUrl("gs://digi-report-i67450jk.appspot.com");
+
         DatePickerDialog.OnDateSetListener datepickerlistener = (view, year, month, dayOfMonth) -> {
             String myFormat = "dd/MM/yyyy"; //In which you need put here
             SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -110,10 +141,8 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
             reportdate.setText(sdf.format(c.getTime()));
         };
 
-        //date choose2
+        //date choose
         reportdate.setOnClickListener(v -> {
-//          DialogFragment datepicker = new DatePickerFragment();
-//          datepicker.show(getActivity().getSupportFragmentManager(), "date picker");
             Calendar calendar = Calendar.getInstance();
             DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), datepickerlistener, calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
@@ -128,7 +157,17 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
             toolbar.setNavigationIcon(d);
         });
 
-        uploadBtn.setOnClickListener(v -> selectImage(getContext()));
+        uploadBtn.setOnClickListener(v -> {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                    && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        REQUEST_PERMISSION);
+            }
+
+            selectImage(getContext());
+
+        });
 
         CardView addReportBtn = getActivity().findViewById(R.id.btn_add_report);
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -139,7 +178,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+//                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                     user = new User(String.valueOf(document.get("uid")), String.valueOf(document.get("name")), String.valueOf(document.get("email")),  String.valueOf(document.get("phone")), Integer.parseInt(String.valueOf(document.get("numberOfReportsUploaded"))));
 
                 } else {
@@ -151,20 +190,23 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
         });
 
         addReportBtn.setOnClickListener(v -> {
-            //increasing total number of reports
-            user.addreport();
-            //TODO: We have to check for the report image, report name, report date
-            addReport(user, currentUser);
+            if(validateFields(reportname.getText().toString(), reportdate.getText().toString(), uploadedPic)){
+                //increasing total number of reports
+                user.addreport();
+                //TODO: We have to check for the report image, report name, report date
+                addReport(user, currentUser);
+            }
         });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Bitmap selectedImage;
         if(resultCode != RESULT_CANCELED) {
             switch (requestCode) {
                 case 0:
                     if (resultCode == RESULT_OK && data != null) {
-                        Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+                        selectedImage = (Bitmap) data.getExtras().get("data");
 
                         //Logic to enlarge the image
                         int currentBitmapWidth = selectedImage.getWidth();
@@ -188,10 +230,10 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
                     break;
                 case 1:
                     if (resultCode == RESULT_OK && data != null) {
-                        Uri selectedImage =  data.getData();
+                        Uri selectedImageUri =  data.getData();
                         String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                        if (selectedImage != null) {
-                            Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                        if (selectedImageUri != null) {
+                            Cursor cursor = getActivity().getContentResolver().query(selectedImageUri,
                                     filePathColumn, null, null, null);
                             if (cursor != null) {
                                 cursor.moveToFirst();
@@ -199,11 +241,33 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
                                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                                 String picturePath = cursor.getString(columnIndex);
                                 uploadBtn.setVisibility(View.GONE);
-                                uploadedPic.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-//                                scaleImage(uploadedPic);
+
+                                selectedImage = BitmapFactory.decodeFile(picturePath);
+                                //Logic to enlarge the image
+                                int currentBitmapWidth = selectedImage.getWidth();
+                                int currentBitmapHeight = selectedImage.getHeight();
+
+                                int ivWidth = uploadedPic.getWidth();
+                                int ivHeight = uploadedPic.getHeight();
+
+                                int newWidth = ivWidth;
+                                int newHeight = (int) Math.floor((double) currentBitmapHeight *( (double) newWidth / (double) currentBitmapWidth));
+
+                                Bitmap newbitMap = Bitmap.createScaledBitmap(selectedImage, newWidth, newHeight, true);
+                                try {
+                                    uploadedPic.setImageBitmap(newbitMap);
+                                    Log.d(TAG, "success");
+                                }catch (Exception e){
+                                    BitmapFactory.Options options = new BitmapFactory.Options();
+                                    options.inSampleSize = 2;
+                                    Bitmap bitmap = BitmapFactory.decodeFile(picturePath, options);
+                                    Log.d(TAG, "failure: " + Arrays.toString(e.getStackTrace()));
+                                    uploadedPic.setImageBitmap(bitmap);
+                                }
+
                                 cursor.close();
                             }
-                        }
+                        }else  Log.d(TAG, "else beta");
 
                     }
                     break;
@@ -218,7 +282,6 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
         builder.setTitle("Choose your profile picture");
 
         builder.setItems(options, (dialog, item) -> {
-
             if (options[item].equals("Take Photo")) {
                 Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(takePicture, 0);
@@ -234,6 +297,53 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
         builder.show();
     }
 
+    String uploadImage(ImageView imageView, User user, FirebaseUser firebaseUser){
+        storageRef = FirebaseStorage.getInstance().getReference(user.getUid() + "/reports/"+ "report" + user.getNumberOfReportsUploaded() + ".png");
+
+        final String[] url = {""};
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.custom_progressbar);
+
+        final ProgressBar progressBar = (ProgressBar) dialog.findViewById(R.id.progress_horizontal);
+        final TextView text2 = dialog.findViewById(R.id.value123);
+
+//        Uri file = Uri.fromFile(new File(imagePath));
+        imageView.setDrawingCacheEnabled(true);
+        imageView.buildDrawingCache();
+        Bitmap bitmap = imageView.getDrawingCache();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        // Create file metadata including the content type
+        StorageMetadata metadata = new StorageMetadata.Builder()
+                .setContentType("image/jpg")
+                .build();
+
+        UploadTask uploadTask = storageRef.putBytes(data, metadata);
+
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.addOnProgressListener(taskSnapshot -> {
+            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+            Log.d(TAG, "Upload is " + progress + "% done");
+            progressBar.setProgress((int) progress);
+//            text2.setText((int) progress);
+
+            if(progress == 100.0)
+                dialog.dismiss();
+        }).addOnPausedListener(taskSnapshot -> Log.d(TAG, "Upload is paused"))
+         .addOnFailureListener(exception -> {
+             // Handle unsuccessful uploads
+         }).addOnSuccessListener(taskSnapshot -> {
+             storageRef.getDownloadUrl().addOnSuccessListener(uri -> url[0] = uri.toString());
+             dialog.dismiss();
+        });
+
+        return url[0];
+    }
+
     private void addReport(User user, FirebaseUser firebaseUser){
         // TODO: API Process
         /**
@@ -241,6 +351,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
          * For now we are adding dummy data
          */
         if(connectionDetector.isInternetAvailble()) {
+
             RandomValGen randomValGen = new RandomValGen();
 
             HaemogramReport haemogramReport = new HaemogramReport(randomValGen.betMinMax(14, 18), randomValGen.betMinMax(4.5f, 5.5f), randomValGen.betMinMax(4000, 10000),
@@ -262,6 +373,9 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
 
             medicalReport = new MedicalReport(randomValGen.randomInt(), reportname.getText().toString(), "patientname", "refferedby", reportdate.getText().toString(),
                     18, "sex", "address", 1203, 1234, ts, haemogramReport, bloodSugrarLevel, renalFunctionTests, liverFunctionTest, "conclusion", "advise", "bloodGroup", "pathologistname");
+
+            //upload image
+            uploadImage(uploadedPic, user, firebaseUser);
 
             //adding report to cloud firestore
             clouddb.collection("users").document(firebaseUser.getUid()).set(user);
@@ -305,7 +419,38 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
     }
 
     @Override
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted.
+
+            } else {
+                // User refused to grant permission.
+                Toast.makeText(getActivity(), "You need to give the permission", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
+    }
+
+    private boolean validateFields(String reportName, String reportDate, ImageView img){
+        if(reportName.isEmpty()){
+            reportname.setError("Please enter valid name of the report");
+            return false;
+        }
+        if (reportDate.isEmpty()){
+            reportdate.setError("Please select date of the report");
+            return false;
+        }
+        if(img.getDrawable() == null){
+            Toast.makeText(getActivity(), "Please add report Image", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 }
