@@ -193,7 +193,6 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
             if(validateFields(reportname.getText().toString(), reportdate.getText().toString(), uploadedPic)){
                 //increasing total number of reports
                 user.addreport();
-                //TODO: We have to check for the report image, report name, report date
                 addReport(user, currentUser);
             }
         });
@@ -220,6 +219,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
 
                         Bitmap newbitMap = Bitmap.createScaledBitmap(selectedImage, newWidth, newHeight, true);
                         uploadedPic.setImageBitmap(newbitMap);
+                        uploadedPic.setTag("uploaded");
 
                         //uploadedPic.setImageBitmap(selectedImage);
                         //scaleImage(uploadedPic);
@@ -263,6 +263,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
                                     Bitmap bitmap = BitmapFactory.decodeFile(picturePath, options);
                                     Log.d(TAG, "failure: " + Arrays.toString(e.getStackTrace()));
                                     uploadedPic.setImageBitmap(bitmap);
+                                    uploadedPic.setTag("uploaded");
                                 }
 
                                 cursor.close();
@@ -446,7 +447,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
             reportdate.setError("Please select date of the report");
             return false;
         }
-        if(img.getDrawable() == null){
+        if(img.getTag() == null){
             Toast.makeText(getActivity(), "Please add report Image", Toast.LENGTH_SHORT).show();
             return false;
         }
