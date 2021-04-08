@@ -119,4 +119,5 @@
     <string name="report_serum_proteins_albumin">Albumin</string>
     <string name="report_serum_proteins_globulins">Globulins</string>
     <string name="report_serum_proteins_agratio">A/G Ratio</string>
+    <string name="text_report_information">Report Information</string>
 </resources>
