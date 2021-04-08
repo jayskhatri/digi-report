@@ -84,6 +84,8 @@ import static android.app.Activity.RESULT_OK;
 
 public class AddReports extends Fragment implements DatePickerDialog.OnDateSetListener {
 
+    //http://digital-pathology-api.herokuapp.com/upload
+
     private AddReportsViewModel mViewModel;
     private LinearLayout uploadBtn;
     private ImageView uploadedPic;
