@@ -21,6 +21,20 @@ public class HaemogramReport {
         this.rbcUnit = rbcUnit;
         this.wbcUnit = wbcUnit;
         this.plateletsUnit = plateletsUnit;
+        this.polymorphs = polymorphs;
+        this.lymphocytes = lymphocytes;
+        this.eosinophils = eosinophils;
+        this.monocytes = monocytes;
+        this.basophils = basophils;
+        this.mcv = mcv;
+        this.mch = mch;
+        this.mchc = mchc;
+        this.rdw = rdw;
+        this.diffCountUnits = diffCountUnits;
+        this.mcvUnit = mcvUnit;
+        this.mchUnit = mchUnit;
+        this.mchcUnit = mchcUnit;
+        this.rdwUnit = rdwUnit;
     }
 
     public float getHb() {
@@ -199,8 +213,31 @@ public class HaemogramReport {
         this.rdwUnit = rdwUnit;
     }
 
-    //    public boolean rangeCheck(){
-//        RangeValidator rangeValidator = new RangeValidator();
-//        return rangeValidator.bloodCounts(hb, hbUnit, rbc, rbcUnit, wbc, wbcUnit, platelets, plateletsUnit, sex);
-//    }
+    @Override
+    public String toString() {
+        return "HaemogramReport{" +
+                "hb=" + hb +
+                ", rbc=" + rbc +
+                ", wbc=" + wbc +
+                ", platelets=" + platelets +
+                ", polymorphs=" + polymorphs +
+                ", lymphocytes=" + lymphocytes +
+                ", eosinophils=" + eosinophils +
+                ", monocytes=" + monocytes +
+                ", basophils=" + basophils +
+                ", mcv=" + mcv +
+                ", mch=" + mch +
+                ", mchc=" + mchc +
+                ", rdw=" + rdw +
+                ", hbUnit='" + hbUnit + '\'' +
+                ", rbcUnit='" + rbcUnit + '\'' +
+                ", wbcUnit='" + wbcUnit + '\'' +
+                ", plateletsUnit='" + plateletsUnit + '\'' +
+                ", diffCountUnits='" + diffCountUnits + '\'' +
+                ", mcvUnit='" + mcvUnit + '\'' +
+                ", mchUnit='" + mchUnit + '\'' +
+                ", mchcUnit='" + mchcUnit + '\'' +
+                ", rdwUnit='" + rdwUnit + '\'' +
+                '}';
+    }
 }

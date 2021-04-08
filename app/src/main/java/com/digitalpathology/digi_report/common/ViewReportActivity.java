@@ -37,8 +37,9 @@ public class ViewReportActivity extends AppCompatActivity {
     private final String TAG = "ViewReportActivity";
 
     private TextView reportName, reportDate, patientName, patientAge, patientSex, pathologist, refferedBy, caseNumber;
-    private TextView valueHB, valueRBC, valueWBC, valuePlatelets, valueBloodSugar, valueBloodUrea, valueUrineSugar;
-    private TextView unitHB, unitRBC, unitWBC, unitPlatelets, unitBloodSugar, unitBloodUrea, unitUrineSugar;
+    private TextView valueHB, valueRBC, valueWBC, valuePlatelets, valuePolymorphs, valueLympho, valueEosino, valueMono, valueBaso,valueMCV, valueMCH, valueMCHC, valueRDW;
+    private TextView unitHB, unitRBC, unitWBC, unitPlatelets, unitPoly, unitLympho, unitEosino, unitMono, unitBaso, unitMCV, unitMCH, unitMCHC, unitRDW;
+    private TextView valueBloodSugar, valueBloodUrea, valueUrineSugar, unitBloodSugar, unitBloodUrea, unitUrineSugar;
     private TextView valueBloodUreaNitrogen, valueSerumCreatinine, valueSerumUricAcid, valueBiliRubinTotal, valueBiliRubinDirect, valueBiliRubinIndirect;
     private TextView unitBloodUreaNitrogen, unitSerumCreatinine, unitSerumUricAcid, unitBiliRubinTotal, unitBiliRubinDirect, unitBiliRubinIndirect;
     private TextView valueSGPT, valueAlkPhosphatase, valueSGOT, valueSerumProtiTotal, valueSerumProtiAlbumin, valueSerumProtiGlobulins, valueSerumProtiAGRatio;
@@ -82,6 +83,33 @@ public class ViewReportActivity extends AppCompatActivity {
 
         valuePlatelets = findViewById(R.id.value_platelet);
         unitPlatelets = findViewById(R.id.unit_platelet);
+
+        valuePolymorphs = findViewById(R.id.value_polymorphs);
+        unitPoly = findViewById(R.id.unit_polymorphs);
+
+        valueLympho = findViewById(R.id.value_lympho);
+        unitLympho = findViewById(R.id.unit_lympho);
+
+        valueEosino = findViewById(R.id.value_eosi);
+        unitEosino = findViewById(R.id.unit_eosi);
+
+        valueMono = findViewById(R.id.value_monocytes);
+        unitMono = findViewById(R.id.unit_monocytes);
+
+        valueBaso = findViewById(R.id.value_basophils);
+        unitBaso = findViewById(R.id.unit_basophils);
+
+        valueMCV = findViewById(R.id.value_mcv);
+        unitMCV = findViewById(R.id.unit_mcv);
+
+        valueMCH = findViewById(R.id.value_mch);
+        unitMCH = findViewById(R.id.unit_mch);
+
+        valueMCHC = findViewById(R.id.value_mchc);
+        unitMCHC = findViewById(R.id.unit_mchc);
+
+        valueRDW = findViewById(R.id.value_rdw);
+        unitRDW = findViewById(R.id.unit_rdw);
 
 //        valueBloodSugar = findViewById(R.id.value_bloodsugar);
 //        unitBloodSugar = findViewById(R.id.unit_blood_sugar);
@@ -200,7 +228,7 @@ public class ViewReportActivity extends AppCompatActivity {
                                 Float.parseFloat(String.valueOf(mapHaemo.get("rbc"))), Float.parseFloat(String.valueOf(mapHaemo.get("wbc"))),
                                 Float.parseFloat(String.valueOf(mapHaemo.get("platelets"))), String.valueOf(mapHaemo.get("hbUnit")),
                                 String.valueOf(mapHaemo.get("rbcUnit")), String.valueOf(mapHaemo.get("wbcUnit")),
-                                String.valueOf(mapHaemo.get("plateletUnit")), Float.parseFloat(String.valueOf(mapHaemo.get("polymorphs"))),
+                                String.valueOf(mapHaemo.get("plateletsUnit")), Float.parseFloat(String.valueOf(mapHaemo.get("polymorphs"))),
                                 Float.parseFloat(String.valueOf(mapHaemo.get("lymphocytes"))), Float.parseFloat(String.valueOf(mapHaemo.get("eosinophils"))), Float.parseFloat(String.valueOf(mapHaemo.get("monocytes"))),
                                 Float.parseFloat(String.valueOf(mapHaemo.get("basophils"))), Float.parseFloat(String.valueOf(mapHaemo.get("mcv"))), Float.parseFloat(String.valueOf(mapHaemo.get("mch"))),
                                 Float.parseFloat(String.valueOf(mapHaemo.get("mchc"))), Float.parseFloat(String.valueOf(mapHaemo.get("rdw"))), String.valueOf(mapHaemo.get("diffCountUnits")),
@@ -260,6 +288,34 @@ public class ViewReportActivity extends AppCompatActivity {
         valuePlatelets.setText("" + medicalReport.getHaemogramReport().getPlatelets());
         unitPlatelets.setText("" + medicalReport.getHaemogramReport().getPlateletsUnit());
 
+        //valuePolymorphs, valueLympho, valueEosino, valueMono, valueBaso,valueMCV, valueMCH, valueMCHC, valueRDW;
+
+        valueLympho.setText("" + medicalReport.getHaemogramReport().getLymphocytes());
+        unitLympho.setText("" + medicalReport.getHaemogramReport().getDiffCountUnits());
+
+        valuePolymorphs.setText("" + medicalReport.getHaemogramReport().getPolymorphs());
+        unitPoly.setText("" + medicalReport.getHaemogramReport().getDiffCountUnits());
+
+        valueEosino.setText("" + medicalReport.getHaemogramReport().getEosinophils());
+        unitEosino.setText("" + medicalReport.getHaemogramReport().getDiffCountUnits());
+
+        valueMono.setText("" + medicalReport.getHaemogramReport().getMonocytes());
+        unitMono.setText("" + medicalReport.getHaemogramReport().getDiffCountUnits());
+
+        valueBaso.setText("" + medicalReport.getHaemogramReport().getBasophils());
+        unitBaso.setText("" + medicalReport.getHaemogramReport().getDiffCountUnits());
+
+        valueMCV.setText("" + medicalReport.getHaemogramReport().getMcv());
+        unitMCV.setText("" + medicalReport.getHaemogramReport().getMcvUnit());
+
+        valueMCH.setText("" + medicalReport.getHaemogramReport().getMch());
+        unitMCH.setText("" + medicalReport.getHaemogramReport().getMchUnit());
+
+        valueMCHC.setText("" + medicalReport.getHaemogramReport().getMchc());
+        unitMCHC.setText("" + medicalReport.getHaemogramReport().getMchcUnit());
+
+        valueRDW.setText("" + medicalReport.getHaemogramReport().getRdw());
+        unitRDW.setText("" + medicalReport.getHaemogramReport().getRdwUnit());
 
 //        valueBloodSugar.setText("" + medicalReport.getBloodSugrarLevel().getBloodSugarResult());
 //        unitPlatelets.setText("" + medicalReport.getBloodSugrarLevel().getBloodSugarUnit());
