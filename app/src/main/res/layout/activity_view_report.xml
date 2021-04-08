@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/ll_btns1">
 
         <LinearLayout
         android:layout_width="match_parent"
@@ -713,22 +714,29 @@
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/ll_btns1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/scrollView_observations"
         app:layout_constraintLeft_toLeftOf="@id/scrollView_observations"
-        app:layout_constraintRight_toRightOf="@id/scrollView_observations">
+        app:layout_constraintRight_toRightOf="@id/scrollView_observations"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@color/startup_background_color"
             android:textColor="@color/colorPrimaryDark"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
             android:text="Download Report"/>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
             android:layout_height="wrap_content"
+            android:background="@color/startup_background_color"
             android:textColor="@color/colorPrimaryDark"
             android:text="View Normal Range"/>
 
