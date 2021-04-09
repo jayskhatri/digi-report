@@ -31,7 +31,7 @@ public class MyAccountFragment extends Fragment {
 
     private MyAccountViewModel myAccountViewModel;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private TextView username, useremail;
+    private TextView username, useremail, title;
 
     private final String TAG = "MyAccountFragment";
 
@@ -45,6 +45,12 @@ public class MyAccountFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        title.setText("My Account");
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -54,6 +60,8 @@ public class MyAccountFragment extends Fragment {
             Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu28, null);
             toolbar.setNavigationIcon(d);
         });
+        title = getActivity().findViewById(R.id.toolbar_title);
+        title.setText("My Account");
 
         //logout btn
         CardView logoutBtn = getActivity().findViewById(R.id.btn_logout);

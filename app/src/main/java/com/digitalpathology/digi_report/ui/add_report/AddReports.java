@@ -101,6 +101,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
     private AddReportsViewModel mViewModel;
     private LinearLayout uploadBtn;
     private ImageView uploadedPic;
+    private TextView title;
     private String picturePath = "";
     private EditText reportname, reportdate;
     private MedicalReport medicalReportFromAPI;
@@ -129,6 +130,12 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        title.setText("Add Reports");
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(AddReportsViewModel.class);
@@ -143,7 +150,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
         cvReportDate = getActivity().findViewById(R.id.cv_report_date);
         connectionDetector = new ConnectionDetector(getActivity());
 
-        TextView title = getActivity().findViewById(R.id.toolbar_title);
+        title = getActivity().findViewById(R.id.toolbar_title);
         title.setText("Add Reports");
 
         storageRef = storage.getReferenceFromUrl("gs://digi-report-i67450jk.appspot.com");
@@ -296,7 +303,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
     }
 
     private void selectImage(Context context) {
-        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+        final CharSequence[] options = { "Choose from Gallery","Cancel" };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Choose your profile picture");

@@ -47,7 +47,7 @@ public class MyReportsFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
-    private TextView noReports, loadError;
+    private TextView noReports, loadError, title;
     private User user;
 
     private ConnectionDetector connectionDetector;
@@ -66,6 +66,12 @@ public class MyReportsFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        title.setText("My Reports");
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
@@ -74,8 +80,8 @@ public class MyReportsFragment extends Fragment {
             Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu28, null);
             toolbar.setNavigationIcon(d);
         });
-        TextView title = getActivity().findViewById(R.id.toolbar_title);
-        title.setText("View Reports");
+        title = getActivity().findViewById(R.id.toolbar_title);
+        title.setText("My Reports");
 
         recyclerView = getActivity().findViewById(R.id.recycler_view_med_list);
         noReports = (TextView) getActivity().findViewById(R.id.text_view_no_med_report);

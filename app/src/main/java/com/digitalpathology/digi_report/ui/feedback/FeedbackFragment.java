@@ -29,13 +29,19 @@ public class FeedbackFragment extends Fragment {
 
     private FeedbackViewModel mViewModel;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private TextView totalReports;
+    private TextView totalReports, title;
     private User user;
 
     private final String TAG = "FeedbackFragment";
 
     public static FeedbackFragment newInstance() {
         return new FeedbackFragment();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        title.setText("Feedback");
     }
 
     @Override
@@ -79,6 +85,9 @@ public class FeedbackFragment extends Fragment {
             Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu28, null);
             toolbar.setNavigationIcon(d);
         });
+
+        TextView title = getActivity().findViewById(R.id.toolbar_title);
+        title.setText("Feedback");
 
         totalReports = getActivity().findViewById(R.id.total_saved_report);
     }

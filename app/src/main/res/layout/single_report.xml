@@ -62,12 +62,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
+                    android:visibility="gone"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_share"/>
                 <ImageView
                     android:id="@+id/btn_download_report"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:padding="10dp"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_download_icon"/>

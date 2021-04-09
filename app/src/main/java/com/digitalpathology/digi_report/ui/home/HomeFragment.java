@@ -21,6 +21,7 @@ import com.digitalpathology.digi_report.ui.my_reports.MyReportsFragment;
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
+    private TextView title;
     private CardView addreports, myreports, myacc;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -30,6 +31,12 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        title.setText("Dashboard");
     }
 
     @Override
@@ -51,6 +58,9 @@ public class HomeFragment extends Fragment {
         myacc.setOnClickListener(v -> {
             loadFragment(new MyAccountFragment());
         });
+
+        title = getActivity().findViewById(R.id.toolbar_title);
+        title.setText("Dashboard");
     }
 
     private boolean loadFragment(Fragment fragment) {

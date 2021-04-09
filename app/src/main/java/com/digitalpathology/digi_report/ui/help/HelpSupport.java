@@ -14,12 +14,14 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.digitalpathology.digi_report.R;
 
 public class HelpSupport extends Fragment {
 
     private HelpSupportViewModel mViewModel;
+    private TextView title;
 
     public static HelpSupport newInstance() {
         return new HelpSupport();
@@ -29,6 +31,12 @@ public class HelpSupport extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_help_support, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        title.setText("Help & Support");
     }
 
     @Override
@@ -43,6 +51,9 @@ public class HelpSupport extends Fragment {
             Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu28, null);
             toolbar.setNavigationIcon(d);
         });
+
+        TextView title = getActivity().findViewById(R.id.toolbar_title);
+        title.setText("Help & Support");
     }
 
 }
