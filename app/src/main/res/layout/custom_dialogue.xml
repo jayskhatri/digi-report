@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="38dp"
+        android:fontFamily="@font/circular_std_black"
         android:text="Loading"
         android:textSize="20sp" />
 
@@ -37,7 +38,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
-        android:text="Please wait... good thing takes time"
+        android:fontFamily="@font/circular_std_medium"
+        android:text="Please wait... Good things take time"
         android:textSize="15sp"
         />
 

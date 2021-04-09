@@ -44,7 +44,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.digitalpathology.digi_report.DashboardActivity;
 import com.digitalpathology.digi_report.R;
+import com.digitalpathology.digi_report.api.HttpHandler;
 import com.digitalpathology.digi_report.object.MedicalReport;
 import com.digitalpathology.digi_report.object.Reports.BloodSugrarLevel;
 import com.digitalpathology.digi_report.object.Reports.HaemogramReport;
@@ -73,9 +75,14 @@ import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -86,13 +93,14 @@ import static android.app.Activity.RESULT_OK;
 
 public class AddReports extends Fragment implements DatePickerDialog.OnDateSetListener {
 
-    //http://digital-pathology-api.herokuapp.com/upload
+    // http://100.26.239.59:8080/upload
 
     private AddReportsViewModel mViewModel;
     private LinearLayout uploadBtn;
     private ImageView uploadedPic;
+    private String picturePath = "";
     private EditText reportname, reportdate;
-    private MedicalReport medicalReport;
+    private MedicalReport medicalReportFromAPI;
     private CardView cvReportDate;
     private User user;
     private ConnectionDetector connectionDetector;
@@ -130,6 +138,9 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
         reportname = getActivity().findViewById(R.id.edittext_report_name);
         cvReportDate = getActivity().findViewById(R.id.cv_report_date);
         connectionDetector = new ConnectionDetector(getActivity());
+
+        TextView title = getActivity().findViewById(R.id.toolbar_title);
+        title.setText("Add Reports");
 
         storageRef = storage.getReferenceFromUrl("gs://digi-report-i67450jk.appspot.com");
 
@@ -243,7 +254,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
                                 cursor.moveToFirst();
 
                                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                                String picturePath = cursor.getString(columnIndex);
+                                picturePath = cursor.getString(columnIndex);
 
                                 selectedImage = BitmapFactory.decodeFile(picturePath);
                                 //Logic to enlarge the image
@@ -259,6 +270,14 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
                                 Bitmap newbitMap = Bitmap.createScaledBitmap(selectedImage, newWidth, newHeight, true);
                                 try {
                                     uploadedPic.setImageBitmap(newbitMap);
+
+//                                    Bitmap bm = BitmapFactory.decodeFile(picturePath);
+//                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                                    bm.compress(Bitmap.CompressFormat.JPEG, 25, baos); // bm is the bitmap object
+//                                    byte[] b = baos.toByteArray();
+                                    GetAddedReportData get = new GetAddedReportData(getContext(), (AppCompatActivity) getActivity());
+                                    get.execute(picturePath);
+
                                     Log.d(TAG, "success");
                                 }catch (Exception e){
                                     BitmapFactory.Options options = new BitmapFactory.Options();
@@ -287,11 +306,12 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
         builder.setTitle("Choose your profile picture");
 
         builder.setItems(options, (dialog, item) -> {
-            if (options[item].equals("Take Photo")) {
-                Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(takePicture, 0);
-
-            } else if (options[item].equals("Choose from Gallery")) {
+//            if (options[item].equals("Take Photo")) {
+//                Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(takePicture, 0);
+//
+//            } else
+                if (options[item].equals("Choose from Gallery")) {
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(pickPhoto , 1);
 
@@ -379,15 +399,15 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
             //upload image
             String url = uploadImage(uploadedPic, user, firebaseUser);
 
-            medicalReport = new MedicalReport(randomValGen.randomInt(), url, reportname.getText().toString(), "patientname", "refferedby", reportdate.getText().toString(),
+            medicalReportFromAPI = new MedicalReport(randomValGen.randomInt(), url, reportname.getText().toString(), "patientname", "refferedby", reportdate.getText().toString(),
                     18, "sex", "address", 1203, 1234, ts, haemogramReport, bloodSugrarLevel, renalFunctionTests, liverFunctionTest, "conclusion", "advise", "bloodGroup", "pathologistname");
 
             //adding report to cloud firestore
             clouddb.collection("users").document(firebaseUser.getUid()).set(user);
-            clouddb.collection("users").document(firebaseUser.getUid()).collection("reports").document(String.valueOf(medicalReport.getId())).set(medicalReport);//
+            clouddb.collection("users").document(firebaseUser.getUid()).collection("reports").document(String.valueOf(medicalReportFromAPI.getId())).set(medicalReportFromAPI);//
 
             //adding report to firebase realtime database
-            databaseRef.child(firebaseUser.getUid()).child("/reports").child("/"+medicalReport.getId()).setValue(medicalReport);
+            databaseRef.child(firebaseUser.getUid()).child("/reports").child("/"+medicalReportFromAPI.getId()).setValue(medicalReportFromAPI);
             Fragment fragment = new ReportAddedFragment();
             Bundle bundle = new Bundle();
             bundle.putString("REPORT_NAME", reportname.getText().toString());
@@ -461,10 +481,13 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
 
 
     //async class
-    public class GetAddedReportData extends AsyncTask<Bitmap, Context, MedicalReport>{
+    public class GetAddedReportData extends AsyncTask<String, Context, MedicalReport>{
 
         private Context c;
         private AppCompatActivity activity;
+        private String url = "http://100.26.239.59:8080/upload";
+        private AlertDialog alertDialog;
+        private final String TAG = GetAddedReportData.class.getSimpleName();
 
         public GetAddedReportData(Context c, AppCompatActivity activity) {
             this.c = c;
@@ -472,8 +495,163 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
         }
 
         @Override
-        protected MedicalReport doInBackground(Bitmap... bitmaps) {
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            alertDialog  = createDialog(c);
+            alertDialog.show();
+        }
+
+        @Override
+        protected MedicalReport doInBackground(String... strings) {
+            HttpHandler sh = new HttpHandler();
+            // Making a request to url and getting response
+            String jsonStr = "{\"advice\":\"\",\"pathologist_2\":\"Dr. Seema Modh MD(Path)\",\"blood_group\":\"\\\"B\\\" POSITIVE\",\"pathologist_1\":\"Dr. Akash Prajapati MD(Path)\",\"patient_name\":\"Isha V. Khimsurya\",\"conclusion\":\"Mild microcytic hypochromic anemia\",\"date\":\"28/12/2017\",\"ref_no\":\"11229\",\"hospital_name\":\"CHARUSAT HOSPITAL\",\"sex\":\"Female\",\"report_name\":\"HAEMOGRAM REPORT\",\"case_no\":\"62263\",\"age\":\"17 Years\",\"referred_by_dr\":\"Dr. Nilam Mehta\",\"haemo_report\":{\"BLOOD COUNTS:\":{\"results\":null,\"units\":null,\"reference_range\":null},\"Haemoglobir\":{\"results\":\"9.45\",\"units\":\"gm%\",\"reference_range\":\"[ M: 14-18,F:12-16]\"},\"R.B.C. Count\":{\"results\":\"6.57\",\"units\":\"mill./c.mm\",\"reference_range\":\"[ M:4.5-5.5,F:3.8-5.2]\"},\"W.B.C. Count\":{\"results\":\"7020\",\"units\":\"/c.mm\",\"reference_range\":\"4000-10000\"},\"Platelet Count\":{\"results\":\"3.07\",\"units\":\"Lakh/cmm\",\"reference_range\":\"1.5-4.5\"},\"DIFFERENTIAL COUNT:\":{\"results\":null,\"units\":null,\"reference_range\":null},\"Polymorphs\":{\"results\":\"66\",\"units\":\"%\",\"reference_range\":\"40 - 70\"},\"Lymphocytes\":{\"results\":\"26\",\"units\":\"%\",\"reference_range\":\"20 - 40\"},\"Eosinophils\":{\"results\":\"01\",\"units\":\"%\",\"reference_range\":\"1 - 6\"},\"Monocytes\":{\"results\":\"07\",\"units\":\"%\",\"reference_range\":\"2 - 10\"},\"Basophils\":{\"results\":\"00\",\"units\":\"%\",\"reference_range\":\"0 - 1\"},\"BLOOD INDICES:\":{\"results\":null,\"units\":null,\"reference_range\":null},\"M.C.V\":{\"results\":\"54.9\",\"units\":\"fl\",\"reference_range\":\"76 - 96\"},\"M.C.H\":{\"results\":\"14.4\",\"units\":\"pg\",\"reference_range\":\"27 - 31\"},\"M.C.H.C.\":{\"results\":\"26.2\",\"units\":\"g/dl\",\"reference_range\":\"32 - 36\"},\"R.D.W\":{\"results\":\"13.4\",\"units\":\"%\",\"reference_range\":\"11.5 - 14\"}}}\n"; //sh.multipartRequest("http://100.26.239.59:8080/upload", null, strings[0], "image", "image/jpeg");
+//            "{\"advice\":\"\",\"pathologist_2\":\"Dr. Seema Modh MD(Path)\",\"blood_group\":\"\\\"B\\\" POSITIVE\",\"pathologist_1\":\"Dr. Akash Prajapati MD(Path)\",\"patient_name\":\"Isha V. Khimsurya\",\"conclusion\":\"Mild microcytic hypochromic anemia\",\"date\":\"28/12/2017\",\"ref_no\":\"11229\",\"hospital_name\":\"CHARUSAT HOSPITAL\",\"sex\":\"Female\",\"report_name\":\"HAEMOGRAM REPORT\",\"case_no\":\"62263\",\"age\":\"17 Years\",\"referred_by_dr\":\"Dr. Nilam Mehta\",\"haemo_report\":{\"BLOOD COUNTS:\":{\"results\":null,\"units\":null,\"reference_range\":null},\"Haemoglobir\":{\"results\":\"9.45\",\"units\":\"gm%\",\"reference_range\":\"[ M: 14-18,F:12-16]\"},\"R.B.C. Count\":{\"results\":\"6.57\",\"units\":\"mill./c.mm\",\"reference_range\":\"[ M:4.5-5.5,F:3.8-5.2]\"},\"W.B.C. Count\":{\"results\":\"7020\",\"units\":\"/c.mm\",\"reference_range\":\"4000-10000\"},\"Platelet Count\":{\"results\":\"3.07\",\"units\":\"Lakh/cmm\",\"reference_range\":\"1.5-4.5\"},\"DIFFERENTIAL COUNT:\":{\"results\":null,\"units\":null,\"reference_range\":null},\"Polymorphs\":{\"results\":\"66\",\"units\":\"%\",\"reference_range\":\"40 - 70\"},\"Lymphocytes\":{\"results\":\"26\",\"units\":\"%\",\"reference_range\":\"20 - 40\"},\"Eosinophils\":{\"results\":\"01\",\"units\":\"%\",\"reference_range\":\"1 - 6\"},\"Monocytes\":{\"results\":\"07\",\"units\":\"%\",\"reference_range\":\"2 - 10\"},\"Basophils\":{\"results\":\"00\",\"units\":\"%\",\"reference_range\":\"0 - 1\"},\"BLOOD INDICES:\":{\"results\":null,\"units\":null,\"reference_range\":null},\"M.C.V\":{\"results\":\"54.9\",\"units\":\"fl\",\"reference_range\":\"76 - 96\"},\"M.C.H\":{\"results\":\"14.4\",\"units\":\"pg\",\"reference_range\":\"27 - 31\"},\"M.C.H.C.\":{\"results\":\"26.2\",\"units\":\"g/dl\",\"reference_range\":\"32 - 36\"},\"R.D.W\":{\"results\":\"13.4\",\"units\":\"%\",\"reference_range\":\"11.5 - 14\"}}}\n"; //
+            Log.e(TAG, "Response from url: " + jsonStr);
+
+            /*
+                {
+                    "pathologist_1": "Dr. Akash Prajapati MD(Path)",
+                    "pathologist_2": "Dr. Seema Modh MD(Path)",
+                    "conclusion": "Mild microcytic hypochromic anemia",
+                    "advice": "",
+                    "report_name": "HAEMOGRAM REPORT",
+                    "blood_group": "\"B\" POSITIVE",
+                    "patient_name": "Isha V. Khimsurya",
+                    "age": "17 Years",
+                    "sex": "Female",
+                    "referred_by_dr": "Dr. Nilam Mehta",
+                    "hospital_name": "CHARUSAT HOSPITAL",
+                    "ref_no": "11229",
+                    "date": "28/12/2017",
+                    "case_no": "62263",
+                    "haemo_report": {
+                        "BLOOD COUNTS:": {
+                            "results": null,
+                            "units": null,
+                            "reference_range": null
+                        },
+                        "Haemoglobir": {
+                            "results": "9.45",
+                            "units": "gm%",
+                            "reference_range": "[ M: 14-18,F:12-16]"
+                        },
+                        "R.B.C. Count": {
+                            "results": "6.57",
+                            "units": "mill./c.mm",
+                            "reference_range": "[ M:4.5-5.5,F:3.8-5.2]"
+                        },
+                        "W.B.C. Count": {
+                            "results": "7020",
+                            "units": "/c.mm",
+                            "reference_range": "4000-10000"
+                        },
+                        "Platelet Count": {
+                            "results": "3.07",
+                            "units": "Lakh/cmm",
+                            "reference_range": "1.5-4.5"
+                        },
+                        "DIFFERENTIAL COUNT:": {
+                            "results": null,
+                            "units": null,
+                            "reference_range": null
+                        },
+                        "Polymorphs": {
+                            "results": "66",
+                            "units": "%",
+                            "reference_range": "40 - 70"
+                        },
+                        "Lymphocytes": {
+                            "results": "26",
+                            "units": "%",
+                            "reference_range": "20 - 40"
+                        },
+                        "Eosinophils": {
+                            "results": "01",
+                            "units": "%",
+                            "reference_range": "1 - 6"
+                        },
+                        "Monocytes": {
+                            "results": "07",
+                            "units": "%",
+                            "reference_range": "2 - 10"
+                        },
+                        "Basophils": {
+                            "results": "00",
+                            "units": "%",
+                            "reference_range": "0 - 1"
+                        },
+                        "BLOOD INDICES:": {
+                            "results": null,
+                            "units": null,
+                            "reference_range": null
+                        },
+                        "M.C.V": {
+                            "results": "54.9",
+                            "units": "fl",
+                            "reference_range": "76 - 96"
+                        },
+                        "M.C.H": {
+                            "results": "14.4",
+                            "units": "pg",
+                            "reference_range": "27 - 31"
+                        },
+                        "M.C.H.C.": {
+                            "results": "26.2",
+                            "units": "g/dl",
+                            "reference_range": "32 - 36"
+                        },
+                        "R.D.W": {
+                            "results": "13.4",
+                            "units": "%",
+                            "reference_range": "11.5 - 14"
+                        }
+                    }
+                }
+            */
+
+            if (jsonStr != null) {
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+
+                    String pathologist1 = jsonObj.getString("pathologist_1");
+                    String pathologist2 = jsonObj.getString("pathologist_2");
+                    String hospitalname = jsonObj.getString("hospital_name");
+                    String reportName = jsonObj.getString("report_name");
+                    String reportDate = jsonObj.getString("date");
+                    String patientName = jsonObj.getString("patient_name");
+                    String age = jsonObj.getString("age");
+                    String sex = jsonObj.getString("sex");
+                    String refno = jsonObj.getString("ref_no");
+                    String caseNo = jsonObj.getString("case_no");
+                    String referredByDR = jsonObj.getString("referred_by_dr");
+                    String conclusion = jsonObj.getString("conclusion");
+                    String advise = jsonObj.getString("advice");
+                    String bloodGroup = jsonObj.getString("blood_group");
+
+                    Log.d(TAG, "refno: " + refno);
+
+                    JSONObject haemoreport = jsonObj.getJSONObject("haemo_report");
+                    Log.d(TAG, haemoreport.toString());
+                } catch (JSONException e) {
+                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                }
+            } else {
+                Log.e(TAG, "Couldn't get json from server.");
+            }
+
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(MedicalReport medicalReport) {
+            super.onPostExecute(medicalReport);
+
+            if(alertDialog.isShowing())
+                alertDialog.dismiss();
+            medicalReportFromAPI = medicalReport;
+
         }
 
         private AlertDialog createDialog(Context context){
@@ -481,6 +659,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
             final View dialogView = factory.inflate(R.layout.custom_dialogue,null);
             final AlertDialog processDialog = new AlertDialog.Builder(context).create();
             processDialog.setView(dialogView);
+            processDialog.setCancelable(false);
             return processDialog;
         }
     }
