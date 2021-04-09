@@ -5,11 +5,12 @@ import com.digitalpathology.digi_report.object.Reports.*;
 public class MedicalReport {
     int id;
     String url;
+    String hospitalName;
     String reportName;
     String patientName;
     String refferedBy;
     String reportDate;
-    int age;
+    String age;
     String sex;
     String address;
     int refno;
@@ -24,16 +25,17 @@ public class MedicalReport {
     String conclusion;
     String advise;
     String bloodGroup;
-    String pathologistName;
+    String pathologistName1, pathologistName2;
 
     public MedicalReport() {    }
 
-    public MedicalReport(int id, String url, String reportName, String patientName, String refferedBy, String reportDate, int age, String sex,
+    public MedicalReport(int id, String url, String hospitalName, String reportName, String patientName, String refferedBy, String reportDate, String age, String sex,
                          String address, int refno, int casenumber, String uploadDate, HaemogramReport haemogramReport,
                          BloodSugrarLevel bloodSugrarLevel, RenalFunctionTests renalFunctionTests, LiverFunctionTest liverFunctionTest,
-                         String conclusion, String advise, String bloodGroup, String pathologistName) {
+                         String conclusion, String advise, String bloodGroup, String pathologistName1, String pathologistName2) {
         this.id = id;
         this.url = url;
+        this.hospitalName = hospitalName;
         this.reportName = reportName;
         this.patientName = patientName;
         this.refferedBy = refferedBy;
@@ -51,7 +53,8 @@ public class MedicalReport {
         this.conclusion = conclusion;
         this.advise = advise;
         this.bloodGroup = bloodGroup;
-        this.pathologistName = pathologistName;
+        this.pathologistName1 = pathologistName1;
+        this.pathologistName2 = pathologistName2;
     }
 
     public int getId() {
@@ -98,11 +101,11 @@ public class MedicalReport {
         this.reportDate = reportDate;
     }
 
-    public int getAge() {
+    public String getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(String age) {
         this.age = age;
     }
 
@@ -202,12 +205,20 @@ public class MedicalReport {
         this.bloodGroup = bloodGroup;
     }
 
-    public String getPathologistName() {
-        return pathologistName;
+    public String getPathologist1Name() {
+        return pathologistName1;
     }
 
-    public void setPathologistName(String pathologistName) {
-        this.pathologistName = pathologistName;
+    public void setPathologist1Name(String pathologistName1) {
+        this.pathologistName1 = pathologistName1;
+    }
+
+    public String getPathologist2Name() {
+        return pathologistName2;
+    }
+
+    public void setPathologist2Name(String pathologistName2) {
+        this.pathologistName2 = pathologistName2;
     }
 
     @Override
@@ -231,7 +242,8 @@ public class MedicalReport {
                 ", conclusion='" + conclusion + '\'' +
                 ", advise='" + advise + '\'' +
                 ", bloodGroup='" + bloodGroup + '\'' +
-                ", pathologistName='" + pathologistName + '\'' +
+                ", pathologistName1='" + pathologistName1 + '\'' +
+                ", pathologistName2='" + pathologistName2 + '\'' +
                 '}';
     }
 }

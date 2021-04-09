@@ -187,66 +187,70 @@ public class ViewReportActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
                         /*int id, String reportName, String patientName, String refferedBy, String reportDate, int age, String sex,
                          String address, int refno, int casenumber, String uploadDate, HaemogramReport haemogramReport,
                          BloodSugrarLevel bloodSugrarLevel, RenalFunctionTests renalFunctionTests, LiverFunctionTest liverFunctionTest,
                          String conclusion, String advise, String bloodGroup, String pathologistName*/
+
                         Map mapHaemo = (Map) document.get("haemogramReport");
-                        Map mapRenal = (Map) document.get("renalFunctionTests");
-                        Map mapBloodSugar = (Map) document.get("bloodSugrarLevel");
-                        Map mapLiverFunc = (Map) document.get("liverFunctionTest");
+//                        Map mapRenal = (Map) document.get("renalFunctionTests");
+//                        Map mapBloodSugar = (Map) document.get("bloodSugrarLevel");
+//                        Map mapLiverFunc = (Map) document.get("liverFunctionTest");
 
                         //float SBilirubinTotal, float SBilirubinDirect, float SBilirubinIndirect, float SGPT,
                         //                             float SAlkalinePhosphatse, float SGOT, float serumPotiTotal, float serumPotiAlbumin,
                         //                             float serumPotiGlobulins, float serumPotiAGRatio, String SBilirubinUnit, String serumProtiUnit,
                         //                             String sgptUnit, String sgotUnit, String SAlkalinePhosphatseUnit
-                        LiverFunctionTest liverFunctionTest = new LiverFunctionTest(Float.parseFloat(String.valueOf(mapLiverFunc.get("sbilirubinTotal"))),
-                                Float.parseFloat(String.valueOf(mapLiverFunc.get("sbilirubinDirect"))),
-                                Float.parseFloat(String.valueOf(mapLiverFunc.get("sbilirubinIndirect"))),
-                                Float.parseFloat(String.valueOf(mapLiverFunc.get("sgpt"))),
-                                Float.parseFloat(String.valueOf(mapLiverFunc.get("salkalinePhosphatse"))),
-                                Float.parseFloat(String.valueOf(mapLiverFunc.get("sgot"))),
-                                Float.parseFloat(String.valueOf(mapLiverFunc.get("serumPotiTotal"))),
-                                Float.parseFloat(String.valueOf(mapLiverFunc.get("serumPotiAlbumin"))),
-                                Float.parseFloat(String.valueOf(mapLiverFunc.get("serumPotiGlobulins"))),
-                                Float.parseFloat(String.valueOf(mapLiverFunc.get("serumPotiAGRatio"))),
-                                String.valueOf(mapLiverFunc.get("sbilirubinUnit")),
-                                String.valueOf(mapLiverFunc.get("serumProtiUnit")),
-                                String.valueOf(mapLiverFunc.get("sgptUnit")),
-                                String.valueOf(mapLiverFunc.get("sgotUnit")),
-                                String.valueOf(mapLiverFunc.get("sAlkalinePhosphatseUnit")));
+//                        LiverFunctionTest liverFunctionTest = new LiverFunctionTest(Float.parseFloat(String.valueOf(mapLiverFunc.get("sbilirubinTotal"))),
+//                                Float.parseFloat(String.valueOf(mapLiverFunc.get("sbilirubinDirect"))),
+//                                Float.parseFloat(String.valueOf(mapLiverFunc.get("sbilirubinIndirect"))),
+//                                Float.parseFloat(String.valueOf(mapLiverFunc.get("sgpt"))),
+//                                Float.parseFloat(String.valueOf(mapLiverFunc.get("salkalinePhosphatse"))),
+//                                Float.parseFloat(String.valueOf(mapLiverFunc.get("sgot"))),
+//                                Float.parseFloat(String.valueOf(mapLiverFunc.get("serumPotiTotal"))),
+//                                Float.parseFloat(String.valueOf(mapLiverFunc.get("serumPotiAlbumin"))),
+//                                Float.parseFloat(String.valueOf(mapLiverFunc.get("serumPotiGlobulins"))),
+//                                Float.parseFloat(String.valueOf(mapLiverFunc.get("serumPotiAGRatio"))),
+//                                String.valueOf(mapLiverFunc.get("sbilirubinUnit")),
+//                                String.valueOf(mapLiverFunc.get("serumProtiUnit")),
+//                                String.valueOf(mapLiverFunc.get("sgptUnit")),
+//                                String.valueOf(mapLiverFunc.get("sgotUnit")),
+//                                String.valueOf(mapLiverFunc.get("sAlkalinePhosphatseUnit")));
 
                         //float bloodSugarResult, String bloodSugarUnit, float urineSugarResult, String urineSugarUnit
-                        BloodSugrarLevel bloodSugrarLevel = new BloodSugrarLevel(Float.parseFloat(String.valueOf(mapBloodSugar.get("bloodSugarResult"))),
-                                String.valueOf(mapBloodSugar.get("bloodSugarUnit")), Float.parseFloat(String.valueOf(mapBloodSugar.get("urineSugarResult"))),
-                                String.valueOf(mapBloodSugar.get("urineSugarUnit")));
+//                        BloodSugrarLevel bloodSugrarLevel = new BloodSugrarLevel(Float.parseFloat(String.valueOf(mapBloodSugar.get("bloodSugarResult"))),
+//                                String.valueOf(mapBloodSugar.get("bloodSugarUnit")), Float.parseFloat(String.valueOf(mapBloodSugar.get("urineSugarResult"))),
+//                                String.valueOf(mapBloodSugar.get("urineSugarUnit")));
 
                         //float hb, float rbc, float wbc, float platelets, String hbUnit, String rbcUnit, String wbcUnit, String plateletsUnit,
                         //float polymorphs, float lymphocytes, float eosinophils, float monocytes, float basophils, float mcv, float mch, float mchc,
                         //float rdw, String diffCountUnits, String mcvUnit, String mchUnit, String mchcUnit, String rdwUnit
-                        HaemogramReport haemogramReport = new HaemogramReport(Float.parseFloat(String.valueOf(mapHaemo.get("hb"))),
-                                Float.parseFloat(String.valueOf(mapHaemo.get("rbc"))), Float.parseFloat(String.valueOf(mapHaemo.get("wbc"))),
-                                Float.parseFloat(String.valueOf(mapHaemo.get("platelets"))), String.valueOf(mapHaemo.get("hbUnit")),
-                                String.valueOf(mapHaemo.get("rbcUnit")), String.valueOf(mapHaemo.get("wbcUnit")),
-                                String.valueOf(mapHaemo.get("plateletsUnit")), Float.parseFloat(String.valueOf(mapHaemo.get("polymorphs"))),
-                                Float.parseFloat(String.valueOf(mapHaemo.get("lymphocytes"))), Float.parseFloat(String.valueOf(mapHaemo.get("eosinophils"))), Float.parseFloat(String.valueOf(mapHaemo.get("monocytes"))),
-                                Float.parseFloat(String.valueOf(mapHaemo.get("basophils"))), Float.parseFloat(String.valueOf(mapHaemo.get("mcv"))), Float.parseFloat(String.valueOf(mapHaemo.get("mch"))),
-                                Float.parseFloat(String.valueOf(mapHaemo.get("mchc"))), Float.parseFloat(String.valueOf(mapHaemo.get("rdw"))), String.valueOf(mapHaemo.get("diffCountUnits")),
-                                String.valueOf(mapHaemo.get("mcvUnit")), String.valueOf(mapHaemo.get("mchUnit")), String.valueOf(mapHaemo.get("mchcUnit")), String.valueOf(mapHaemo.get("rdwUnit")));
-
-                        //float bloodUrea, float bloodUreaNitrogen, float serumCreatinine, float serumUricAcid, String commonUnit
-                        RenalFunctionTests renalFunctionTests = new RenalFunctionTests(Float.parseFloat(String.valueOf(mapRenal.get("bloodUrea"))),
-                                Float.parseFloat(String.valueOf(mapRenal.get("bloodUreaNitrogen"))), Float.parseFloat(String.valueOf(mapRenal.get("serumCreatinine"))),
-                                Float.parseFloat(String.valueOf(mapRenal.get("serumUricAcid"))), String.valueOf(mapRenal.get("commonUnit")));
-
-                        medicalReport = document.toObject(MedicalReport.class);
-                        medicalReport.setHaemogramReport(haemogramReport);
-                        medicalReport.setLiverFunctionTest(liverFunctionTest);
-                        medicalReport.setBloodSugrarLevel(bloodSugrarLevel);
-                        medicalReport.setRenalFunctionTests(renalFunctionTests);
+//here
+//                        HaemogramReport haemogramReport = new HaemogramReport(Float.parseFloat(String.valueOf(mapHaemo.get("hb"))),
+//                                Float.parseFloat(String.valueOf(mapHaemo.get("rbc"))), Float.parseFloat(String.valueOf(mapHaemo.get("wbc"))),
+//                                Float.parseFloat(String.valueOf(mapHaemo.get("platelets"))), String.valueOf(mapHaemo.get("hbUnit")),
+//                                String.valueOf(mapHaemo.get("rbcUnit")), String.valueOf(mapHaemo.get("wbcUnit")),
+//                                String.valueOf(mapHaemo.get("plateletsUnit")), Float.parseFloat(String.valueOf(mapHaemo.get("polymorphs"))),
+//                                Float.parseFloat(String.valueOf(mapHaemo.get("lymphocytes"))), Float.parseFloat(String.valueOf(mapHaemo.get("eosinophils"))), Float.parseFloat(String.valueOf(mapHaemo.get("monocytes"))),
+//                                Float.parseFloat(String.valueOf(mapHaemo.get("basophils"))), Float.parseFloat(String.valueOf(mapHaemo.get("mcv"))), Float.parseFloat(String.valueOf(mapHaemo.get("mch"))),
+//                                Float.parseFloat(String.valueOf(mapHaemo.get("mchc"))), Float.parseFloat(String.valueOf(mapHaemo.get("rdw"))), String.valueOf(mapHaemo.get("diffCountUnits")),
+//                                String.valueOf(mapHaemo.get("mcvUnit")), String.valueOf(mapHaemo.get("mchUnit")), String.valueOf(mapHaemo.get("mchcUnit")), String.valueOf(mapHaemo.get("rdwUnit")));
+//
+//                        //float bloodUrea, float bloodUreaNitrogen, float serumCreatinine, float serumUricAcid, String commonUnit
+//                        RenalFunctionTests renalFunctionTests = new RenalFunctionTests(Float.parseFloat(String.valueOf(mapRenal.get("bloodUrea"))),
+//                                Float.parseFloat(String.valueOf(mapRenal.get("bloodUreaNitrogen"))), Float.parseFloat(String.valueOf(mapRenal.get("serumCreatinine"))),
+//                                Float.parseFloat(String.valueOf(mapRenal.get("serumUricAcid"))), String.valueOf(mapRenal.get("commonUnit")));
+//
+//                        medicalReport = document.toObject(MedicalReport.class);
+//                        medicalReport.setHaemogramReport(haemogramReport);
+//                        medicalReport.setLiverFunctionTest(liverFunctionTest);
+//                        medicalReport.setBloodSugrarLevel(bloodSugrarLevel);
+//                        medicalReport.setRenalFunctionTests(renalFunctionTests);
+//here
                         Log.d(TAG, "report name: " + medicalReport.getReportName());
 
-                        setupData(medicalReport);
+//                        setupData(medicalReport);
                         tableLayout.setVisibility(View.VISIBLE);
 
                     } else {
@@ -265,106 +269,106 @@ public class ViewReportActivity extends AppCompatActivity {
 
     }
 
-    private void setupData(MedicalReport medicalReport){
-        Log.d(TAG, "medical report: " + medicalReport.toString());
-        reportName.setText(medicalReport.getReportName());
-        reportDate.setText(medicalReport.getReportDate());
-        patientName.setText(medicalReport.getPatientName());
-        patientAge.setText(String.valueOf(medicalReport.getAge()));
-        patientSex.setText(medicalReport.getSex());
-        pathologist.setText(medicalReport.getPathologistName());
-        refferedBy.setText(medicalReport.getRefferedBy());
-        caseNumber.setText(String.valueOf(medicalReport.getCasenumber()));
-
-        valueHB.setText("" + medicalReport.getHaemogramReport().getHb());
-        unitHB.setText("" + medicalReport.getHaemogramReport().getHbUnit());
-
-        valueRBC.setText("" + medicalReport.getHaemogramReport().getRbc());
-        unitRBC.setText(""+ medicalReport.getHaemogramReport().getRbcUnit());
-
-        valueWBC.setText("" + medicalReport.getHaemogramReport().getWbc());
-        unitWBC.setText("" + medicalReport.getHaemogramReport().getWbcUnit());
-
-        valuePlatelets.setText("" + medicalReport.getHaemogramReport().getPlatelets());
-        unitPlatelets.setText("" + medicalReport.getHaemogramReport().getPlateletsUnit());
-
-        //valuePolymorphs, valueLympho, valueEosino, valueMono, valueBaso,valueMCV, valueMCH, valueMCHC, valueRDW;
-
-        valueLympho.setText("" + medicalReport.getHaemogramReport().getLymphocytes());
-        unitLympho.setText("" + medicalReport.getHaemogramReport().getDiffCountUnits());
-
-        valuePolymorphs.setText("" + medicalReport.getHaemogramReport().getPolymorphs());
-        unitPoly.setText("" + medicalReport.getHaemogramReport().getDiffCountUnits());
-
-        valueEosino.setText("" + medicalReport.getHaemogramReport().getEosinophils());
-        unitEosino.setText("" + medicalReport.getHaemogramReport().getDiffCountUnits());
-
-        valueMono.setText("" + medicalReport.getHaemogramReport().getMonocytes());
-        unitMono.setText("" + medicalReport.getHaemogramReport().getDiffCountUnits());
-
-        valueBaso.setText("" + medicalReport.getHaemogramReport().getBasophils());
-        unitBaso.setText("" + medicalReport.getHaemogramReport().getDiffCountUnits());
-
-        valueMCV.setText("" + medicalReport.getHaemogramReport().getMcv());
-        unitMCV.setText("" + medicalReport.getHaemogramReport().getMcvUnit());
-
-        valueMCH.setText("" + medicalReport.getHaemogramReport().getMch());
-        unitMCH.setText("" + medicalReport.getHaemogramReport().getMchUnit());
-
-        valueMCHC.setText("" + medicalReport.getHaemogramReport().getMchc());
-        unitMCHC.setText("" + medicalReport.getHaemogramReport().getMchcUnit());
-
-        valueRDW.setText("" + medicalReport.getHaemogramReport().getRdw());
-        unitRDW.setText("" + medicalReport.getHaemogramReport().getRdwUnit());
-
-//        valueBloodSugar.setText("" + medicalReport.getBloodSugrarLevel().getBloodSugarResult());
-//        unitPlatelets.setText("" + medicalReport.getBloodSugrarLevel().getBloodSugarUnit());
+//    private void setupData(MedicalReport medicalReport){
+//        Log.d(TAG, "medical report: " + medicalReport.toString());
+//        reportName.setText(medicalReport.getReportName());
+//        reportDate.setText(medicalReport.getReportDate());
+//        patientName.setText(medicalReport.getPatientName());
+//        patientAge.setText(String.valueOf(medicalReport.getAge()));
+//        patientSex.setText(medicalReport.getSex());
+//        pathologist.setText(medicalReport.getPathologistName());
+//        refferedBy.setText(medicalReport.getRefferedBy());
+//        caseNumber.setText(String.valueOf(medicalReport.getCasenumber()));
 //
-//        valueUrineSugar.setText("" + medicalReport.getBloodSugrarLevel().getUrineSugarResult());
-//        unitUrineSugar.setText("" + medicalReport.getBloodSugrarLevel().getUrineSugarUnit());
+//        valueHB.setText("" + medicalReport.getHaemogramReport().getHb());
+//        unitHB.setText("" + medicalReport.getHaemogramReport().getHbUnit());
 //
+//        valueRBC.setText("" + medicalReport.getHaemogramReport().getRbc());
+//        unitRBC.setText(""+ medicalReport.getHaemogramReport().getRbcUnit());
 //
-//        valueBiliRubinTotal.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinTotal());
-//        unitBiliRubinTotal.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinUnit());
+//        valueWBC.setText("" + medicalReport.getHaemogramReport().getWbc());
+//        unitWBC.setText("" + medicalReport.getHaemogramReport().getWbcUnit());
 //
-//        valueBiliRubinDirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinDirect());
-//        unitBiliRubinDirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinUnit());
+//        valuePlatelets.setText("" + medicalReport.getHaemogramReport().getPlatelets());
+//        unitPlatelets.setText("" + medicalReport.getHaemogramReport().getPlateletsUnit());
 //
-//        valueBiliRubinIndirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinIndirect());
-//        unitBiliRubinIndirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinUnit());
+//        //valuePolymorphs, valueLympho, valueEosino, valueMono, valueBaso,valueMCV, valueMCH, valueMCHC, valueRDW;
 //
-//        valueSGPT.setText("" + medicalReport.getLiverFunctionTest().getSGPT());
-//        unitSGPT.setText("" + medicalReport.getLiverFunctionTest().getSgptUnit());
+//        valueLympho.setText("" + medicalReport.getHaemogramReport().getLymphocytes());
+//        unitLympho.setText("" + medicalReport.getHaemogramReport().getDiffCountUnits());
 //
-//        valueSGOT.setText("" + medicalReport.getLiverFunctionTest().getSGOT());
-//        unitSGOT.setText("" + medicalReport.getLiverFunctionTest().getSgotUnit());
+//        valuePolymorphs.setText("" + medicalReport.getHaemogramReport().getPolymorphs());
+//        unitPoly.setText("" + medicalReport.getHaemogramReport().getDiffCountUnits());
 //
-//        valueAlkPhosphatase.setText("" + medicalReport.getLiverFunctionTest().getSAlkalinePhosphatse());
-//        unitAlkPhosphatase.setText("" + medicalReport.getLiverFunctionTest().getSAlkalinePhosphatseUnit());
+//        valueEosino.setText("" + medicalReport.getHaemogramReport().getEosinophils());
+//        unitEosino.setText("" + medicalReport.getHaemogramReport().getDiffCountUnits());
 //
-//        valueSerumProtiTotal.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiTotal());
-//        unitSerumProtiTotal.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
+//        valueMono.setText("" + medicalReport.getHaemogramReport().getMonocytes());
+//        unitMono.setText("" + medicalReport.getHaemogramReport().getDiffCountUnits());
 //
-//        valueSerumProtiAlbumin.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiAlbumin());
-//        unitSerumProtiAlbumin.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
+//        valueBaso.setText("" + medicalReport.getHaemogramReport().getBasophils());
+//        unitBaso.setText("" + medicalReport.getHaemogramReport().getDiffCountUnits());
 //
-//        valueSerumProtiGlobulins.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiGlobulins());
-//        unitSerumProtiGlobulins.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
+//        valueMCV.setText("" + medicalReport.getHaemogramReport().getMcv());
+//        unitMCV.setText("" + medicalReport.getHaemogramReport().getMcvUnit());
 //
-//        valueSerumProtiAGRatio.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiAGRatio());
-//        unitSerumProtiAGRatio.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
+//        valueMCH.setText("" + medicalReport.getHaemogramReport().getMch());
+//        unitMCH.setText("" + medicalReport.getHaemogramReport().getMchUnit());
 //
+//        valueMCHC.setText("" + medicalReport.getHaemogramReport().getMchc());
+//        unitMCHC.setText("" + medicalReport.getHaemogramReport().getMchcUnit());
 //
-//        valueBloodUrea.setText("" + medicalReport.getRenalFunctionTests().getBloodUrea());
-//        unitBloodUrea.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
+//        valueRDW.setText("" + medicalReport.getHaemogramReport().getRdw());
+//        unitRDW.setText("" + medicalReport.getHaemogramReport().getRdwUnit());
 //
-//        valueBloodUreaNitrogen.setText("" + medicalReport.getRenalFunctionTests().getBloodUreaNitrogen());
-//        unitBloodUreaNitrogen.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
-//
-//        valueSerumCreatinine.setText("" + medicalReport.getRenalFunctionTests().getSerumCreatinine());
-//        unitSerumCreatinine.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
-//
-//        valueSerumUricAcid.setText("" + medicalReport.getRenalFunctionTests().getSerumUricAcid());
-//        unitSerumUricAcid.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
-    }
+////        valueBloodSugar.setText("" + medicalReport.getBloodSugrarLevel().getBloodSugarResult());
+////        unitPlatelets.setText("" + medicalReport.getBloodSugrarLevel().getBloodSugarUnit());
+////
+////        valueUrineSugar.setText("" + medicalReport.getBloodSugrarLevel().getUrineSugarResult());
+////        unitUrineSugar.setText("" + medicalReport.getBloodSugrarLevel().getUrineSugarUnit());
+////
+////
+////        valueBiliRubinTotal.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinTotal());
+////        unitBiliRubinTotal.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinUnit());
+////
+////        valueBiliRubinDirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinDirect());
+////        unitBiliRubinDirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinUnit());
+////
+////        valueBiliRubinIndirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinIndirect());
+////        unitBiliRubinIndirect.setText("" + medicalReport.getLiverFunctionTest().getSBilirubinUnit());
+////
+////        valueSGPT.setText("" + medicalReport.getLiverFunctionTest().getSGPT());
+////        unitSGPT.setText("" + medicalReport.getLiverFunctionTest().getSgptUnit());
+////
+////        valueSGOT.setText("" + medicalReport.getLiverFunctionTest().getSGOT());
+////        unitSGOT.setText("" + medicalReport.getLiverFunctionTest().getSgotUnit());
+////
+////        valueAlkPhosphatase.setText("" + medicalReport.getLiverFunctionTest().getSAlkalinePhosphatse());
+////        unitAlkPhosphatase.setText("" + medicalReport.getLiverFunctionTest().getSAlkalinePhosphatseUnit());
+////
+////        valueSerumProtiTotal.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiTotal());
+////        unitSerumProtiTotal.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
+////
+////        valueSerumProtiAlbumin.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiAlbumin());
+////        unitSerumProtiAlbumin.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
+////
+////        valueSerumProtiGlobulins.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiGlobulins());
+////        unitSerumProtiGlobulins.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
+////
+////        valueSerumProtiAGRatio.setText("" + medicalReport.getLiverFunctionTest().getSerumPotiAGRatio());
+////        unitSerumProtiAGRatio.setText("" + medicalReport.getLiverFunctionTest().getSerumProtiUnit());
+////
+////
+////        valueBloodUrea.setText("" + medicalReport.getRenalFunctionTests().getBloodUrea());
+////        unitBloodUrea.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
+////
+////        valueBloodUreaNitrogen.setText("" + medicalReport.getRenalFunctionTests().getBloodUreaNitrogen());
+////        unitBloodUreaNitrogen.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
+////
+////        valueSerumCreatinine.setText("" + medicalReport.getRenalFunctionTests().getSerumCreatinine());
+////        unitSerumCreatinine.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
+////
+////        valueSerumUricAcid.setText("" + medicalReport.getRenalFunctionTests().getSerumUricAcid());
+////        unitSerumUricAcid.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
+//    }
 }

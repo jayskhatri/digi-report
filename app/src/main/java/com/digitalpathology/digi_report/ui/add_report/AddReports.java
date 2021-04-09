@@ -86,7 +86,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -103,6 +106,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
     private MedicalReport medicalReportFromAPI;
     private CardView cvReportDate;
     private User user;
+    private FirebaseUser firebaseUser;
     private ConnectionDetector connectionDetector;
 
     private FirebaseFirestore clouddb = FirebaseFirestore.getInstance();
@@ -185,10 +189,10 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
         });
 
         CardView addReportBtn = getActivity().findViewById(R.id.btn_add_report);
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //read user data from firestore
-        DocumentReference docRef = clouddb.collection("users").document(currentUser.getUid());
+        DocumentReference docRef = clouddb.collection("users").document(firebaseUser.getUid());
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
@@ -208,7 +212,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
             if(validateFields(reportname.getText().toString(), reportdate.getText().toString(), uploadedPic)){
                 //increasing total number of reports
                 user.addreport();
-                addReport(user, currentUser);
+                addReport(user);
             }
         });
     }
@@ -270,14 +274,6 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
                                 Bitmap newbitMap = Bitmap.createScaledBitmap(selectedImage, newWidth, newHeight, true);
                                 try {
                                     uploadedPic.setImageBitmap(newbitMap);
-
-//                                    Bitmap bm = BitmapFactory.decodeFile(picturePath);
-//                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//                                    bm.compress(Bitmap.CompressFormat.JPEG, 25, baos); // bm is the bitmap object
-//                                    byte[] b = baos.toByteArray();
-                                    GetAddedReportData get = new GetAddedReportData(getContext(), (AppCompatActivity) getActivity());
-                                    get.execute(picturePath);
-
                                     Log.d(TAG, "success");
                                 }catch (Exception e){
                                     BitmapFactory.Options options = new BitmapFactory.Options();
@@ -369,7 +365,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
         return  storageRef.toString();
     }
 
-    private void addReport(User user, FirebaseUser firebaseUser){
+    private void addReport(User user){
         // TODO: API Process
         /**
          * api process will be done here, it will give everything except the reportname and date
@@ -377,51 +373,27 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
          */
         if(connectionDetector.isInternetAvailble()) {
 
-            RandomValGen randomValGen = new RandomValGen();
-
-            HaemogramReport haemogramReport = new HaemogramReport(randomValGen.betMinMax(14, 18), randomValGen.betMinMax(4.5f, 5.5f), randomValGen.betMinMax(4000, 10000),
-                    randomValGen.betMinMax(1.5f, 4.5f), "gm%", "mill/cmm", "/cmm", "Lakh/cmm", randomValGen.betMinMax(40f, 70f), randomValGen.betMinMax(20f, 40f),
-                    randomValGen.betMinMax(1f, 6f), randomValGen.betMinMax(2f, 10f), randomValGen.betMinMax(0f,1f), randomValGen.betMinMax(76f, 96f),
-                    randomValGen.betMinMax(27f, 31f), randomValGen.betMinMax(32f, 36f), randomValGen.betMinMax(11.5f, 14f), "%", "fl", "pg", "g/dl", "%");
-            Log.d(TAG, "haemo: "+ haemogramReport.toString());
-            BloodSugrarLevel bloodSugrarLevel = new BloodSugrarLevel(randomValGen.betMinMax(70, 140), "mg/dl", randomValGen.betMinMax(0, 0.8f), "mmol/L");
-
-            RenalFunctionTests renalFunctionTests = new RenalFunctionTests(randomValGen.betMinMax(15, 40), randomValGen.betMinMax(8, 23), randomValGen.betMinMax(0.9f, 1.5f), randomValGen.betMinMax(2.5f, 7), "mg/dl");
-
-            LiverFunctionTest liverFunctionTest = new LiverFunctionTest(randomValGen.betMinMax(0.0f, 1.0f), randomValGen.betMinMax(0.0f, 0.25f),
-                    randomValGen.betMinMax(0.0f, 0.75f), randomValGen.betMinMax(0, 40), randomValGen.betMinMax(37, 147), randomValGen.betMinMax(0, 40),
-                    randomValGen.betMinMax(6, 7.8f), randomValGen.betMinMax(3.5f, 5.0f), randomValGen.betMinMax(2.5f, 2.8f), 1.3f,
-                    "mg/dl", "gm/dl", "IU/L", "IU/L", "IU/L");
-
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault());
             String ts = sdf.format(new Date());
 
             //upload image
             String url = uploadImage(uploadedPic, user, firebaseUser);
 
-            medicalReportFromAPI = new MedicalReport(randomValGen.randomInt(), url, reportname.getText().toString(), "patientname", "refferedby", reportdate.getText().toString(),
-                    18, "sex", "address", 1203, 1234, ts, haemogramReport, bloodSugrarLevel, renalFunctionTests, liverFunctionTest, "conclusion", "advise", "bloodGroup", "pathologistname");
+            GetAddedReportData get = new GetAddedReportData(getContext(), (AppCompatActivity) getActivity());
+            String[] params = {picturePath, url, ts, reportname.getText().toString()};
+            get.execute(params);
 
-            //adding report to cloud firestore
-            clouddb.collection("users").document(firebaseUser.getUid()).set(user);
-            clouddb.collection("users").document(firebaseUser.getUid()).collection("reports").document(String.valueOf(medicalReportFromAPI.getId())).set(medicalReportFromAPI);//
-
-            //adding report to firebase realtime database
-            databaseRef.child(firebaseUser.getUid()).child("/reports").child("/"+medicalReportFromAPI.getId()).setValue(medicalReportFromAPI);
             Fragment fragment = new ReportAddedFragment();
             Bundle bundle = new Bundle();
             bundle.putString("REPORT_NAME", reportname.getText().toString());
             bundle.putString("REPORT_DATE", todayDate());
             fragment.setArguments(bundle);
             loadFragment(fragment);
+//                    new MedicalReport(randomValGen.randomInt(), url, reportname.getText().toString(), "patientname", "refferedby", reportdate.getText().toString(),
+//                    18, "sex", "address", 1203, 1234, ts, haemogramReport, bloodSugrarLevel, renalFunctionTests, liverFunctionTest, "conclusion", "advise", "bloodGroup", "pathologistname");
         }else{
             Toast.makeText(getActivity(), "Check your internet", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private int dpToPx(int dp) {
-        float density = getActivity().getResources().getDisplayMetrics().density;
-        return Math.round((float)dp * density);
     }
 
     private String todayDate(){
@@ -499,14 +471,15 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
             super.onPreExecute();
 
             alertDialog  = createDialog(c);
-            alertDialog.show();
+//            alertDialog.show();
         }
 
         @Override
         protected MedicalReport doInBackground(String... strings) {
+            MedicalReport medicalReport = new MedicalReport();
             HttpHandler sh = new HttpHandler();
             // Making a request to url and getting response
-            String jsonStr = "{\"advice\":\"\",\"pathologist_2\":\"Dr. Seema Modh MD(Path)\",\"blood_group\":\"\\\"B\\\" POSITIVE\",\"pathologist_1\":\"Dr. Akash Prajapati MD(Path)\",\"patient_name\":\"Isha V. Khimsurya\",\"conclusion\":\"Mild microcytic hypochromic anemia\",\"date\":\"28/12/2017\",\"ref_no\":\"11229\",\"hospital_name\":\"CHARUSAT HOSPITAL\",\"sex\":\"Female\",\"report_name\":\"HAEMOGRAM REPORT\",\"case_no\":\"62263\",\"age\":\"17 Years\",\"referred_by_dr\":\"Dr. Nilam Mehta\",\"haemo_report\":{\"BLOOD COUNTS:\":{\"results\":null,\"units\":null,\"reference_range\":null},\"Haemoglobir\":{\"results\":\"9.45\",\"units\":\"gm%\",\"reference_range\":\"[ M: 14-18,F:12-16]\"},\"R.B.C. Count\":{\"results\":\"6.57\",\"units\":\"mill./c.mm\",\"reference_range\":\"[ M:4.5-5.5,F:3.8-5.2]\"},\"W.B.C. Count\":{\"results\":\"7020\",\"units\":\"/c.mm\",\"reference_range\":\"4000-10000\"},\"Platelet Count\":{\"results\":\"3.07\",\"units\":\"Lakh/cmm\",\"reference_range\":\"1.5-4.5\"},\"DIFFERENTIAL COUNT:\":{\"results\":null,\"units\":null,\"reference_range\":null},\"Polymorphs\":{\"results\":\"66\",\"units\":\"%\",\"reference_range\":\"40 - 70\"},\"Lymphocytes\":{\"results\":\"26\",\"units\":\"%\",\"reference_range\":\"20 - 40\"},\"Eosinophils\":{\"results\":\"01\",\"units\":\"%\",\"reference_range\":\"1 - 6\"},\"Monocytes\":{\"results\":\"07\",\"units\":\"%\",\"reference_range\":\"2 - 10\"},\"Basophils\":{\"results\":\"00\",\"units\":\"%\",\"reference_range\":\"0 - 1\"},\"BLOOD INDICES:\":{\"results\":null,\"units\":null,\"reference_range\":null},\"M.C.V\":{\"results\":\"54.9\",\"units\":\"fl\",\"reference_range\":\"76 - 96\"},\"M.C.H\":{\"results\":\"14.4\",\"units\":\"pg\",\"reference_range\":\"27 - 31\"},\"M.C.H.C.\":{\"results\":\"26.2\",\"units\":\"g/dl\",\"reference_range\":\"32 - 36\"},\"R.D.W\":{\"results\":\"13.4\",\"units\":\"%\",\"reference_range\":\"11.5 - 14\"}}}\n"; //sh.multipartRequest("http://100.26.239.59:8080/upload", null, strings[0], "image", "image/jpeg");
+            String jsonStr = sh.multipartRequest("http://100.26.239.59:8080/upload", null, strings[0], "image", "image/jpeg");
 //            "{\"advice\":\"\",\"pathologist_2\":\"Dr. Seema Modh MD(Path)\",\"blood_group\":\"\\\"B\\\" POSITIVE\",\"pathologist_1\":\"Dr. Akash Prajapati MD(Path)\",\"patient_name\":\"Isha V. Khimsurya\",\"conclusion\":\"Mild microcytic hypochromic anemia\",\"date\":\"28/12/2017\",\"ref_no\":\"11229\",\"hospital_name\":\"CHARUSAT HOSPITAL\",\"sex\":\"Female\",\"report_name\":\"HAEMOGRAM REPORT\",\"case_no\":\"62263\",\"age\":\"17 Years\",\"referred_by_dr\":\"Dr. Nilam Mehta\",\"haemo_report\":{\"BLOOD COUNTS:\":{\"results\":null,\"units\":null,\"reference_range\":null},\"Haemoglobir\":{\"results\":\"9.45\",\"units\":\"gm%\",\"reference_range\":\"[ M: 14-18,F:12-16]\"},\"R.B.C. Count\":{\"results\":\"6.57\",\"units\":\"mill./c.mm\",\"reference_range\":\"[ M:4.5-5.5,F:3.8-5.2]\"},\"W.B.C. Count\":{\"results\":\"7020\",\"units\":\"/c.mm\",\"reference_range\":\"4000-10000\"},\"Platelet Count\":{\"results\":\"3.07\",\"units\":\"Lakh/cmm\",\"reference_range\":\"1.5-4.5\"},\"DIFFERENTIAL COUNT:\":{\"results\":null,\"units\":null,\"reference_range\":null},\"Polymorphs\":{\"results\":\"66\",\"units\":\"%\",\"reference_range\":\"40 - 70\"},\"Lymphocytes\":{\"results\":\"26\",\"units\":\"%\",\"reference_range\":\"20 - 40\"},\"Eosinophils\":{\"results\":\"01\",\"units\":\"%\",\"reference_range\":\"1 - 6\"},\"Monocytes\":{\"results\":\"07\",\"units\":\"%\",\"reference_range\":\"2 - 10\"},\"Basophils\":{\"results\":\"00\",\"units\":\"%\",\"reference_range\":\"0 - 1\"},\"BLOOD INDICES:\":{\"results\":null,\"units\":null,\"reference_range\":null},\"M.C.V\":{\"results\":\"54.9\",\"units\":\"fl\",\"reference_range\":\"76 - 96\"},\"M.C.H\":{\"results\":\"14.4\",\"units\":\"pg\",\"reference_range\":\"27 - 31\"},\"M.C.H.C.\":{\"results\":\"26.2\",\"units\":\"g/dl\",\"reference_range\":\"32 - 36\"},\"R.D.W\":{\"results\":\"13.4\",\"units\":\"%\",\"reference_range\":\"11.5 - 14\"}}}\n"; //
             Log.e(TAG, "Response from url: " + jsonStr);
 
@@ -618,7 +591,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
                     String pathologist1 = jsonObj.getString("pathologist_1");
                     String pathologist2 = jsonObj.getString("pathologist_2");
                     String hospitalname = jsonObj.getString("hospital_name");
-                    String reportName = jsonObj.getString("report_name");
+                    String reportName = strings[3]; //jsonObj.getString("report_name");
                     String reportDate = jsonObj.getString("date");
                     String patientName = jsonObj.getString("patient_name");
                     String age = jsonObj.getString("age");
@@ -633,7 +606,36 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
                     Log.d(TAG, "refno: " + refno);
 
                     JSONObject haemoreport = jsonObj.getJSONObject("haemo_report");
-                    Log.d(TAG, haemoreport.toString());
+
+                    Iterator keys = haemoreport.keys();
+                    Map<String, String> haemoValueMap = new HashMap<>();
+                    Map<String, String> haemoUnitsMap = new HashMap<>();
+                    while (keys.hasNext()){
+                        String currentKey = (String) keys.next();
+
+                        JSONObject currentDynamicValue = haemoreport.getJSONObject(currentKey);
+                        Log.d(TAG, currentKey + ": " + currentDynamicValue.getString("results"));
+                        haemoValueMap.put(currentKey,currentDynamicValue.getString("results"));
+                        haemoUnitsMap.put(currentKey,currentDynamicValue.getString("units"));
+
+                        haemoValueMap.put(currentKey.toLowerCase().replaceAll("[^a-z]", ""), haemoValueMap.remove(currentKey));
+                        haemoUnitsMap.put(currentKey.toLowerCase().replaceAll("[^a-z]", ""), haemoUnitsMap.remove(currentKey));
+                    }
+
+
+                    medicalReport = convertMapToMedicalReport(haemoValueMap, haemoUnitsMap, pathologist1, pathologist2, hospitalname, reportName, reportDate,
+                            patientName, age, sex, refno, caseNo, referredByDR, conclusion, advise, bloodGroup, strings[1], strings[2]);
+                    medicalReportFromAPI = medicalReport;
+
+                    Log.d(TAG, "medreport: " + medicalReportFromAPI.getId());
+                    //adding report to cloud firestore
+                    clouddb.collection("users").document(firebaseUser.getUid()).set(user);
+                    clouddb.collection("users").document(firebaseUser.getUid()).collection("reports").document(String.valueOf(medicalReportFromAPI.getId())).set(medicalReportFromAPI);//
+
+                    //adding report to firebase realtime database
+                    databaseRef.child(firebaseUser.getUid()).child("/reports").child("/"+medicalReportFromAPI.getId()).setValue(medicalReportFromAPI);
+
+//                    Log.d(TAG, haemoreport.toString());
                 } catch (JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
                 }
@@ -641,17 +643,17 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
                 Log.e(TAG, "Couldn't get json from server.");
             }
 
-            return null;
+            return medicalReport;
         }
 
         @Override
         protected void onPostExecute(MedicalReport medicalReport) {
             super.onPostExecute(medicalReport);
 
-            if(alertDialog.isShowing())
-                alertDialog.dismiss();
             medicalReportFromAPI = medicalReport;
 
+            if(alertDialog.isShowing())
+                alertDialog.dismiss();
         }
 
         private AlertDialog createDialog(Context context){
@@ -661,6 +663,23 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
             processDialog.setView(dialogView);
             processDialog.setCancelable(false);
             return processDialog;
+        }
+
+        private MedicalReport convertMapToMedicalReport(Map<String, String> values, Map<String, String> units,
+                                                        String pathologist1, String pathologist2, String hospitalname, String reportName,
+                                                        String reportDate, String patientName, String age, String sex, String refno,
+                                                        String caseNo, String referredByDR, String conclusion, String advise,
+                                                        String bloodGroup, String url, String uploadDate){
+           HaemogramReport hm = new HaemogramReport(values, units);
+            RandomValGen randomValGen = new RandomValGen();
+            /*int id, String url, String reportName, String patientName, String refferedBy, String reportDate, int age, String sex,
+                         String address, int refno, int casenumber, String uploadDate, HaemogramReport haemogramReport,
+                         BloodSugrarLevel bloodSugrarLevel, RenalFunctionTests renalFunctionTests, LiverFunctionTest liverFunctionTest,
+                         String conclusion, String advise, String bloodGroup, String pathologistName*/
+
+           return new MedicalReport(randomValGen.randomInt(), url, hospitalname, reportName, patientName, referredByDR, reportDate, age, sex, "",
+                   Integer.parseInt(refno), Integer.parseInt(caseNo), uploadDate, hm, null, null, null,
+                   conclusion, advise, bloodGroup, pathologist1, pathologist2);
         }
     }
 }

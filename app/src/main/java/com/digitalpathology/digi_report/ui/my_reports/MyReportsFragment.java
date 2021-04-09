@@ -74,6 +74,8 @@ public class MyReportsFragment extends Fragment {
             Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_menu28, null);
             toolbar.setNavigationIcon(d);
         });
+        TextView title = getActivity().findViewById(R.id.toolbar_title);
+        title.setText("View Reports");
 
         recyclerView = getActivity().findViewById(R.id.recycler_view_med_list);
         noReports = (TextView) getActivity().findViewById(R.id.text_view_no_med_report);
