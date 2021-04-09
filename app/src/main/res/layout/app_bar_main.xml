@@ -27,11 +27,11 @@
                     <TextView
                         android:id="@+id/toolbar_title"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:text="@string/text_dashboard"
                         android:textSize="24sp"
                         android:layout_weight="1"
-                        android:layout_gravity="start|center_vertical"
+                        android:layout_gravity="center_vertical"
                         android:textColor="@color/colorPrimaryDark"
                         android:fontFamily="@font/circular_std_black"
                         android:layout_marginTop="10dp"/>

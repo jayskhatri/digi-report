@@ -16,10 +16,12 @@
         android:textStyle="bold"
         android:textSize="22sp"
         android:layout_margin="10dp"
+        android:gravity="center_horizontal"
         android:fontFamily="@font/circular_std_black"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <LinearLayout
         android:id="@+id/ll_msg"
@@ -68,6 +70,7 @@
         android:numStars="5"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ll_msg" />
@@ -75,7 +78,8 @@
     <ScrollView
         android:id="@+id/sv_feedback"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ratingBar"
@@ -83,7 +87,7 @@
         <EditText
             android:id="@+id/edittext_feedback"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="start|top"
             android:inputType="textMultiLine"
             android:hint="@string/text_write_your_feedback"
