@@ -471,7 +471,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
             super.onPreExecute();
 
             alertDialog  = createDialog(c);
-//            alertDialog.show();
+            alertDialog.show();
         }
 
         @Override

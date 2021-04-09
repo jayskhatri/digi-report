@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:id="@+id/template_report_info_cell"
+    style="@style/BodyText"
+    android:layout_weight="0.5"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

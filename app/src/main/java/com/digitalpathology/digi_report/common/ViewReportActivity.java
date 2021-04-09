@@ -3,11 +3,16 @@ package com.digitalpathology.digi_report.common;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,55 +66,55 @@ public class ViewReportActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.VISIBLE);
         tableLayout = findViewById(R.id.tablelayout);
-        tableLayout.setVisibility(View.GONE);
+//        tableLayout.setVisibility(View.GONE);
 
-        reportName = findViewById(R.id.tv_report_name);
-        reportDate = findViewById(R.id.tv_report_date);
-        patientName = findViewById(R.id.tv_patient_name);
-        patientAge = findViewById(R.id.tv_age);
-        patientSex = findViewById(R.id.tv_sex);
-        refferedBy = findViewById(R.id.tv_reffered_by);
-        caseNumber = findViewById(R.id.tv_case_number);
-        pathologist = findViewById(R.id.tv_pathologist);
-
-        valueHB = findViewById(R.id.value_hb);
-        unitHB = findViewById(R.id.unit_hb);
-
-        valueRBC = findViewById(R.id.value_rbc);
-        unitRBC = findViewById(R.id.unit_rbc);
-
-        valueWBC = findViewById(R.id.value_wbc);
-        unitWBC = findViewById(R.id.unit_wbc);
-
-        valuePlatelets = findViewById(R.id.value_platelet);
-        unitPlatelets = findViewById(R.id.unit_platelet);
-
-        valuePolymorphs = findViewById(R.id.value_polymorphs);
-        unitPoly = findViewById(R.id.unit_polymorphs);
-
-        valueLympho = findViewById(R.id.value_lympho);
-        unitLympho = findViewById(R.id.unit_lympho);
-
-        valueEosino = findViewById(R.id.value_eosi);
-        unitEosino = findViewById(R.id.unit_eosi);
-
-        valueMono = findViewById(R.id.value_monocytes);
-        unitMono = findViewById(R.id.unit_monocytes);
-
-        valueBaso = findViewById(R.id.value_basophils);
-        unitBaso = findViewById(R.id.unit_basophils);
-
-        valueMCV = findViewById(R.id.value_mcv);
-        unitMCV = findViewById(R.id.unit_mcv);
-
-        valueMCH = findViewById(R.id.value_mch);
-        unitMCH = findViewById(R.id.unit_mch);
-
-        valueMCHC = findViewById(R.id.value_mchc);
-        unitMCHC = findViewById(R.id.unit_mchc);
-
-        valueRDW = findViewById(R.id.value_rdw);
-        unitRDW = findViewById(R.id.unit_rdw);
+//        reportName = findViewById(R.id.tv_report_name);
+//        reportDate = findViewById(R.id.tv_report_date);
+//        patientName = findViewById(R.id.tv_patient_name);
+//        patientAge = findViewById(R.id.tv_age);
+//        patientSex = findViewById(R.id.tv_sex);
+//        refferedBy = findViewById(R.id.tv_reffered_by);
+//        caseNumber = findViewById(R.id.tv_case_number);
+//        pathologist = findViewById(R.id.tv_pathologist);
+//
+//        valueHB = findViewById(R.id.value_hb);
+//        unitHB = findViewById(R.id.unit_hb);
+//
+//        valueRBC = findViewById(R.id.value_rbc);
+//        unitRBC = findViewById(R.id.unit_rbc);
+//
+//        valueWBC = findViewById(R.id.value_wbc);
+//        unitWBC = findViewById(R.id.unit_wbc);
+//
+//        valuePlatelets = findViewById(R.id.value_platelet);
+//        unitPlatelets = findViewById(R.id.unit_platelet);
+//
+//        valuePolymorphs = findViewById(R.id.value_polymorphs);
+//        unitPoly = findViewById(R.id.unit_polymorphs);
+//
+//        valueLympho = findViewById(R.id.value_lympho);
+//        unitLympho = findViewById(R.id.unit_lympho);
+//
+//        valueEosino = findViewById(R.id.value_eosi);
+//        unitEosino = findViewById(R.id.unit_eosi);
+//
+//        valueMono = findViewById(R.id.value_monocytes);
+//        unitMono = findViewById(R.id.unit_monocytes);
+//
+//        valueBaso = findViewById(R.id.value_basophils);
+//        unitBaso = findViewById(R.id.unit_basophils);
+//
+//        valueMCV = findViewById(R.id.value_mcv);
+//        unitMCV = findViewById(R.id.unit_mcv);
+//
+//        valueMCH = findViewById(R.id.value_mch);
+//        unitMCH = findViewById(R.id.unit_mch);
+//
+//        valueMCHC = findViewById(R.id.value_mchc);
+//        unitMCHC = findViewById(R.id.unit_mchc);
+//
+//        valueRDW = findViewById(R.id.value_rdw);
+//        unitRDW = findViewById(R.id.unit_rdw);
 
 //        valueBloodSugar = findViewById(R.id.value_bloodsugar);
 //        unitBloodSugar = findViewById(R.id.unit_blood_sugar);
@@ -179,7 +184,6 @@ public class ViewReportActivity extends AppCompatActivity {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if(connectionDetector.isInternetAvailble()) {
-
             //read user data from firestore
             DocumentReference reportRef = clouddb.collection("users").document(currentUser.getUid()).collection("reports").document(String.valueOf(id));
             reportRef.get().addOnCompleteListener(task -> {
@@ -193,7 +197,37 @@ public class ViewReportActivity extends AppCompatActivity {
                          BloodSugrarLevel bloodSugrarLevel, RenalFunctionTests renalFunctionTests, LiverFunctionTest liverFunctionTest,
                          String conclusion, String advise, String bloodGroup, String pathologistName*/
 
+                        String rn = document.getString("reportName");
+                        Log.d(TAG, "reportdate: " + document.getString("reportDate"));
+                        tableLayout.addView(createRow(createCommonHeaderTextView(new String[]{"Report Information"}, 1)));
+                        tableLayout.addView(createRow(createTextView(new String[]{"Report Name", rn}, 2)));
+                        tableLayout.addView(createRow(createTextView(new String[]{"Case Number", String.valueOf(document.getDouble("casenumber"))}, 2)));
+                        tableLayout.addView(createRow(createTextView(new String[]{"Report Date", document.getString("reportDate")}, 2)));
+                        tableLayout.addView(createRow(createTextView(new String[]{"Patient Name", document.getString("patientName")}, 2)));
+                        tableLayout.addView(createRow(createTextView(new String[]{"Sex", document.getString("sex")}, 2)));
+                        tableLayout.addView(createRow(createTextView(new String[]{"age", document.getString("age")}, 2)));
+                        tableLayout.addView(createRow(createTextView(new String[]{"Referred By", document.getString("refferedBy")}, 2)));
+                        tableLayout.addView(createRow(createTextView(new String[]{"Pathologist 1", document.getString("pathologist1Name")}, 2)));
+                        tableLayout.addView(createRow(createTextView(new String[]{"Pathologist 2", document.getString("pathologist2Name")}, 2)));
+                        tableLayout.addView(createRow(createCommonHeaderTextView(new String[]{"Observation", "Value", "Units"}, 3)));
+
+
                         Map mapHaemo = (Map) document.get("haemogramReport");
+
+                        Map haemoValue = (Map) mapHaemo.get("values");
+                        Map haemoUnits = (Map) mapHaemo.get("units");
+
+                        for(Object s: haemoValue.keySet()){
+                            if(haemoValue.get(s) != null)
+                            tableLayout.addView(createRow(createTextView(new String[]{s.toString(), (String) haemoValue.get(s), (String) haemoUnits.get(s)}, 3)));
+                            Log.d(TAG, s.toString() + ": " + haemoValue.get(s).toString() + ", " + haemoUnits.get(s).toString());
+                        }
+
+//                        TextView normalcell = (TextView) getLayoutInflater().inflate(R.layout.template_normal_report_info_cell, null);
+//                        normalcell.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//
+//                        TextView[] tvValue = new TextView[mapHaemo.size()];
+
 //                        Map mapRenal = (Map) document.get("renalFunctionTests");
 //                        Map mapBloodSugar = (Map) document.get("bloodSugrarLevel");
 //                        Map mapLiverFunc = (Map) document.get("liverFunctionTest");
@@ -248,7 +282,7 @@ public class ViewReportActivity extends AppCompatActivity {
 //                        medicalReport.setBloodSugrarLevel(bloodSugrarLevel);
 //                        medicalReport.setRenalFunctionTests(renalFunctionTests);
 //here
-                        Log.d(TAG, "report name: " + medicalReport.getReportName());
+//                        Log.d(TAG, "report name: " + medicalReport.getReportName());
 
 //                        setupData(medicalReport);
                         tableLayout.setVisibility(View.VISIBLE);
@@ -371,4 +405,52 @@ public class ViewReportActivity extends AppCompatActivity {
 ////        valueSerumUricAcid.setText("" + medicalReport.getRenalFunctionTests().getSerumUricAcid());
 ////        unitSerumUricAcid.setText("" + medicalReport.getRenalFunctionTests().getCommonUnit());
 //    }
+
+    private TextView[] createCommonHeaderTextView(String text[], int total) {
+        TextView[] textView = new TextView[total];
+        for(int i=0; i<total; i++) {
+            textView[i] = (TextView) getLayoutInflater().inflate(R.layout.template_normal_report_info_cell, null);
+            textView[i].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            textView[i].setTextColor(getResources().getColor(R.color.white));
+            textView[i].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            textView[i].setText(text[i]);
+            Log.d(TAG, "createtv: " + text[i]);
+            textView[i].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+            textView[i].setPadding(10, 10, 10, 10);
+        }
+        return textView;
+    }
+
+    private TextView[] createTextView(String text[], int total) {
+        TextView[] textView = new TextView[total];
+        for(int i=0; i<total; i++) {
+            textView[i] = (TextView) getLayoutInflater().inflate(R.layout.template_normal_report_info_cell, null);
+            textView[i].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            textView[i].setTextColor(getResources().getColor(R.color.black));
+            textView[i].setBackgroundColor(getResources().getColor(R.color.white));
+            textView[i].setText(text[i]);
+            Log.d(TAG, "createtv: " + text[i]);
+            textView[i].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+            textView[i].setPadding(10, 10, 10, 10);
+        }
+        return textView;
+
+    }
+
+    private TableRow createRow(TextView[] tv){
+        TableRow tr = new TableRow(this);
+        tr.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        tr.setBackgroundColor(getResources().getColor(R.color.white));
+
+        for(int i=0; i<tv.length; i++) {
+            TableRow.LayoutParams columnParams = new TableRow.LayoutParams();
+            // wrap-up content of the row
+            columnParams.height = TableRow.LayoutParams.WRAP_CONTENT;
+            columnParams.width = TableRow.LayoutParams.WRAP_CONTENT;
+            // set gravity to center of the column
+            columnParams.gravity = Gravity.CENTER;
+            tr.addView(tv[i],columnParams);
+        }
+        return tr;
+    }
 }
