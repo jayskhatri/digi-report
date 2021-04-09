@@ -389,13 +389,6 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
             GetAddedReportData get = new GetAddedReportData(getContext(), (AppCompatActivity) getActivity());
             String[] params = {picturePath, url, ts, reportname.getText().toString()};
             get.execute(params);
-
-            Fragment fragment = new ReportAddedFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("REPORT_NAME", reportname.getText().toString());
-            bundle.putString("REPORT_DATE", todayDate());
-            fragment.setArguments(bundle);
-            loadFragment(fragment);
 //                    new MedicalReport(randomValGen.randomInt(), url, reportname.getText().toString(), "patientname", "refferedby", reportdate.getText().toString(),
 //                    18, "sex", "address", 1203, 1234, ts, haemogramReport, bloodSugrarLevel, renalFunctionTests, liverFunctionTest, "conclusion", "advise", "bloodGroup", "pathologistname");
         }else{
@@ -448,7 +441,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
         }
         if (reportDate.isEmpty()){
             reportdate.setError("Please select date of the report");
-            return false;
+            return true;
         }
         if(img.getTag() == null){
             Toast.makeText(getActivity(), "Please add report Image", Toast.LENGTH_SHORT).show();
@@ -661,6 +654,13 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
 
             if(alertDialog.isShowing())
                 alertDialog.dismiss();
+
+            Fragment fragment = new ReportAddedFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("REPORT_NAME", reportname.getText().toString());
+            bundle.putString("REPORT_DATE", todayDate());
+            fragment.setArguments(bundle);
+            loadFragment(fragment);
         }
 
         private AlertDialog createDialog(Context context){

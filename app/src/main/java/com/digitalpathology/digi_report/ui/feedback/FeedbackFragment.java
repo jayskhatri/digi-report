@@ -86,7 +86,7 @@ public class FeedbackFragment extends Fragment {
             toolbar.setNavigationIcon(d);
         });
 
-        TextView title = getActivity().findViewById(R.id.toolbar_title);
+        title = getActivity().findViewById(R.id.toolbar_title);
         title.setText("Feedback");
 
         totalReports = getActivity().findViewById(R.id.total_saved_report);

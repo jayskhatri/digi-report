@@ -52,7 +52,7 @@ public class HelpSupport extends Fragment {
             toolbar.setNavigationIcon(d);
         });
 
-        TextView title = getActivity().findViewById(R.id.toolbar_title);
+        title = getActivity().findViewById(R.id.toolbar_title);
         title.setText("Help & Support");
     }
 

@@ -1,5 +1,6 @@
 package com.digitalpathology.digi_report.ui.my_reports;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -96,6 +98,8 @@ public class MyReportsFragment extends Fragment {
     }
 
     private void readReports(){
+        AlertDialog alertDialog = createDialog(getActivity());
+        alertDialog.show();
         if(connectionDetector.isInternetAvailble()) {
             FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -134,5 +138,15 @@ public class MyReportsFragment extends Fragment {
         }else {
             Toast.makeText(getActivity(), "Internet Not Available", Toast.LENGTH_SHORT).show();
         }
+        alertDialog.dismiss();
+    }
+
+    private AlertDialog createDialog(Context context){
+        LayoutInflater factory = LayoutInflater.from(context);
+        final View dialogView = factory.inflate(R.layout.custom_dialogue,null);
+        final AlertDialog processDialog = new AlertDialog.Builder(context).create();
+        processDialog.setView(dialogView);
+        processDialog.setCancelable(false);
+        return processDialog;
     }
 }
