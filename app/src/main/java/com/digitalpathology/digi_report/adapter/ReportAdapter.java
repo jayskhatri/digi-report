@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -30,6 +31,7 @@ import com.digitalpathology.digi_report.common.ViewReportActivity;
 import com.digitalpathology.digi_report.object.MedicalReport;
 import com.digitalpathology.digi_report.object.User;
 import com.digitalpathology.digi_report.ui.my_reports.MyReportsFragment;
+import com.digitalpathology.digi_report.utils.ConnectionDetector;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,8 +44,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHolder> {
@@ -55,6 +59,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
     private User user;
     private Context context;
     private String savephotoName;
+    private ConnectionDetector connectionDetector;
     private final String TAG = "ReportAdapter";
     private final int REQUEST_PERMISSION = 774;
 
@@ -84,30 +89,31 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
 //            loadFragment(new MyReportsFragment());
         });
 
+        //download btn
+        final long ONE_MEGABYTE = 1024 * 1024;
         storageRef = FirebaseStorage.getInstance().getReference(report.getUrl().substring(38));//FirebaseStorage.getInstance().getReferenceFromUrl("gs://digi-report-i67450jk.appspot.com");
-
         holder.downloadBtn.setOnClickListener(v -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                     && ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         REQUEST_PERMISSION);
             }
-
-            final long ONE_MEGABYTE = 1024 * 1024;
-            storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
-                // Data for "images/island.jpg" is returns, use this as needed
-                Log.d(TAG, "bytes" + bytes);
-                savephotoName = report.getReportName() + ".png";
-                SavePhotoTask t = new SavePhotoTask();
-                t.execute(bytes);
-                Toast.makeText(context, "Report image saved in downloads folder as "+savephotoName, Toast.LENGTH_LONG).show();
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
+            if(connectionDetector.isInternetAvailble()){
+                storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
+                    // Data for "images/island.jpg" is returns, use this as needed
+                    Log.d(TAG, "bytes" + bytes);
+                    savephotoName = report.getReportName() + ".png";
+                    SavePhotoTask t = new SavePhotoTask();
+                    t.execute(bytes);
+                    Toast.makeText(context, "Report image saved in downloads folder as "+savephotoName, Toast.LENGTH_LONG).show();
+                }).addOnFailureListener(exception -> {
                     // Handle any errors
-                }
-            });
-        });
+                    Toast.makeText(context, "Something went wrong, Please try after sometime", Toast.LENGTH_SHORT).show();
+                });
+            }});
+
+
+
     }
 
     @Override
@@ -117,13 +123,15 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView uploadDate, reportName;
-        public ImageView deleteReportBtn, viewReportBtn, downloadBtn;
+        public ImageView deleteReportBtn, viewReportBtn, shareBtn, downloadBtn;
 
         public MyViewHolder(View view) {
             super(view);
+            connectionDetector = new ConnectionDetector(context);
             uploadDate = view.findViewById(R.id.report_uploaddate);
             reportName = view.findViewById(R.id.report_name);
             downloadBtn = view.findViewById(R.id.btn_download_report);
+            shareBtn = view.findViewById(R.id.btn_share_report);
             deleteReportBtn = view.findViewById(R.id.btn_delete_report);
             viewReportBtn = view.findViewById(R.id.btn_view_report);
         }
