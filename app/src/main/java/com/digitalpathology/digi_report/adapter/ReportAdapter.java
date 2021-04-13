@@ -112,7 +112,17 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
                 });
             }});
 
+        //share btn
+        holder.shareBtn.setOnClickListener(v -> {
+            if(connectionDetector.isInternetAvailble()){
+                storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
+                    // Data for "images/island.jpg" is returns, use this as needed
 
+                }).addOnFailureListener(exception -> {
+                    // Handle any errors
+                });
+            }
+        });
 
     }
 
