@@ -120,6 +120,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
 
                 }).addOnFailureListener(exception -> {
                     // Handle any errors
+                    Toast.makeText(context, "Something went wrong, Please try after sometime", Toast.LENGTH_SHORT).show();
                 });
             }
         });
