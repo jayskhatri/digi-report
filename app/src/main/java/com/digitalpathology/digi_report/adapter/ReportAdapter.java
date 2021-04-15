@@ -117,6 +117,8 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
             if(connectionDetector.isInternetAvailble()){
                 storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
                     // Data for "images/island.jpg" is returns, use this as needed
+                    Log.d(TAG, "bytes" + bytes);
+
 
                 }).addOnFailureListener(exception -> {
                     // Handle any errors
