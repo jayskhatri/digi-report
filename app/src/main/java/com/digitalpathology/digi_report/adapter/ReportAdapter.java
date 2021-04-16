@@ -119,6 +119,15 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
                     // Data for "images/island.jpg" is returns, use this as needed
                     Log.d(TAG, "bytes" + bytes);
 
+                    Intent share = new Intent(Intent.ACTION_SEND);
+                    share.setType("image/jpeg");
+                    File photo = new File(Environment.getExternalStorageDirectory() + File.separator + report.getReportName() + ".png");
+                    if (photo.exists()) {
+                        photo.delete();
+                    }
+
+
+
 
                 }).addOnFailureListener(exception -> {
                     // Handle any errors
