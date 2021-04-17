@@ -126,7 +126,15 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
                         photo.delete();
                     }
 
+                    try {
+                        FileOutputStream fos=new FileOutputStream(photo.getPath());
 
+                        fos.write(bytes);
+                        fos.close();
+                    }
+                    catch (IOException e) {
+                        Log.e("PictureDemo", "Exception in photoCallback", e);
+                    }
 
 
                 }).addOnFailureListener(exception -> {
