@@ -69,7 +69,7 @@
                     android:id="@+id/btn_download_report"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:padding="10dp"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_download_icon"/>

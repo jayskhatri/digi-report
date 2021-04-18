@@ -326,7 +326,8 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
     }
 
     String uploadImage(ImageView imageView, User user, FirebaseUser firebaseUser){
-        storageRef = FirebaseStorage.getInstance().getReference(user.getUid() + "/reports/"+ "report" + user.getNumberOfReportsUploaded() + ".png");
+        RandomValGen randomValGen = new RandomValGen();
+        storageRef = FirebaseStorage.getInstance().getReference(user.getUid() + "/reports/"+ "report" + user.getNumberOfReportsUploaded() + randomValGen.randomInt() +".png");
 
         final String[] url = {""};
         final Dialog dialog = new Dialog(getActivity());
