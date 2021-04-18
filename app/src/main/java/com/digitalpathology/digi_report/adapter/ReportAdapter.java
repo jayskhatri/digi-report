@@ -136,7 +136,10 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
                         Log.e("PictureDemo", "Exception in photoCallback", e);
                     }
 
+                    share.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///sdcard/"+ report.getReportName() + ".png"));
+                    context.startActivity(Intent.createChooser(share, "Share Image"));
 
+                    Toast.makeText(context, "Report image saved in downloads folder as "+savephotoName, Toast.LENGTH_LONG).show();
                 }).addOnFailureListener(exception -> {
                     // Handle any errors
                     Toast.makeText(context, "Something went wrong, Please try after sometime", Toast.LENGTH_SHORT).show();
