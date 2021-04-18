@@ -147,6 +147,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private boolean loadFragment(Fragment fragment) {
+        //TODO: check here
         //switching fragment
         if (fragment != null) {
             getSupportFragmentManager()

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
+import com.digitalpathology.digi_report.common.LoginActivity;
 import com.digitalpathology.digi_report.common.OnBoarding;
 import com.digitalpathology.digi_report.common.SignUpActivity;
 
@@ -44,7 +45,7 @@ public class SplashActivity extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    startActivity(new Intent(SplashActivity.this, SignUpActivity.class));
+                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                     finish();
                 }
             }, 3000);
