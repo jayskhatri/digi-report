@@ -4,12 +4,14 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -199,6 +201,12 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
 
         //updating the number of reports
         user1.removereport();
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(String.valueOf(R.string.shared_pref_total_reports), String.valueOf(user1.getNumberOfReportsUploaded()));
+        editor.commit();
+
         clouddb.collection("users").document(currentUser.getUid()).set(user1);
 
         clouddb.collection("users").document(currentUser.getUid())

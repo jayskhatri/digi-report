@@ -14,6 +14,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -30,6 +31,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -220,6 +222,10 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
                 //increasing total number of reports
                 user.addreport();
                 addReport(user);
+                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString(String.valueOf(R.string.shared_pref_total_reports), ""+ user.getNumberOfReportsUploaded());
+                editor.commit();
             }
         });
     }

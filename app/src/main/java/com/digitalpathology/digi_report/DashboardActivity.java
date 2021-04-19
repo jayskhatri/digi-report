@@ -32,13 +32,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.Calendar;
+
 public class DashboardActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ImageView homeBtn, accSettingsBtn;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private TextView headerUserName, headerUserEmail;
+    private TextView headerUserName, headerUserEmail, copyright;
 
     private final String TAG = "DashboardActivity";
 
@@ -55,6 +57,10 @@ public class DashboardActivity extends AppCompatActivity {
         //hooks
         homeBtn = findViewById(R.id.btn_home);
         accSettingsBtn = findViewById(R.id.btn_user_acc);
+        copyright = findViewById(R.id.copyright);
+
+        //setting year in copyright
+        copyright.setText("\u00a9 DigiReport "+ Calendar.getInstance().get(Calendar.YEAR));
 
         //reloading dashboard activity
         homeBtn.setOnClickListener(v -> {
