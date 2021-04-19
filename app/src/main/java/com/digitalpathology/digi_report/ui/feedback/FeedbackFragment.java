@@ -4,21 +4,33 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.digitalpathology.digi_report.R;
 import com.digitalpathology.digi_report.object.User;
+import com.digitalpathology.digi_report.utils.ConnectionDetector;
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.review.model.ReviewErrorCode;
+import com.google.android.play.core.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -30,7 +42,8 @@ public class FeedbackFragment extends Fragment {
     private FeedbackViewModel mViewModel;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TextView totalReports, title;
-    private User user;
+    private ConnectionDetector con;
+    private ReviewInfo reviewInfo;
 
     private final String TAG = "FeedbackFragment";
 
@@ -47,24 +60,38 @@ public class FeedbackFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        //read user data from firestore
-        DocumentReference docRef = db.collection("users").document(currentUser.getUid());
-        docRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                    totalReports.setText(String.valueOf(document.get("numberOfReportsUploaded")));
-//                    user = new User(String.valueOf(document.get("uid")), String.valueOf(document.get("name")), String.valueOf(document.get("email")),  String.valueOf(document.get("phone")));
+        // getting user
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String totalreports = pref.getString(String.valueOf(R.string.shared_pref_total_reports), "null");
 
-                } else {
-                    Log.d(TAG, "user does not exist");
-                }
-            } else {
-                Log.d(TAG, "get failed with ", task.getException());
+        if(totalreports.contentEquals("null")){
+            if(con.isInternetAvailble()){
+                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                //read user data from firestore
+                DocumentReference docRef = db.collection("users").document(currentUser.getUid());
+                docRef.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            totalReports.setText(String.valueOf(document.get("numberOfReportsUploaded")));
+                            SharedPreferences.Editor editor = pref.edit();
+                            editor.putString(String.valueOf(R.string.shared_pref_total_reports), String.valueOf(document.get("numberOfReportsUploaded")));
+                            editor.commit();
+
+                        } else {
+                            Log.d(TAG, "user does not exist");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                });
+            }else{
+                Toast.makeText(getActivity(), "Internet Unavailable", Toast.LENGTH_SHORT).show();
             }
-        });
+        }else {
+            totalReports.setText(totalreports);
+        }
     }
 
     @Override
@@ -77,6 +104,7 @@ public class FeedbackFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(FeedbackViewModel.class);
+        con = new ConnectionDetector(getActivity());
         // TODO: Use the ViewModel
 
         //code to change a hamburger icon
@@ -90,6 +118,44 @@ public class FeedbackFragment extends Fragment {
         title.setText("Feedback");
 
         totalReports = getActivity().findViewById(R.id.total_saved_report);
+
+        launchInAppReview();
+    }
+
+    private void launchMarket() {
+        Uri uri = Uri.parse("market://details?id=" + getActivity().getPackageName());
+        Intent myAppLinkToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        try {
+            startActivity(myAppLinkToMarket);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getActivity(), " unable to find market app", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void launchInAppReview(){
+
+        ReviewManager manager = ReviewManagerFactory.create(getActivity());
+        Task<ReviewInfo> request = manager.requestReviewFlow();
+        request.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // We can get the ReviewInfo object
+                reviewInfo = task.getResult();
+                Log.d(TAG, "launchInAppReview: no problem");
+
+                Task<Void> flow = manager.launchReviewFlow(getActivity(), reviewInfo);
+                flow.addOnCompleteListener(task1 -> {
+                    Log.d(TAG, "launchInAppReview: launchreview has prob");
+                    // The flow has finished. The API does not indicate whether the user
+                    // reviewed or not, or even whether the review dialog was shown. Thus, no
+                    // matter the result, we continue our app flow.
+                });
+            } else {
+                // There was some problem, log or handle the error code.
+//                @ReviewErrorCode int reviewErrorCode = ((TaskException) task.getException()).getErrorCode();
+                Log.d(TAG, "launchInAppReview: problem");
+                Toast.makeText(getActivity(), "Issues", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

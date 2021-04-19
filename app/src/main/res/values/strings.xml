@@ -67,6 +67,7 @@
     <string name="shared_pref_first_time_user">IS_FIRST_TIME_USER</string>
     <string name="shared_pref_user_name">USER_NAME</string>
     <string name="shared_pref_user_email">USER_EMAIL</string>
+    <string name="shared_pref_total_reports">TOTAL_REPORTS</string>
     <string name="text_write_your_feedback">Write your Feedback</string>
     <string name="btn_submit">Submit</string>
     <string name="text_thank_you_for_using_digireport">Thank you for using DigiReport!</string>
