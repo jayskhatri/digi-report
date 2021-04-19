@@ -1,6 +1,7 @@
 package com.digitalpathology.digi_report.ui.feedback;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -20,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +35,8 @@ import com.google.android.play.core.review.model.ReviewErrorCode;
 import com.google.android.play.core.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -42,8 +46,12 @@ public class FeedbackFragment extends Fragment {
     private FeedbackViewModel mViewModel;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TextView totalReports, title;
+    private EditText fb;
+    private CardView submitBtn;
     private ConnectionDetector con;
     private ReviewInfo reviewInfo;
+    private DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+    private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
     private final String TAG = "FeedbackFragment";
 
@@ -66,7 +74,6 @@ public class FeedbackFragment extends Fragment {
 
         if(totalreports.contentEquals("null")){
             if(con.isInternetAvailble()){
-                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                 //read user data from firestore
                 DocumentReference docRef = db.collection("users").document(currentUser.getUid());
                 docRef.get().addOnCompleteListener(task -> {
@@ -105,7 +112,13 @@ public class FeedbackFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(FeedbackViewModel.class);
         con = new ConnectionDetector(getActivity());
-        // TODO: Use the ViewModel
+        fb = getActivity().findViewById(R.id.edittext_feedback);
+        submitBtn = getActivity().findViewById(R.id.btn_submit);
+
+        submitBtn.setOnClickListener(v -> {
+            sendfeedback(fb.getText().toString());
+            fb.setText("");
+        });
 
         //code to change a hamburger icon
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
@@ -158,4 +171,12 @@ public class FeedbackFragment extends Fragment {
         });
     }
 
+    private void sendfeedback(String feedback){
+        //adding feedback to firebase realtime database
+        Long ts = System.currentTimeMillis();
+        if(con.isInternetAvailble())
+            databaseRef.child("feedback/").child(currentUser.getUid()).child("" + ts).child("feedback").setValue(feedback);
+        else
+            Toast.makeText(getActivity(), "Internet Unavailable", Toast.LENGTH_SHORT).show();
+    }
 }
