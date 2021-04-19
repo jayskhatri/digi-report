@@ -92,24 +92,33 @@ public class MyAccountFragment extends Fragment {
          */
 
         // getting user
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        //read user data from firestore
-        DocumentReference docRef = db.collection("users").document(currentUser.getUid());
-        docRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String fullname = pref.getString(String.valueOf(R.string.shared_pref_user_name), "null");
+        String email = pref.getString(String.valueOf(R.string.shared_pref_user_email), "null");
+
+        if(fullname.contentEquals("null") || email.contentEquals("null")){
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            //read user data from firestore
+            DocumentReference docRef = db.collection("users").document(currentUser.getUid());
+            docRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 //                    totalReports.setText(String.valueOf(document.get("numberOfReportsUploaded")));
 //                    user = new User(String.valueOf(document.get("uid")), String.valueOf(document.get("name")), String.valueOf(document.get("email")),  String.valueOf(document.get("phone")));
                         useremail.setText(String.valueOf(document.get("email")));
                         username.setText(String.valueOf(document.get("name")));
+                    } else {
+                        Log.d(TAG, "user does not exist");
+                    }
                 } else {
-                    Log.d(TAG, "user does not exist");
+                    Log.d(TAG, "get failed with ", task.getException());
                 }
-            } else {
-                Log.d(TAG, "get failed with ", task.getException());
-            }
-        });
+            });
+        }else {
+            useremail.setText(email);
+            username.setText(fullname);
+        }
     }
 }
