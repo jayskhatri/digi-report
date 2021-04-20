@@ -19,7 +19,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="38dp"
         android:fontFamily="@font/circular_std_black"
-        android:text="Loading"
+        android:text="Loading..."
         android:textSize="20sp" />
 
     <ImageView

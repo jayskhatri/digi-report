@@ -94,12 +94,13 @@ public class MyReportsFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
 
         //Reading the uploaded reports
+        AlertDialog alertDialog = createDialog(getActivity());
+        alertDialog.show();
         readReports();
+        alertDialog.dismiss();
     }
 
     private void readReports(){
-        AlertDialog alertDialog = createDialog(getActivity());
-        alertDialog.show();
         if(connectionDetector.isInternetAvailble()) {
             FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -138,7 +139,6 @@ public class MyReportsFragment extends Fragment {
         }else {
             Toast.makeText(getActivity(), "Internet Not Available", Toast.LENGTH_SHORT).show();
         }
-        alertDialog.dismiss();
     }
 
     private AlertDialog createDialog(Context context){
