@@ -137,7 +137,7 @@
             android:foregroundGravity="center"
             android:fontFamily="@font/circular_std_medium" />
         <TextView
-            android:id="@+id/emailid"
+            android:id="@+id/emailtoid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="digireport@gmail.com"

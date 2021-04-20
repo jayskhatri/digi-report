@@ -50,7 +50,7 @@ public class MyReportsFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
     private TextView noReports, loadError, title;
-    private User user;
+    private AlertDialog alertDialog;
 
     private ConnectionDetector connectionDetector;
     private FirebaseFirestore clouddb = FirebaseFirestore.getInstance();
@@ -94,7 +94,7 @@ public class MyReportsFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
 
         //Reading the uploaded reports
-        AlertDialog alertDialog = createDialog(getActivity());
+        alertDialog = createDialog(getActivity());
         alertDialog.show();
         readReports();
         alertDialog.dismiss();
@@ -142,6 +142,7 @@ public class MyReportsFragment extends Fragment {
     }
 
     private AlertDialog createDialog(Context context){
+        Log.d(TAG, "createDialog: ");
         LayoutInflater factory = LayoutInflater.from(context);
         final View dialogView = factory.inflate(R.layout.custom_dialogue,null);
         final AlertDialog processDialog = new AlertDialog.Builder(context).create();

@@ -4,7 +4,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,7 +23,7 @@ import com.digitalpathology.digi_report.R;
 public class HelpSupport extends Fragment {
 
     private HelpSupportViewModel mViewModel;
-    private TextView title;
+    private TextView title, emailTO;
 
     public static HelpSupport newInstance() {
         return new HelpSupport();
@@ -43,7 +45,7 @@ public class HelpSupport extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(HelpSupportViewModel.class);
-        // TODO: Use the ViewModel
+        emailTO = getActivity().findViewById(R.id.emailtoid);
 
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         //code to change a hamburger icon
@@ -54,6 +56,19 @@ public class HelpSupport extends Fragment {
 
         title = getActivity().findViewById(R.id.toolbar_title);
         title.setText("Help & Support");
+
+        //emailto
+        emailTO.setOnClickListener(v -> mailto());
+    }
+
+    private void mailto(){
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_EMAIL, R.string.email);
+//        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
 }

@@ -166,7 +166,7 @@ public class FeedbackFragment extends Fragment {
                 // There was some problem, log or handle the error code.
 //                @ReviewErrorCode int reviewErrorCode = ((TaskException) task.getException()).getErrorCode();
                 Log.d(TAG, "launchInAppReview: problem");
-                Toast.makeText(getActivity(), "Issues", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "Issues", Toast.LENGTH_SHORT).show();
             }
         });
     }
