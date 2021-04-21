@@ -73,7 +73,7 @@ public class ViewReportActivity extends AppCompatActivity {
         if(connectionDetector.isInternetAvailble()) {
             //read user data from firestore
             DocumentReference reportRef = clouddb.collection("users").document(currentUser.getUid())
-                    .collection("reports").document(String.valueOf(9064));
+                    .collection("reports").document(String.valueOf(id));
             reportRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
@@ -106,11 +106,13 @@ public class ViewReportActivity extends AppCompatActivity {
                         Map haemoUnits = (Map) mapHaemo.get("units");
 
                         for(Object s: haemoValue.keySet()){
+                            Log.d(TAG, "onCreate: "+ s.toString() + " adding");
                             if(!haemoValue.get(s).toString().equals("null"))
-                                tableLayout.addView(createRow(createTextView(new String[]{s.toString(), (String) haemoValue.get(s), (String) haemoUnits.get(s)}, 3)));
+                                tableLayout.addView(createRow(createTextView(new String[]{s.toString().substring(0,1).toUpperCase() + s.toString().substring(1), (String) haemoValue.get(s), (String) haemoUnits.get(s)}, 3)));
                             else
-                                tableLayout.addView(createHeaderRow(createHeaderTextView(new String[]{s.toString()}, 1)));
-                            Log.d(TAG, s.toString() + ": " + haemoValue.get(s).toString() + ", " + haemoUnits.get(s).toString());
+                                tableLayout.addView(createHeaderRow(createHeaderTextView(new String[]{s.toString().substring(0,1).toUpperCase() + s.toString().substring(1)}, 1)));
+                            Log.d(TAG, s.toString().substring(0,1).toUpperCase() + s.toString().substring(1) + ": " + haemoValue.get(s).toString() + ", " + haemoUnits.get(s).toString());
+                            Log.d(TAG, "onCreate: "+ s.toString() + " added");
                         }
 
                         tableLayout.setVisibility(View.VISIBLE);
