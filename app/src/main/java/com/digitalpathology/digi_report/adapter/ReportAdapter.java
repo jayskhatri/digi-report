@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.digitalpathology.digi_report.DashboardActivity;
 import com.digitalpathology.digi_report.R;
 import com.digitalpathology.digi_report.common.LoginActivity;
+import com.digitalpathology.digi_report.common.SavePhotoTask;
 import com.digitalpathology.digi_report.common.ViewReportActivity;
 import com.digitalpathology.digi_report.object.MedicalReport;
 import com.digitalpathology.digi_report.object.User;
@@ -87,6 +88,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
         holder.viewReportBtn.setOnClickListener(v -> {
             Intent i = new Intent(context, ViewReportActivity.class);
             i.putExtra("id", report.getId());
+            i.putExtra("report_name", report.getReportName());
             context.startActivity(i);
 //            loadFragment(new MyReportsFragment());
         });
@@ -105,7 +107,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
                     // Data for "images/island.jpg" is returns, use this as needed
                     Log.d(TAG, "bytes" + bytes);
                     savephotoName = report.getReportName() + ".png";
-                    SavePhotoTask t = new SavePhotoTask();
+                    SavePhotoTask t = new SavePhotoTask(savephotoName);
                     t.execute(bytes);
                     Toast.makeText(context, "Report image saved in downloads folder as "+savephotoName, Toast.LENGTH_LONG).show();
                 }).addOnFailureListener(exception -> {
@@ -221,26 +223,5 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
                 });
     }
 
-    class SavePhotoTask extends AsyncTask<byte[], String, String> {
-        @Override
-        protected String doInBackground(byte[]... jpeg) {
-            File photo=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), savephotoName);
 
-            if (photo.exists()) {
-                photo.delete();
-            }
-
-            try {
-                FileOutputStream fos=new FileOutputStream(photo.getPath());
-
-                fos.write(jpeg[0]);
-                fos.close();
-            }
-            catch (java.io.IOException e) {
-                Log.e("PictureDemo", "Exception in photoCallback", e);
-            }
-
-            return(null);
-        }
-    }
 }

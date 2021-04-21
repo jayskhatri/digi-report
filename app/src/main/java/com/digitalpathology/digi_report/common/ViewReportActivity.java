@@ -2,6 +2,7 @@ package com.digitalpathology.digi_report.common;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -71,7 +72,8 @@ public class ViewReportActivity extends AppCompatActivity {
 
         if(connectionDetector.isInternetAvailble()) {
             //read user data from firestore
-            DocumentReference reportRef = clouddb.collection("users").document(currentUser.getUid()).collection("reports").document(String.valueOf(id));
+            DocumentReference reportRef = clouddb.collection("users").document(currentUser.getUid())
+                    .collection("reports").document(String.valueOf(9064));
             reportRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
@@ -91,7 +93,7 @@ public class ViewReportActivity extends AppCompatActivity {
                         tableLayout.addView(createRow(createTextView(new String[]{"Report Date", document.getString("reportDate")}, 2)));
                         tableLayout.addView(createRow(createTextView(new String[]{"Patient Name", document.getString("patientName")}, 2)));
                         tableLayout.addView(createRow(createTextView(new String[]{"Sex", document.getString("sex")}, 2)));
-                        tableLayout.addView(createRow(createTextView(new String[]{"age", document.getString("age")}, 2)));
+                        tableLayout.addView(createRow(createTextView(new String[]{"Age", document.getString("age")}, 2)));
                         tableLayout.addView(createRow(createTextView(new String[]{"Referred By", document.getString("refferedBy")}, 2)));
                         tableLayout.addView(createRow(createTextView(new String[]{"Pathologist 1", document.getString("pathologist1Name")}, 2)));
                         tableLayout.addView(createRow(createTextView(new String[]{"Pathologist 2", document.getString("pathologist2Name")}, 2)));
@@ -132,14 +134,23 @@ public class ViewReportActivity extends AppCompatActivity {
         TextView[] textView = new TextView[total];
         for(int i=0; i<total; i++) {
             textView[i] = (TextView) getLayoutInflater().inflate(R.layout.template_normal_report_info_cell, null);
-            textView[i].setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             textView[i].setTextColor(getResources().getColor(R.color.white));
             textView[i].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            textView[i].setGravity(View.TEXT_ALIGNMENT_CENTER);
+            textView[i].setGravity(Gravity.CENTER_HORIZONTAL);
             textView[i].setText(text[i]);
+            if(i==0){
+                textView[i].setLayoutParams(new TableLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.3f));
+            } else if(i==1){
+                textView[i].setLayoutParams(new TableLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.4f));
+            } else if(i==2){
+                textView[i].setLayoutParams(new TableLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.3f));
+            }
             Log.d(TAG, "createtv: " + text[i]);
             textView[i].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
             textView[i].setPadding(10, 10, 10, 10);
+        }
+        if(total == 1){
+            textView[0].setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.2f));
         }
         return textView;
     }
@@ -151,17 +162,15 @@ public class ViewReportActivity extends AppCompatActivity {
             textView[i].setTextColor(getResources().getColor(R.color.black));
             textView[i].setBackgroundColor(getResources().getColor(R.color.white));
             textView[i].setText(text[i]);
-            textView[i].setLayoutParams(new TableLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-//            if (total == 3){
-//                if (i == 0) {
-//                    textView[i].setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.4f));
-//                } else if (i == 1) {
-//                    textView[i].setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.3f));
-//                } else if (i == 2) {
-//                    textView[i].setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0.3f));
-//                }
-//            }
-//            Log.d(TAG, "createtv: " + text[i]);
+            if(total == 3)
+                if(i==0)
+                    textView[i].setLayoutParams(new TableLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.3f));
+                else if(i==1)
+                    textView[i].setLayoutParams(new TableLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.4f));
+                else if(i==2)
+                    textView[i].setLayoutParams(new TableLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.3f));
+            else if(total == 2)
+                    textView[i].setLayoutParams(new TableLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
             textView[i].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
             textView[i].setPadding(10, 10, 10, 10);
         }
@@ -177,6 +186,7 @@ public class ViewReportActivity extends AppCompatActivity {
             textView[i].setTextColor(getResources().getColor(R.color.black));
             textView[i].setBackgroundColor(getResources().getColor(R.color.startup_background_color));
             textView[i].setText(text[i]);
+            textView[i].setGravity(Gravity.CENTER_HORIZONTAL);
             Log.d(TAG, "createtv: " + text[i]);
             textView[i].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
             textView[i].setPadding(10, 10, 10, 10);
@@ -189,6 +199,7 @@ public class ViewReportActivity extends AppCompatActivity {
         TableRow tr = new TableRow(this);
         tr.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         tr.setBackgroundColor(getResources().getColor(R.color.white));
+        tr.setGravity(Gravity.CENTER_HORIZONTAL);
 
         for(int i=0; i<tv.length; i++) {
             TableRow.LayoutParams columnParams = new TableRow.LayoutParams();
@@ -206,12 +217,13 @@ public class ViewReportActivity extends AppCompatActivity {
         TableRow tr = new TableRow(this);
         tr.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         tr.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        tr.setGravity(Gravity.CENTER_HORIZONTAL);
 
         for(int i=0; i<tv.length; i++) {
             TableRow.LayoutParams columnParams = new TableRow.LayoutParams();
             // wrap-up content of the row
             columnParams.height = TableRow.LayoutParams.WRAP_CONTENT;
-            columnParams.width = TableRow.LayoutParams.WRAP_CONTENT;
+            columnParams.width = TableRow.LayoutParams.MATCH_PARENT;
             // set gravity to center of the column
             columnParams.gravity = Gravity.CENTER_HORIZONTAL;
             tr.addView(tv[i],columnParams);
@@ -223,6 +235,7 @@ public class ViewReportActivity extends AppCompatActivity {
         TableRow tr = new TableRow(this);
         tr.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         tr.setBackgroundColor(getResources().getColor(R.color.startup_background_color));
+        tr.setGravity(Gravity.CENTER_HORIZONTAL);
 
         for(int i=0; i<tv.length; i++) {
             TableRow.LayoutParams columnParams = new TableRow.LayoutParams();
