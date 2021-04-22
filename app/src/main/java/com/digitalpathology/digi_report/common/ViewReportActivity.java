@@ -109,8 +109,8 @@ public class ViewReportActivity extends AppCompatActivity {
                             Log.d(TAG, "onCreate: "+ s.toString() + " adding");
                             if(!haemoValue.get(s).toString().equals("null"))
                                 tableLayout.addView(createRow(createTextView(new String[]{s.toString().substring(0,1).toUpperCase() + s.toString().substring(1), (String) haemoValue.get(s), (String) haemoUnits.get(s)}, 3)));
-                            else
-                                tableLayout.addView(createHeaderRow(createHeaderTextView(new String[]{s.toString().substring(0,1).toUpperCase() + s.toString().substring(1)}, 1)));
+//                            else
+//                                tableLayout.addView(createHeaderRow(createHeaderTextView(new String[]{s.toString().substring(0,1).toUpperCase() + s.toString().substring(1)}, 1)));
                             Log.d(TAG, s.toString().substring(0,1).toUpperCase() + s.toString().substring(1) + ": " + haemoValue.get(s).toString() + ", " + haemoUnits.get(s).toString());
                             Log.d(TAG, "onCreate: "+ s.toString() + " added");
                         }
