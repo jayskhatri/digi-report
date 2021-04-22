@@ -56,7 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="Step 1: Go to Add your report section"
+                android:text="@string/text_step1"
                 android:textSize="18sp"
                 android:textColor="@color/grey"
                 android:fontFamily="@font/circular_std_medium"/>
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="Step 2: Add report name and report image and hit add report button"
+                android:text="@string/text_step2"
                 android:textSize="18sp"
                 android:textColor="@color/grey"
                 android:fontFamily="@font/circular_std_medium"/>
@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="Step 3: See your added report in the view report option"
+                android:text="@string/text_step3"
                 android:textSize="18sp"
                 android:textColor="@color/grey"
                 android:fontFamily="@font/circular_std_medium"/>
