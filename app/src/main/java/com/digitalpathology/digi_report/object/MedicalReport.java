@@ -14,7 +14,7 @@ public class MedicalReport {
     String sex;
     String address;
     int refno;
-    int casenumber;
+    String casenumber;
     String uploadDate;
 
     HaemogramReport haemogramReport;
@@ -30,7 +30,7 @@ public class MedicalReport {
     public MedicalReport() {    }
 
     public MedicalReport(int id, String url, String hospitalName, String reportName, String patientName, String refferedBy, String reportDate, String age, String sex,
-                         String address, int refno, int casenumber, String uploadDate, HaemogramReport haemogramReport,
+                         String address, int refno, String casenumber, String uploadDate, HaemogramReport haemogramReport,
                          BloodSugrarLevel bloodSugrarLevel, RenalFunctionTests renalFunctionTests, LiverFunctionTest liverFunctionTest,
                          String conclusion, String advise, String bloodGroup, String pathologistName1, String pathologistName2) {
         this.id = id;
@@ -133,11 +133,11 @@ public class MedicalReport {
         this.refno = refno;
     }
 
-    public int getCasenumber() {
+    public String getCasenumber() {
         return casenumber;
     }
 
-    public void setCasenumber(int casenumber) {
+    public void setCasenumber(String casenumber) {
         this.casenumber = casenumber;
     }
 

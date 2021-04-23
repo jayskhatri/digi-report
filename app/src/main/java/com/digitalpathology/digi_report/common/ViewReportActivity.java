@@ -89,7 +89,7 @@ public class ViewReportActivity extends AppCompatActivity {
                         Log.d(TAG, "reportdate: " + document.getString("reportDate"));
                         tableLayout.addView(createCommonHeaderRow(createCommonHeaderTextView(new String[]{"Report Information"}, 1)));
                         tableLayout.addView(createRow(createTextView(new String[]{"Report Name", rn}, 2)));
-                        tableLayout.addView(createRow(createTextView(new String[]{"Case Number", String.valueOf(document.getDouble("casenumber"))}, 2)));
+                        tableLayout.addView(createRow(createTextView(new String[]{"Case Number", document.getString("casenumber")}, 2)));
                         tableLayout.addView(createRow(createTextView(new String[]{"Report Date", document.getString("reportDate")}, 2)));
                         tableLayout.addView(createRow(createTextView(new String[]{"Patient Name", document.getString("patientName")}, 2)));
                         tableLayout.addView(createRow(createTextView(new String[]{"Sex", document.getString("sex")}, 2)));
