@@ -692,7 +692,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
                          String conclusion, String advise, String bloodGroup, String pathologistName*/
 
            return new MedicalReport(randomValGen.randomInt(), url, hospitalname, reportName, patientName, referredByDR, reportDate, age, sex, "",
-                   Integer.parseInt(refno), Integer.parseInt(caseNo), uploadDate, hm, null, null, null,
+                   Integer.parseInt(refno), caseNo, uploadDate, hm, null, null, null,
                    conclusion, advise, bloodGroup, pathologist1, pathologist2);
         }
     }
