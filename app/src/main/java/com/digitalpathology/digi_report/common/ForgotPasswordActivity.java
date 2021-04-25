@@ -35,20 +35,34 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
 
         sendLink.setOnClickListener(v ->{
-            if(connectionDetector.isInternetAvailble()) {
-                auth.sendPasswordResetEmail(email.getText().toString())
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                startActivity(new Intent(ForgotPasswordActivity.this, LoginActivity.class));
-                                finish();
-                            }else{
-                                Toast.makeText(this, "Something went wrong, Please try after sometime", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            }else {
-                Toast.makeText(this, "Internet unavailable", Toast.LENGTH_SHORT).show();
+            if(validateEmail(email)) {
+                if (connectionDetector.isInternetAvailble()) {
+                    auth.sendPasswordResetEmail(email.getText().toString())
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    startActivity(new Intent(ForgotPasswordActivity.this, LoginActivity.class));
+                                    finish();
+                                } else {
+                                    Toast.makeText(this, "Something went wrong, Please try after sometime", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                } else {
+                    Toast.makeText(this, "Internet unavailable", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
+    }
+
+    private boolean validateEmail(EditText email){
+        if (email.getText().toString().isEmpty()) {
+            email.setError("Please Enter Email Id");
+            return false;
+        }
+        if (!email.getText().toString().contains("@")) {
+            email.setError("Please Enter valid Email ID");
+            return false;
+        }
+        return true;
     }
 }

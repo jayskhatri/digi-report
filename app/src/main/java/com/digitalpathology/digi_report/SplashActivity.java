@@ -24,30 +24,20 @@ public class SplashActivity extends AppCompatActivity {
         SharedPreferences sharedPref = SplashActivity.this.getPreferences(Context.MODE_PRIVATE);
         boolean defaultValue = true;
         boolean isAppFirstTimeOpened = sharedPref.getBoolean(getString(R.string.shared_pref_first_time_user), defaultValue);
-        Log.i(TAG, "value isAppFirstTimeOpened: " + isAppFirstTimeOpened);
+//        Log.i(TAG, "value isAppFirstTimeOpened: " + isAppFirstTimeOpened);
         if(isAppFirstTimeOpened){
-            Log.i(TAG, "in if value isAppFirstTimeOpened: " + isAppFirstTimeOpened);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putBoolean(getString(R.string.shared_pref_first_time_user), false);
-            editor.apply();
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startActivity(new Intent(SplashActivity.this, OnBoarding.class));
-                    finish();
-                }
+//            Log.i(TAG, "in if value isAppFirstTimeOpened: " + isAppFirstTimeOpened);
+            new Handler().postDelayed(() -> {
+                startActivity(new Intent(SplashActivity.this, OnBoarding.class));
+                finish();
             },3000);
         }
 
         else {
-            Log.i(TAG, "in else value isAppFirstTimeOpened: " + isAppFirstTimeOpened);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                    finish();
-                }
+//            Log.i(TAG, "in else value isAppFirstTimeOpened: " + isAppFirstTimeOpened);
+            new Handler().postDelayed(() -> {
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                finish();
             }, 3000);
         }
     }

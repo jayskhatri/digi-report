@@ -136,6 +136,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 /** this may cause a problem because, task1 inside task */
 
+                                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplication());
                                 //read user data from firestore
                                 DocumentReference docRef = clouddb.collection("users").document(currentUser.getUid());
                                 docRef.get().addOnCompleteListener(task1 -> {
@@ -144,7 +145,6 @@ public class LoginActivity extends AppCompatActivity {
                                         if (document.exists()) {
                                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                                             user = new User(String.valueOf(document.get("uid")), String.valueOf(document.get("name")), String.valueOf(document.get("email")),  String.valueOf(document.get("phone")), Integer.parseInt(String.valueOf(document.get("numberOfReportsUploaded"))));
-                                            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplication());
                                             SharedPreferences.Editor editor = pref.edit();
                                             editor.putString(String.valueOf(R.string.shared_pref_user_name), user.getName());
                                             editor.putString(String.valueOf(R.string.shared_pref_user_email), user.getEmail());
@@ -164,6 +164,10 @@ public class LoginActivity extends AppCompatActivity {
                                     Toast.makeText(this, "Please verify your email id", Toast.LENGTH_SHORT).show();
                                     email.setError("Please verify email ID");
                                 }
+
+                                SharedPreferences.Editor editor = pref.edit();
+                                editor.putBoolean(getString(R.string.shared_pref_first_time_user), false);
+                                editor.apply();
 
                             } else {
                                 // If sign in fails, display a message to the user.

@@ -61,7 +61,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         signup.setOnClickListener(v -> {
-            if(validateFields(name, email, pwd)){
+            if(validateFields(name, email, phone, pwd)){
                 signUP(name.getText().toString(), email.getText().toString(), pwd.getText().toString(), phone.getText().toString());
             }else {
                 Toast.makeText(SignUpActivity.this, "Jay rehne de", Toast.LENGTH_LONG).show();
@@ -69,7 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    boolean validateFields(EditText fullName, EditText email, EditText password){
+    boolean validateFields(EditText fullName, EditText email, EditText phone, EditText password){
         if(connectionDetector.isInternetAvailble()) {
             if (fullName.getText().toString().isEmpty()) {
                 name.setError("Please Enter valid name");
@@ -79,12 +79,20 @@ public class SignUpActivity extends AppCompatActivity {
                 email.setError("Please Enter Email Id");
                 return false;
             }
+            if(phone.getText().toString().isEmpty()){
+                phone.setError("Please Enter Phone number");
+                return false;
+            }
             if (password.getText().toString().isEmpty()) {
                 pwd.setError("Please Enter Password");
                 return false;
             }
             if (!email.getText().toString().contains("@")) {
                 email.setError("Please Enter valid Email ID");
+                return false;
+            }
+            if(phone.getText().toString().length() < 8 && phone.getText().toString().length() > 15){
+                phone.setError("Phone number is invalid");
                 return false;
             }
             if (password.getText().toString().length() < 6) {
