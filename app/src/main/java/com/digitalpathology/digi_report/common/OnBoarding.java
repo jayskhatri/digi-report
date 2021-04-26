@@ -39,12 +39,10 @@ public class OnBoarding extends AppCompatActivity {
         addDots(0);
         viewPager.addOnPageChangeListener(changeListener);
 
-        getStarted.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(OnBoarding.this, SignUpActivity.class));
-                finish();
-            }
+        getStarted.setVisibility(View.GONE);
+        getStarted.setOnClickListener(v -> {
+            startActivity(new Intent(OnBoarding.this, SignUpActivity.class));
+            finish();
         });
     }
 
@@ -63,6 +61,12 @@ public class OnBoarding extends AppCompatActivity {
 
         if (dots.length > 0){
             dots[pos].setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
+
+        if(pos==2){
+            getStarted.setVisibility(View.VISIBLE);
+        }else{
+            getStarted.setVisibility(View.GONE);
         }
 
     }
