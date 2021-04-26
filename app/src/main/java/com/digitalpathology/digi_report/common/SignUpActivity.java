@@ -18,17 +18,9 @@ import com.digitalpathology.digi_report.DashboardActivity;
 import com.digitalpathology.digi_report.R;
 import com.digitalpathology.digi_report.object.User;
 import com.digitalpathology.digi_report.utils.ConnectionDetector;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -97,21 +89,18 @@ public class SignUpActivity extends AppCompatActivity {
                 return false;
             }
         }else {
-            //generating dialog
+            // Generating dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-            // 2. Chain together various setter methods to set the dialog characteristics
+            // Chain together various setter methods to set the dialog characteristics
             builder.setMessage("Please turn your Internet on or connect to WIFI")
                     .setTitle("No Internet Connection");
 
-            builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
+            builder.setNeutralButton("OK", (dialogInterface, i) -> {
 
-                }
             });
 
-            // 3. Get the <code><a href="/reference/android/app/AlertDialog.html">AlertDialog</a></code> from <code><a href="/reference/android/app/AlertDialog.Builder.html#create()">create()</a></code>
+            // Get the <code><a href="/reference/android/app/AlertDialog.html">AlertDialog</a></code> from <code><a href="/reference/android/app/AlertDialog.Builder.html#create()">create()</a></code>
             AlertDialog dialog = builder.create();
             dialog.show();
             return false;
