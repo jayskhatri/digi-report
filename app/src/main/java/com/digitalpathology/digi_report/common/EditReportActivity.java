@@ -1,75 +1,65 @@
 package com.digitalpathology.digi_report.common;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ProgressBar;
+import android.view.Window;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.digitalpathology.digi_report.R;
-import com.digitalpathology.digi_report.object.MedicalReport;
-import com.digitalpathology.digi_report.object.Reports.BloodSugrarLevel;
-import com.digitalpathology.digi_report.object.Reports.HaemogramReport;
-import com.digitalpathology.digi_report.object.Reports.LiverFunctionTest;
-import com.digitalpathology.digi_report.object.Reports.RenalFunctionTests;
-import com.digitalpathology.digi_report.object.User;
 import com.digitalpathology.digi_report.utils.ConnectionDetector;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.w3c.dom.Text;
-
 import java.util.Map;
 
-public class ViewReportActivity extends AppCompatActivity {
+public class EditReportActivity extends AppCompatActivity {
 
-    private final String TAG = "ViewReportActivity";
-    private Context c;
-    private int id;
-
+    private  LinearLayout linlaHeaderProgress;
     private TableLayout tableLayout;
-    private Button normalRange, editReport;
     private ConnectionDetector connectionDetector;
     private FirebaseFirestore clouddb = FirebaseFirestore.getInstance();
+
+    private final String TAG = EditReportActivity.class.getSimpleName();
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_report);
+        setContentView(R.layout.activity_edit_report);
+//        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+//        setProgressBarIndeterminateVisibility(true);
 
         Intent i = getIntent();
-        id = i.getIntExtra("id", -1);
+        int id = i.getIntExtra("ID", -1);
 
-        //hooks
-        tableLayout = findViewById(R.id.tablelayout);
-        c = this;
-        normalRange = findViewById(R.id.btn_normal_range);
-        editReport = findViewById(R.id.btn_edit_report);
         connectionDetector = new ConnectionDetector(this);
 
-        Log.d(TAG, "id: "+ id);
-        normalRange.setOnClickListener(v -> createDialog(c).show());
-        editReport.setOnClickListener(v -> openEditActivity());
+        //hooks
+        tableLayout = findViewById(R.id.tablelayout_edit_report);
+        // CAST THE LINEARLAYOUT HOLDING THE MAIN PROGRESS (SPINNER)
+        linlaHeaderProgress = findViewById(R.id.linlaHeaderProgress);
+
+        // SHOW THE SPINNER WHILE LOADING FEEDS
+        linlaHeaderProgress.setVisibility(View.VISIBLE);
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -91,18 +81,18 @@ public class ViewReportActivity extends AppCompatActivity {
                         String rn = document.getString("reportName");
                         Log.d(TAG, "reportdate: " + document.getString("reportDate"));
                         tableLayout.addView(createCommonHeaderRow(createCommonHeaderTextView(new String[]{"Report Information"}, 1)));
-                        tableLayout.addView(createRow(createTextView(new String[]{"Report Name", rn}, 2)));
-                        tableLayout.addView(createRow(createTextView(new String[]{"Case Number", document.getString("casenumber")}, 2)));
-                        tableLayout.addView(createRow(createTextView(new String[]{"Report Date", document.getString("reportDate")}, 2)));
-                        tableLayout.addView(createRow(createTextView(new String[]{"Patient Name", document.getString("patientName")}, 2)));
-                        tableLayout.addView(createRow(createTextView(new String[]{"Sex", document.getString("sex")}, 2)));
-                        tableLayout.addView(createRow(createTextView(new String[]{"Age", document.getString("age")}, 2)));
-                        tableLayout.addView(createRow(createTextView(new String[]{"Referred By", document.getString("refferedBy")}, 2)));
-                        tableLayout.addView(createRow(createTextView(new String[]{"Pathologist 1", document.getString("pathologist1Name")}, 2)));
-                        tableLayout.addView(createRow(createTextView(new String[]{"Pathologist 2", document.getString("pathologist2Name")}, 2)));
+                        tableLayout.addView(createRowWE(createTextView("Report Name"), createEditText(rn)));
+                        tableLayout.addView(createRowWE(createTextView("Case Number"), createEditText(document.getString("casenumber"))));
+                        tableLayout.addView(createRowWE(createTextView("Report Date"), createEditText(document.getString("reportDate"))));
+                        tableLayout.addView(createRowWE(createTextView("Patient Name"), createEditText(document.getString("patientName"))));
+                        tableLayout.addView(createRowWE(createTextView("Sex"), createEditText(document.getString("sex"))));
+                        tableLayout.addView(createRowWE(createTextView("Age"), createEditText(document.getString("age"))));
+                        tableLayout.addView(createRowWE(createTextView("Referred By"), createEditText(document.getString("refferedBy"))));
+                        tableLayout.addView(createRowWE(createTextView("Pathologist 1"), createEditText(document.getString("pathologist1Name"))));
+                        tableLayout.addView(createRowWE(createTextView("Pathologist 2"), createEditText(document.getString("pathologist2Name"))));
                         tableLayout.addView(createCommonHeaderRow(createCommonHeaderTextView(new String[]{"Observation", "Value", "Units"}, 3)));
-
-
+//
+//
                         Map mapHaemo = (Map) document.get("haemogramReport");
 
                         Map haemoValue = (Map) mapHaemo.get("values");
@@ -110,15 +100,16 @@ public class ViewReportActivity extends AppCompatActivity {
 
                         for(Object s: haemoValue.keySet()){
                             Log.d(TAG, "onCreate: "+ s.toString() + " adding");
-                            if(!haemoValue.get(s).toString().equals("null"))
-                                tableLayout.addView(createRow(createTextView(new String[]{s.toString().substring(0,1).toUpperCase() + s.toString().substring(1), (String) haemoValue.get(s), (String) haemoUnits.get(s)}, 3)));
+//                            if(!haemoValue.get(s).toString().equals("null"))
+//                                tableLayout.addView(createRow(createTextView(new String[]{s.toString().substring(0,1).toUpperCase() + s.toString().substring(1), (String) haemoValue.get(s), (String) haemoUnits.get(s)}, 3)));
 //                            else
-//                                tableLayout.addView(createHeaderRow(createHeaderTextView(new String[]{s.toString().substring(0,1).toUpperCase() + s.toString().substring(1)}, 1)));
-                            Log.d(TAG, s.toString().substring(0,1).toUpperCase() + s.toString().substring(1) + ": " + haemoValue.get(s).toString() + ", " + haemoUnits.get(s).toString());
-                            Log.d(TAG, "onCreate: "+ s.toString() + " added");
+////                                tableLayout.addView(createHeaderRow(createHeaderTextView(new String[]{s.toString().substring(0,1).toUpperCase() + s.toString().substring(1)}, 1)));
+//                            Log.d(TAG, s.toString().substring(0,1).toUpperCase() + s.toString().substring(1) + ": " + haemoValue.get(s).toString() + ", " + haemoUnits.get(s).toString());
+//                            Log.d(TAG, "onCreate: "+ s.toString() + " added");
                         }
 
                         tableLayout.setVisibility(View.VISIBLE);
+                        linlaHeaderProgress.setVisibility(View.GONE);
 
                     } else {
                         Log.d(TAG, "report does not exist");
@@ -132,8 +123,8 @@ public class ViewReportActivity extends AppCompatActivity {
             Toast.makeText(this, "Internet unavailable", Toast.LENGTH_SHORT).show();
         }
 
-    }
 
+    }
 
     private TextView[] createCommonHeaderTextView(String text[], int total) {
         TextView[] textView = new TextView[total];
@@ -161,13 +152,8 @@ public class ViewReportActivity extends AppCompatActivity {
     }
 
 
-    private void openEditActivity(){
-        Intent i = new Intent(ViewReportActivity.this, EditReportActivity.class);
-        i.putExtra("ID", id);
-        startActivity(i);
-    }
 
-    private TextView[] createTextView(String text[], int total) {
+    private TextView[] createTextViews(String text[], int total) {
         TextView[] textView = new TextView[total];
         for(int i=0; i<total; i++) {
             textView[i] = (TextView) getLayoutInflater().inflate(R.layout.template_normal_report_info_cell, null);
@@ -181,13 +167,41 @@ public class ViewReportActivity extends AppCompatActivity {
                     textView[i].setLayoutParams(new TableLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.4f));
                 else if(i==2)
                     textView[i].setLayoutParams(new TableLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.3f));
-            else if(total == 2)
+                else if(total == 2)
                     textView[i].setLayoutParams(new TableLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
             textView[i].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
             textView[i].setPadding(10, 10, 10, 10);
         }
         return textView;
 
+    }
+
+    private TextView createTextView(String text) {
+        TextView textView = new TextView(this);
+//        for(int i=0; i<total; i++) {
+            textView = (TextView) getLayoutInflater().inflate(R.layout.template_normal_report_info_cell, null);
+            textView.setLayoutParams(new TableLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0.5f));
+            textView.setTextColor(getResources().getColor(R.color.black));
+            textView.setBackgroundColor(getResources().getColor(R.color.white));
+            textView.setText(text);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+            textView.setPadding(10, 10, 10, 10);
+//        }
+        return textView;
+
+    }
+
+    private EditText createEditText(String text){
+        EditText editText = new EditText(this);
+        editText = (EditText) getLayoutInflater().inflate(R.layout.template_normal_info_edittext_cell, null);
+        editText.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f));
+        editText.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        editText.setFocusable(false);
+        editText.setText(text, TextView.BufferType.EDITABLE);
+        editText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+        editText.setBackgroundColor(getResources().getColor(R.color.white));
+        editText.setPadding(10, 10, 10, 10);
+        return editText;
     }
 
     private TextView[] createHeaderTextView(String text[], int total) {
@@ -225,6 +239,25 @@ public class ViewReportActivity extends AppCompatActivity {
         return tr;
     }
 
+    private TableRow createRowWE(TextView tv, EditText et){
+        TableRow tr = new TableRow(this);
+        tr.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        tr.setBackgroundColor(getResources().getColor(R.color.white));
+        tr.setGravity(Gravity.CENTER_HORIZONTAL);
+
+//        for(int i=0; i<tv.length; i++) {
+            TableRow.LayoutParams columnParams = new TableRow.LayoutParams();
+            // wrap-up content of the row
+            columnParams.height = TableRow.LayoutParams.WRAP_CONTENT;
+            columnParams.width = TableRow.LayoutParams.WRAP_CONTENT;
+            // set gravity to center of the column
+            columnParams.gravity = Gravity.CENTER_HORIZONTAL;
+            tr.addView(tv,columnParams);
+            tr.addView(et, columnParams);
+//        }
+        return tr;
+    }
+
     private TableRow createCommonHeaderRow(TextView[] tv){
         TableRow tr = new TableRow(this);
         tr.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -241,32 +274,5 @@ public class ViewReportActivity extends AppCompatActivity {
             tr.addView(tv[i],columnParams);
         }
         return tr;
-    }
-
-    private TableRow createHeaderRow(TextView[] tv){
-        TableRow tr = new TableRow(this);
-        tr.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        tr.setBackgroundColor(getResources().getColor(R.color.startup_background_color));
-        tr.setGravity(Gravity.CENTER_HORIZONTAL);
-
-        for(int i=0; i<tv.length; i++) {
-            TableRow.LayoutParams columnParams = new TableRow.LayoutParams();
-            // wrap-up content of the row
-            columnParams.height = TableRow.LayoutParams.WRAP_CONTENT;
-            columnParams.width = TableRow.LayoutParams.WRAP_CONTENT;
-            // set gravity to center of the column
-            columnParams.gravity = Gravity.CENTER_HORIZONTAL;
-            tr.addView(tv[i],columnParams);
-        }
-        return tr;
-    }
-
-    private AlertDialog createDialog(Context context){
-        Log.d(TAG, "createDialog called");
-        LayoutInflater factory = LayoutInflater.from(context);
-        final View dialogView = factory.inflate(R.layout.popup_normal_range,null);
-        final AlertDialog processDialog = new AlertDialog.Builder(context).create();
-        processDialog.setView(dialogView);
-        return processDialog;
     }
 }

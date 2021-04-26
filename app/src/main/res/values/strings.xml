@@ -124,4 +124,5 @@
     <string name="text_step1">Step 1: Go to Add your report section</string>
     <string name="text_step2">Step 2: Add report name and report image (must be png/jpg/jpeg) and hit add report button</string>
     <string name="text_step3">Step 3: See your added report in the view report option</string>
+    <string name="text_edit_report_information">Edit Text Information</string>
 </resources>
