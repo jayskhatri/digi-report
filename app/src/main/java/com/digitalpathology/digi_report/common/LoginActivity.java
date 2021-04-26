@@ -42,7 +42,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+        if(currentUser!=null && currentUser.isEmailVerified())
+            updateUI(currentUser);
     }
 
     @Override
@@ -66,7 +67,8 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         forgotPwd.setOnClickListener(v -> {
-
+            startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
+            finish();
         });
 
         signin.setOnClickListener(v -> {
@@ -112,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    private void Login(String email, String password){
+    private void Login(String emailid, String password){
         if(connectionDetector.isInternetAvailble()) {
             //generating dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -125,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
             final AlertDialog dialog = builder.create();
             dialog.show();
             try {
-                mAuth.signInWithEmailAndPassword(email, password)
+                mAuth.signInWithEmailAndPassword(emailid, password)
                         .addOnCompleteListener(this, (OnCompleteListener<AuthResult>) task -> {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
@@ -155,9 +157,15 @@ public class LoginActivity extends AppCompatActivity {
                                         Log.d(TAG, "get failed with ", task1.getException());
                                     }
                                 });
+                                if(currentUser.isEmailVerified()) {
+                                    updateUI(currentUser);
+                                    finish();
+                                }
+                                else {
+                                    Toast.makeText(this, "Please verify your email id", Toast.LENGTH_SHORT).show();
+                                    email.setError("Please verify email ID");
+                                }
 
-                                updateUI(currentUser);
-                                finish();
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());

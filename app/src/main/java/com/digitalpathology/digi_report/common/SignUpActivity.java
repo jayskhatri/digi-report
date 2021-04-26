@@ -1,5 +1,6 @@
 package com.digitalpathology.digi_report.common;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -18,6 +19,8 @@ import com.digitalpathology.digi_report.DashboardActivity;
 import com.digitalpathology.digi_report.R;
 import com.digitalpathology.digi_report.object.User;
 import com.digitalpathology.digi_report.utils.ConnectionDetector;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -126,6 +129,13 @@ public class SignUpActivity extends AppCompatActivity {
                             User dbuser = new User(user.getUid(), sfullName, semail, sphone, 0);
                             db.collection("users").document(user.getUid()).set(dbuser);
 
+                            user.sendEmailVerification()
+                                    .addOnCompleteListener(task1 -> {
+                                        if (task1.isSuccessful()) {
+                                            Toast.makeText(this, "Verification email sent", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
                             updateUI(user);
                             finish();
                         } else {
@@ -135,10 +145,9 @@ public class SignUpActivity extends AppCompatActivity {
                                 email.setError("Please enter valid email id");
                             } else if (task.getException().getMessage().contains("The email address is already in use by another account")) {
                                 email.setError("Email ID is already in use");
+                                Toast.makeText(SignUpActivity.this, "Email ID is already registered",
+                                        Toast.LENGTH_SHORT).show();
                             }
-                            Toast.makeText(SignUpActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-//                                updateUI(null);
                         }
                     });
         }else {
@@ -167,13 +176,15 @@ public class SignUpActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+        if(currentUser != null && currentUser.isEmailVerified())
+            updateUI(currentUser);
     }
 
     void updateUI(FirebaseUser currentUser){
         Log.d(TAG, "current User");
         if(currentUser!=null) {
-            Intent i = new Intent(SignUpActivity.this, DashboardActivity.class);
+            Toast.makeText(this, "Please verify your email id and then login", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(SignUpActivity.this, LoginActivity.class);
 //            i.putExtra("CURRENT_USER", currentUser);
             startActivity(i);
             finish();

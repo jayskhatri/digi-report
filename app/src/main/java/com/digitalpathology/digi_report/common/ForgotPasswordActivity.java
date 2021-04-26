@@ -29,7 +29,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
-        email = findViewById(R.id.cv_fp_email);
+        email = findViewById(R.id.edittext_fp_email);
         sendLink = findViewById(R.id.btn_send_link);
         connectionDetector = new ConnectionDetector(this);
 
