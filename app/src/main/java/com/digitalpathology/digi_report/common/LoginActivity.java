@@ -32,7 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText email, pwd;
-    private TextView signuphere;
+    private TextView signuphere, forgotPwd;
     private CardView signin;
     private ConnectionDetector connectionDetector;
     private FirebaseAuth mAuth;
@@ -60,11 +60,16 @@ public class LoginActivity extends AppCompatActivity {
         email = findViewById(R.id.edittext_si_email);
         pwd = findViewById(R.id.edittext_si_pwd);
         signuphere = findViewById(R.id.tv_signup_here);
+        forgotPwd = findViewById(R.id.tv_forgot_pwd);
         signin = findViewById(R.id.btn_signin);
 
         signuphere.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
             finish();
+        });
+
+        forgotPwd.setOnClickListener(v -> {
+
         });
 
         signin.setOnClickListener(v -> {

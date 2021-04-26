@@ -33,7 +33,7 @@
     <!-- Description-->
     <string name="text_accept_tnc">By signing in you accept our </string>
     <string name="text_insert_code_here">Insert your code here</string>
-    <string name="desc_dont_have_an_acc">Don\'t have an account?</string>
+    <string name="desc_dont_have_an_acc">Don't have an account?</string>
     <string name="desc_enter_cred">Enter Credentials here!</string>
 
     <!-- Buttons-->
@@ -47,7 +47,7 @@
     <string name="text_upload_report">Upload Report</string>
     <string name="text_get_started">Get started</string>
     <string name="desc_enter_following_details">Enter following Details</string>
-    <string name="text_sign_up_here">Sign Up here</string>
+    <string name="text_sign_up_here">Sign up here</string>
     <string name="title_activity_dashboard">DashboardActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -125,4 +125,6 @@
     <string name="text_step2">Step 2: Add report name and report image (must be png/jpg/jpeg) and hit add report button</string>
     <string name="text_step3">Step 3: See your added report in the view report option</string>
     <string name="text_edit_report_information">Edit Text Information</string>
+    <string name="text_forgot_password">Forgot Password?</string>
+    <string name="text_send_reset_password_link">Send Reset Password Link</string>
 </resources>
