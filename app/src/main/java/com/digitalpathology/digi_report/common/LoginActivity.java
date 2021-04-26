@@ -68,7 +68,6 @@ public class LoginActivity extends AppCompatActivity {
 
         forgotPwd.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
-            finish();
         });
 
         signin.setOnClickListener(v -> {
