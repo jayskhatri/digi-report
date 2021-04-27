@@ -1,0 +1,79 @@
+@startuml
+class com.digitalpathology.digi_report.ui.help.HelpSupport {
+- TextView title
++ {static} HelpSupport newInstance()
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onResume()
++ void onActivityCreated(Bundle)
+- void mailto()
+}
+class com.digitalpathology.digi_report.ui.feedback.FeedbackFragment {
+- FirebaseFirestore db
+- TextView totalReports
+- EditText fb
+- CardView submitBtn
+- ConnectionDetector con
+- ReviewInfo reviewInfo
+- DatabaseReference databaseRef
+- FirebaseUser currentUser
+- String TAG
++ {static} FeedbackFragment newInstance()
++ void onResume()
++ void onStart()
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onActivityCreated(Bundle)
+- void launchMarket()
+- void launchInAppReview()
+- void sendfeedback(String)
+}
+
+class com.digitalpathology.digi_report.ui.report_added.ReportAddedFragment {
+- {static} String REPORT_NAME
+- {static} String REPORT_DATE
+- String reportName
+- String reportDate
+- TextView reportname
+- CardView addAnotherReport
+- {static} String TAG
++ {static} ReportAddedFragment newInstance(String,String)
++ void onCreate(Bundle)
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onActivityCreated(Bundle)
+- boolean loadFragment(Fragment)
+}
+class com.digitalpathology.digi_report.ui.my_reports.MyReportsFragment {
+- RecyclerView recyclerView
+- RecyclerView.LayoutManager mLayoutManager
+- RecyclerView.Adapter mAdapter
+- TextView noReports
+- AlertDialog alertDialog
+- ConnectionDetector connectionDetector
+- FirebaseFirestore clouddb
+- DatabaseReference databaseRef
+- String TAG
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onResume()
++ void onActivityCreated(Bundle)
+- void readReports()
+- AlertDialog createDialog(Context)
+}
+
+
+
+class com.digitalpathology.digi_report.ui.home.HomeFragment {
+- TextView title
+- CardView addreports
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onResume()
++ void onActivityCreated(Bundle)
+- boolean loadFragment(Fragment)
+}
+
+
+androidx.fragment.app.Fragment <|-- com.digitalpathology.digi_report.ui.help.HelpSupport
+androidx.fragment.app.Fragment <|-- com.digitalpathology.digi_report.ui.feedback.FeedbackFragment
+androidx.fragment.app.Fragment <|-- com.digitalpathology.digi_report.ui.report_added.ReportAddedFragment
+androidx.fragment.app.Fragment <|-- com.digitalpathology.digi_report.ui.my_reports.MyReportsFragment
+androidx.fragment.app.Fragment <|-- com.digitalpathology.digi_report.ui.home.HomeFragment
+
+@enduml

@@ -1,0 +1,42 @@
+@startuml
+class com.digitalpathology.digi_report.common.ValidationChecker {
+~ Context context
+}
+class com.digitalpathology.digi_report.common.SavePhotoTask {
+~ String savephotoName
+# String doInBackground(byte[])
+}
+
+class com.digitalpathology.digi_report.common.ForgotPasswordActivity {
+- String TAG
+- CardView sendLink
+- EditText email
+- FirebaseAuth auth
+- ConnectionDetector connectionDetector
+# void onCreate(Bundle)
+- boolean validateEmail(EditText)
+}
+
+class com.digitalpathology.digi_report.common.ViewReportActivity {
+- String TAG
+- Context c
+- int id
+- TableLayout tableLayout
+- Button normalRange
+- ConnectionDetector connectionDetector
+- FirebaseFirestore clouddb
+# void onCreate(Bundle)
+- TextView[] createCommonHeaderTextView(String[],int)
+- void openEditActivity()
+- TextView[] createTextView(String[],int)
+- TextView[] createHeaderTextView(String[],int)
+- TableRow createRow(TextView[])
+- TableRow createCommonHeaderRow(TextView[])
+- TableRow createHeaderRow(TextView[])
+- AlertDialog createDialog(Context)
+}
+
+androidx.appcompat.app.AppCompatActivity <|-- com.digitalpathology.digi_report.common.ForgotPasswordActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.digitalpathology.digi_report.common.ViewReportActivity
+android.os.AsyncTask <|-- com.digitalpathology.digi_report.common.SavePhotoTask
+@enduml

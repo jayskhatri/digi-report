@@ -1,0 +1,62 @@
+@startuml
+class com.digitalpathology.digi_report.ui.add_report.AddReports {
+- LinearLayout uploadBtn
+- ImageView uploadedPic
+- TextView title
+- String picturePath
+- EditText reportname
+- MedicalReport medicalReportFromAPI
+- CardView cvReportDate
+- User user
+- FirebaseUser firebaseUser
+- ConnectionDetector connectionDetector
+- FirebaseFirestore clouddb
+- DatabaseReference databaseRef
+- FirebaseStorage storage
+- StorageReference storageRef
+- {static} int PICK_IMAGE
+- {static} int REQUEST_PERMISSION
+- {static} String TAG
++ {static} AddReports newInstance()
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onResume()
++ void onActivityCreated(Bundle)
++ void onActivityResult(int,int,Intent)
+- void selectImage(Context)
+~ String uploadImage(ImageView,User,FirebaseUser)
+- void addReport(User)
+- String todayDate()
+- boolean loadFragment(Fragment)
++ void onRequestPermissionsResult(int,String[],int[])
++ void onDateSet(DatePicker,int,int,int)
+- boolean validateFields(String,String,ImageView)
+}
+class com.digitalpathology.digi_report.ui.add_report.AddReports.GetAddedReportData {
+- Context c
+- AppCompatActivity activity
+- String url
+- AlertDialog alertDialog
+- String TAG
+# void onPreExecute()
+# MedicalReport doInBackground(String)
+# void onPostExecute(MedicalReport)
+- AlertDialog createDialog(Context)
+- MedicalReport convertMapToMedicalReport(Map<String,String>,Map<String,String>,String,String,String,String,String,String,String,String,String,String,String,String,String,String,String,String)
+}
+
+class com.digitalpathology.digi_report.ui.my_acc.MyAccountFragment {
+- FirebaseFirestore db
+- TextView username
+- String TAG
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onResume()
++ void onActivityCreated(Bundle)
+- void removeAllPreferenceData()
++ void onStart()
+}
+com.digitalpathology.digi_report.ui.add_report.OnDateSetListener <|.. com.digitalpathology.digi_report.ui.add_report.AddReports
+androidx.fragment.app.Fragment <|-- com.digitalpathology.digi_report.ui.add_report.AddReports
+com.digitalpathology.digi_report.ui.add_report.AddReports +.. com.digitalpathology.digi_report.ui.add_report.AddReports.GetAddedReportData
+com.digitalpathology.digi_report.ui.add_report.AsyncTask <|-- com.digitalpathology.digi_report.ui.add_report.AddReports.GetAddedReportData
+androidx.fragment.app.Fragment <|-- com.digitalpathology.digi_report.ui.my_acc.MyAccountFragment
+@enduml
