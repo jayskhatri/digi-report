@@ -37,14 +37,14 @@
         android:id="@+id/ll_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <Button
-            android:id="@+id/btn_edit_report"
-            android:layout_width="0dp"
+            android:id="@+id/btn_hb_visualization"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:layout_weight="1"
@@ -52,22 +52,42 @@
             android:layout_marginStart="5dp"
             android:background="@color/white"
             android:textColor="@color/colorPrimaryDark"
-            android:visibility="gone"
-            android:text="Edit Report"/>
+            android:visibility="visible"
+            android:text="HB Visualization"/>
 
-        <Button
-            android:id="@+id/btn_normal_range"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
             android:layout_weight="1"
-            android:background="@color/white"
-            android:textColor="@color/colorPrimaryDark"
-            android:onClick="createDialog"
-            android:text="Normal Range" />
+            android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/btn_edit_report"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:background="@color/white"
+                android:textColor="@color/colorPrimaryDark"
+                android:visibility="visible"
+                android:text="Edit Report"/>
+
+            <Button
+                android:id="@+id/btn_normal_range"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:textColor="@color/colorPrimaryDark"
+                android:onClick="createDialog"
+                android:text="Normal Range" />
+
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

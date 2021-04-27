@@ -128,6 +128,7 @@ public class SignUpActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = pref.edit();
                             editor.putString(String.valueOf(R.string.shared_pref_user_name), sfullName);
                             editor.putString(String.valueOf(R.string.shared_pref_user_email), semail);
+                            editor.putBoolean(getString(R.string.shared_pref_first_time_user), false);
                             editor.commit();
 
                             User dbuser = new User(user.getUid(), sfullName, semail, sphone, 0);

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,9 +23,9 @@ public class SplashActivity extends AppCompatActivity {
         SharedPreferences sharedPref = SplashActivity.this.getPreferences(Context.MODE_PRIVATE);
         boolean defaultValue = true;
         boolean isAppFirstTimeOpened = sharedPref.getBoolean(getString(R.string.shared_pref_first_time_user), defaultValue);
-//        Log.i(TAG, "value isAppFirstTimeOpened: " + isAppFirstTimeOpened);
+        Log.i(TAG, "value isAppFirstTimeOpened: " + isAppFirstTimeOpened);
         if(isAppFirstTimeOpened){
-//            Log.i(TAG, "in if value isAppFirstTimeOpened: " + isAppFirstTimeOpened);
+            Log.i(TAG, "in if value isAppFirstTimeOpened: " + isAppFirstTimeOpened);
             new Handler().postDelayed(() -> {
                 startActivity(new Intent(SplashActivity.this, OnBoarding.class));
                 finish();
@@ -32,7 +33,7 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         else {
-//            Log.i(TAG, "in else value isAppFirstTimeOpened: " + isAppFirstTimeOpened);
+            Log.i(TAG, "in else value isAppFirstTimeOpened: " + isAppFirstTimeOpened);
             new Handler().postDelayed(() -> {
                 startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                 finish();

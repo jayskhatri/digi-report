@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private User user;
     private FirebaseFirestore clouddb = FirebaseFirestore.getInstance();
-    private final String TAG = "LoginActivity";
+    private final String TAG = LoginActivity.class.getSimpleName();
 
     @Override
     protected void onStart() {
@@ -146,6 +146,8 @@ public class LoginActivity extends AppCompatActivity {
                                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                                             user = new User(String.valueOf(document.get("uid")), String.valueOf(document.get("name")), String.valueOf(document.get("email")),  String.valueOf(document.get("phone")), Integer.parseInt(String.valueOf(document.get("numberOfReportsUploaded"))));
                                             SharedPreferences.Editor editor = pref.edit();
+                                            editor.putBoolean(getString(R.string.shared_pref_first_time_user), false);
+                                            Log.d(TAG, "data written");
                                             editor.putString(String.valueOf(R.string.shared_pref_user_name), user.getName());
                                             editor.putString(String.valueOf(R.string.shared_pref_user_email), user.getEmail());
                                             editor.commit();
@@ -164,10 +166,6 @@ public class LoginActivity extends AppCompatActivity {
                                     Toast.makeText(this, "Please verify your email id", Toast.LENGTH_SHORT).show();
                                     email.setError("Please verify email ID");
                                 }
-
-                                SharedPreferences.Editor editor = pref.edit();
-                                editor.putBoolean(getString(R.string.shared_pref_first_time_user), false);
-                                editor.apply();
 
                             } else {
                                 // If sign in fails, display a message to the user.
