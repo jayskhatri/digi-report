@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:textColor="@color/colorPrimaryDark"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="14sp"
             android:layout_marginStart="15dp"
             android:fontFamily="@font/circular_std_medium"
             android:text="@string/nav_header_subtitle" />
