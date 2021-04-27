@@ -1,7 +1,5 @@
 package com.digitalpathology.digi_report.object.Reports;
 
-import com.digitalpathology.digi_report.object.RangeValidator;
-
 import java.util.Map;
 
 public class HaemogramReport {

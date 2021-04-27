@@ -1,6 +1,9 @@
 package com.digitalpathology.digi_report.object;
 
-import com.digitalpathology.digi_report.object.Reports.*;
+import com.digitalpathology.digi_report.object.Reports.BloodSugrarLevel;
+import com.digitalpathology.digi_report.object.Reports.HaemogramReport;
+import com.digitalpathology.digi_report.object.Reports.LiverFunctionTest;
+import com.digitalpathology.digi_report.object.Reports.RenalFunctionTests;
 
 public class MedicalReport {
     int id;

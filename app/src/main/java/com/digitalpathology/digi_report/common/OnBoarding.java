@@ -1,8 +1,5 @@
 package com.digitalpathology.digi_report.common;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
@@ -11,8 +8,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.digitalpathology.digi_report.helper_classes.SliderAdapter;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
 import com.digitalpathology.digi_report.R;
+import com.digitalpathology.digi_report.helper_classes.SliderAdapter;
 
 public class OnBoarding extends AppCompatActivity {
 
