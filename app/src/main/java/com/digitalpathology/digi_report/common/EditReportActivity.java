@@ -98,7 +98,7 @@ public class EditReportActivity extends AppCompatActivity {
                         tableLayout.addView(createRowWE(createTextView("Report Name"), createEditText(rn, "reportname"), null));
                         tableLayout.addView(createRowWE(createTextView("Case Number"), createEditText(document.getString("casenumber"), "casenumber"), null));
                         tableLayout.addView(createRowWE(createTextView("Report Date"), createEditText(document.getString("reportDate"), "reportDate"), null));
-                        tableLayout.addView(createRowWE(createTextView("Patient Name"), createEditText(document.getString("patientName"), "reportDate"), null));
+                        tableLayout.addView(createRowWE(createTextView("Patient Name"), createEditText(document.getString("patientName"), "patientName"), null));
                         tableLayout.addView(createRowWE(createTextView("Sex"), createEditText(document.getString("sex"), "sex"), null));
                         tableLayout.addView(createRowWE(createTextView("Age"), createEditText(document.getString("age"), "age"),null));
                         tableLayout.addView(createRowWE(createTextView("Referred By"), createEditText(document.getString("refferedBy"), "refferedBy"),null));
@@ -115,7 +115,7 @@ public class EditReportActivity extends AppCompatActivity {
                         for(Object s: haemoValue.keySet()){
 //                            Log.d(TAG, "onCreate: "+ s.toString() + " adding");
                             if(!haemoValue.get(s).toString().equals("null")) {
-                                TextView tv = createTextView(s.toString().substring(0, 1).toUpperCase() + s.toString().substring(1));
+                                TextView tv = createTextView(s.toString());
                                 tv.setTag(haemoValue.get(s) + "TV");
                                 tableLayout.addView(createRowWE(tv, createEditText(String.valueOf(haemoValue.get(s)), haemoValue.get(s) + "Value"),
                                         createEditText(String.valueOf(haemoUnits.get(s)), haemoValue.get(s) + "Unit")));
@@ -315,6 +315,7 @@ public class EditReportActivity extends AppCompatActivity {
 
         EditText reportName = tableLayout.findViewWithTag("reportname");
         EditText casenumber = tableLayout.findViewWithTag("casenumber");
+        EditText patientName = tableLayout.findViewWithTag("patientName");
         EditText reportDate = tableLayout.findViewWithTag("reportDate");
         EditText refferedBy = tableLayout.findViewWithTag("refferedBy");
         EditText sex = tableLayout.findViewWithTag("sex");
@@ -325,10 +326,11 @@ public class EditReportActivity extends AppCompatActivity {
 
         DocumentReference reportRef = clouddb.collection("users").document(currentUser.getUid())
                 .collection("reports").document(String.valueOf(id));
-
+        Log.d(TAG, "saveReport: reportname: " + reportName.getText().toString());
         reportRef.update(
             "casenumber", casenumber.getText().toString(),
                 "reportName", reportName.getText().toString(),
+                "patientName", patientName.getText().toString(),
                 "reportDate", reportDate.getText().toString(),
                 "refferedBy", refferedBy.getText().toString(),
                 "sex", sex.getText().toString(),

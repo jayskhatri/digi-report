@@ -1,5 +1,6 @@
 package com.digitalpathology.digi_report.common;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +17,7 @@ import androidx.cardview.widget.CardView;
 
 import com.digitalpathology.digi_report.DashboardActivity;
 import com.digitalpathology.digi_report.R;
+import com.digitalpathology.digi_report.SplashActivity;
 import com.digitalpathology.digi_report.object.User;
 import com.digitalpathology.digi_report.utils.ConnectionDetector;
 import com.google.android.gms.tasks.OnCompleteListener;
