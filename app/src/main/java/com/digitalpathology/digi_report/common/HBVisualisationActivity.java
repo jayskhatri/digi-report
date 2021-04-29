@@ -55,8 +55,6 @@ public class HBVisualisationActivity extends AppCompatActivity {
 
     private LineChart mChart;
     private ConnectionDetector connectionDetector;
-    private ArrayList<Entry> xHB;
-    private ArrayList<String> yYear;
     private FirebaseFirestore clouddb = FirebaseFirestore.getInstance();
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private long reference_timestamp = 1451660400;
@@ -101,12 +99,12 @@ public class HBVisualisationActivity extends AppCompatActivity {
 //                Log.d(TAG, "getFormattedValue: value: "+value);
                 long convertedTS = (long) value;
                 long actTS = convertedTS + reference_timestamp;
-                return sdf.format(new Date(actTS));
+                return sdf.format(new Date(convertedTS));
             }
         });
         xAxis.setDrawLimitLinesBehindData(true);
 
-        LimitLine ll1 = new LimitLine(16f, "Maximum Limit");
+        LimitLine ll1 = new LimitLine(18f, "Maximum Limit");
         ll1.setLineWidth(4f);
         ll1.enableDashedLine(10f, 10f, 0f);
         ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
@@ -135,30 +133,14 @@ public class HBVisualisationActivity extends AppCompatActivity {
     private void setData() {
 
         ArrayList<Entry> values = new ArrayList<>();
-//        try {
-//            values.add(new Entry(new SimpleDateFormat("dd/MM/yyyy").parse("28/12/2015").getTime(), 9.1f));
-//            values.add(new Entry(new SimpleDateFormat("dd/MM/yyyy").parse("28/12/2016").getTime(), 11.2f));
-//            values.add(new Entry(new SimpleDateFormat("dd/MM/yyyy").parse("28/12/2017").getTime(), 12.3f));
-//            values.add(new Entry(new SimpleDateFormat("dd/MM/yyyy").parse("28/12/2018").getTime(), 13.4f));
-//            values.add(new Entry(new SimpleDateFormat("dd/MM/yyyy").parse("28/12/2019").getTime(), 15.6f));
-//            values.add(new Entry(new SimpleDateFormat("dd/MM/yyyy").parse("28/12/2020").getTime(), 7.8f));
-//            values.add(new Entry(new SimpleDateFormat("dd/MM/yyyy").parse("28/12/2021").getTime(), 8.9f));
-////            values.add(new Entry(9, 10.2f));
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-        for(Entry value : values){
-            Log.d(TAG, "setData manual  " + value.toString());
-        }
 
+        //reading hb data from the firestore
         if(connectionDetector.isInternetAvailble()) {
             CollectionReference collectionRef = clouddb.collection("users").document(currentUser.getUid()).collection("reports");
             collectionRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    int i = 0;
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         String reportDate = document.getString("reportDate");
-                        Date date1;
                         try {
 //                            long newTS = Objects.requireNonNull(new SimpleDateFormat("dd/MM/yyyy").parse(reportDate)).getTime() - reference_timestamp;
                             Map mapHaemo = (Map) document.get("haemogramReport");
@@ -172,10 +154,6 @@ public class HBVisualisationActivity extends AppCompatActivity {
                             Log.e(TAG, "setData: "+ e.getMessage());
                             e.printStackTrace();
                         }
-                    }
-                    for(Entry entry : values)
-                    {
-                        Log.d(TAG, "setData firebase " + entry.toString());
                     }
 
                     //sorting to x values

@@ -42,12 +42,12 @@ public class MyMarkerView extends MarkerView {
 
             tvContent.setText("HB: " + ce.getHigh());
             tvContent.setText(""+ new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(new Date((long) ce.getX())));
-//            Log.d(TAG, "refreshContent1: " + new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(new Date((long) ce.getX())));
+            Log.d(TAG, "refreshContent1: " + new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(new Date((long) ce.getX())));
         } else {
 
             tvContent.setText("HB: " + e.getY());
             tvDate.setText("" + new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(new Date((long) e.getX())));
-//            Log.d(TAG, "refreshContent: " + new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(new Date((long) e.getX())));
+            Log.d(TAG, "refreshContent: " + new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(new Date((long) e.getX())));
         }
 
         super.refreshContent(e, highlight);
