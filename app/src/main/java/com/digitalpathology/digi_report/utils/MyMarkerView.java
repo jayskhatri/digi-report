@@ -1,6 +1,7 @@
 package com.digitalpathology.digi_report.utils;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.digitalpathology.digi_report.R;
@@ -11,15 +12,23 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import io.grpc.okhttp.internal.Util;
+
 
 public class MyMarkerView extends MarkerView {
 
-    private TextView tvContent;
+    private TextView tvContent, tvDate;
+    private final String TAG = MyMarkerView.class.getSimpleName();
 
     public MyMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);
 
         tvContent = (TextView) findViewById(R.id.tvContent);
+        tvDate = findViewById(R.id.tvContentDate);
     }
 
     // callbacks everytime the MarkerView is redrawn, can be used to update the
@@ -31,10 +40,14 @@ public class MyMarkerView extends MarkerView {
 
             CandleEntry ce = (CandleEntry) e;
 
-            tvContent.setText("" + Utils.formatNumber(ce.getHigh(), 0, true));
+            tvContent.setText("HB: " + ce.getHigh());
+            tvContent.setText(""+ new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(new Date((long) ce.getX())));
+//            Log.d(TAG, "refreshContent1: " + new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(new Date((long) ce.getX())));
         } else {
 
-            tvContent.setText("" + Utils.formatNumber(e.getY(), 0, true));
+            tvContent.setText("HB: " + e.getY());
+            tvDate.setText("" + new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(new Date((long) e.getX())));
+//            Log.d(TAG, "refreshContent: " + new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(new Date((long) e.getX())));
         }
 
         super.refreshContent(e, highlight);

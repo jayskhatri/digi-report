@@ -70,9 +70,11 @@ public class HBVisualisationActivity extends AppCompatActivity {
         mChart = findViewById(R.id.barChart_view);
         connectionDetector = new ConnectionDetector(this);
 
+        //chart characteristics
         mChart.setTouchEnabled(true);
         mChart.setPinchZoom(true);
-
+        mChart.getDescription().setText("This graph shows historic Haemoglobin data");
+        //setting marker
         MyMarkerView mv = new MyMarkerView(getApplicationContext(), R.layout.custom_marker_view);
         mv.setChartView(mChart);
         mChart.setMarker(mv);
