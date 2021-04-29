@@ -35,7 +35,7 @@ public class ViewReportActivity extends AppCompatActivity {
     private int id;
 
     private TableLayout tableLayout;
-    private Button normalRange, editReport;
+    private Button normalRange, editReport, visualizationBtn;
     private ConnectionDetector connectionDetector;
     private FirebaseFirestore clouddb = FirebaseFirestore.getInstance();
 
@@ -52,11 +52,13 @@ public class ViewReportActivity extends AppCompatActivity {
         c = this;
         normalRange = findViewById(R.id.btn_normal_range);
         editReport = findViewById(R.id.btn_edit_report);
+        visualizationBtn = findViewById(R.id.btn_hb_visualization);
         connectionDetector = new ConnectionDetector(this);
 
         Log.d(TAG, "id: "+ id);
         normalRange.setOnClickListener(v -> createDialog(c).show());
         editReport.setOnClickListener(v -> openEditActivity());
+        visualizationBtn.setOnClickListener(v-> openVisualizationActivity());
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -150,6 +152,12 @@ public class ViewReportActivity extends AppCompatActivity {
 
     private void openEditActivity(){
         Intent i = new Intent(ViewReportActivity.this, EditReportActivity.class);
+        i.putExtra("ID", id);
+        startActivity(i);
+    }
+
+    private void openVisualizationActivity(){
+        Intent i = new Intent(ViewReportActivity.this, HBVisualisationActivity.class);
         i.putExtra("ID", id);
         startActivity(i);
     }

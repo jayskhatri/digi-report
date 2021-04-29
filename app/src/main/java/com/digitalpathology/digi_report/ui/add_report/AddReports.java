@@ -643,7 +643,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
 
             if(alertDialog.isShowing())
                 alertDialog.dismiss();
-            if(medicalReportFromAPI!=null) {
+            if(medicalReportFromAPI.getReportName()!=null) {
                 Fragment fragment = new ReportAddedFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("REPORT_NAME", reportname.getText().toString());
@@ -651,7 +651,7 @@ public class AddReports extends Fragment implements DatePickerDialog.OnDateSetLi
                 fragment.setArguments(bundle);
                 loadFragment(fragment);
             } else {
-                Toast.makeText(c, "Something went wrong, try with more clearer picture", Toast.LENGTH_SHORT).show();
+                Toast.makeText(c, "Server Error", Toast.LENGTH_SHORT).show();
             }
         }
 
