@@ -1,13 +1,25 @@
 package com.digitalpathology.digi_report.common;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.digitalpathology.digi_report.R;
@@ -39,8 +51,15 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -55,18 +74,31 @@ public class HBVisualisationActivity extends AppCompatActivity {
 
     private LineChart mChart;
     private ConnectionDetector connectionDetector;
+    private Button shareBtn, saveBtn;
     private FirebaseFirestore clouddb = FirebaseFirestore.getInstance();
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-    private long reference_timestamp = 1451660400;
+//    private long reference_timestamp = 1451660400;
     private final static String TAG = HBVisualisationActivity.class.getSimpleName();
+    private final int REQUEST_PERMISSION = 774;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hb_visualisation);
 
-        mChart = findViewById(R.id.barChart_view);
+        //hooks
+        mChart = findViewById(R.id.lineChart_view);
+        shareBtn = findViewById(R.id.btn_back);
+        saveBtn = findViewById(R.id.btn_save_graph);
         connectionDetector = new ConnectionDetector(this);
+
+        //save chart
+        saveBtn.setOnClickListener(v->{
+            saveGraph(mChart);
+        });
+
+        //back from the chart
+        shareBtn.setOnClickListener(v-> shareVisualization(mChart));
 
         //chart characteristics
         mChart.setTouchEnabled(true);
@@ -98,7 +130,6 @@ public class HBVisualisationActivity extends AppCompatActivity {
             public String getFormattedValue(float value) {
 //                Log.d(TAG, "getFormattedValue: value: "+value);
                 long convertedTS = (long) value;
-                long actTS = convertedTS + reference_timestamp;
                 return sdf.format(new Date(convertedTS));
             }
         });
@@ -148,10 +179,10 @@ public class HBVisualisationActivity extends AppCompatActivity {
                             if (!haemoValue.get("haemoglobin").toString().equals("null")) {
                                 values.add(new Entry(new SimpleDateFormat("dd/MM/yyyy").parse(reportDate).getTime(), Float.parseFloat(String.valueOf(haemoValue.get("haemoglobin")))));
 //                                yYear.add(reportDate);
-                                Log.d(TAG, "setData year: " + reportDate + ", ts: "+ new SimpleDateFormat("dd/MM/yyyy").parse(reportDate).getTime() + ", hb: " + Float.parseFloat(String.valueOf(haemoValue.get("haemoglobin"))));
+//                                Log.d(TAG, "setData year: " + reportDate + ", ts: "+ new SimpleDateFormat("dd/MM/yyyy").parse(reportDate).getTime() + ", hb: " + Float.parseFloat(String.valueOf(haemoValue.get("haemoglobin"))));
                             }
                         } catch (ParseException e) {
-                            Log.e(TAG, "setData: "+ e.getMessage());
+//                            Log.e(TAG, "setData: "+ e.getMessage());
                             e.printStackTrace();
                         }
                     }
@@ -163,7 +194,7 @@ public class HBVisualisationActivity extends AppCompatActivity {
                     if (mChart.getData() != null &&
                             mChart.getData().getDataSetCount() > 0) {
                         set1 = (LineDataSet) mChart.getData().getDataSetByIndex(0);
-                        Log.d(TAG, "setData: size: "+ values.size());
+//                        Log.d(TAG, "setData: size: "+ values.size());
                         set1.setValues(values);
                         mChart.getData().notifyDataChanged();
                         mChart.notifyDataSetChanged();
@@ -189,7 +220,7 @@ public class HBVisualisationActivity extends AppCompatActivity {
                         } else {
                             set1.setFillColor(Color.DKGRAY);
                         }
-                        Log.d(TAG, "setData: " + set1.toSimpleString());
+//                        Log.d(TAG, "setData: " + set1.toSimpleString());
                         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
                         dataSets.add(set1);
                         LineData data = new LineData(dataSets);
@@ -207,4 +238,70 @@ public class HBVisualisationActivity extends AppCompatActivity {
 
     }
 
+    private void shareVisualization(LineChart lineChart){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_PERMISSION);
+        }
+
+        Bitmap bitmap = getBitmapFromView(lineChart);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] bytes = baos.toByteArray();
+
+
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("image/jpeg");
+        File photo = new File(Environment.getExternalStorageDirectory() + File.separator + "visualization" + ".png");
+        if (photo.exists()) {
+            photo.delete();
+        }
+
+        try {
+            FileOutputStream fos=new FileOutputStream(photo.getPath());
+
+            fos.write(bytes);
+            fos.close();
+        }
+        catch (IOException e) {
+            Log.e("PictureDemo", "Exception in photoCallback", e);
+        }
+
+        share.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///sdcard/"+ "visualization" + ".png"));
+        startActivity(Intent.createChooser(share, "Share Visualization"));
+    }
+
+
+    private void saveGraph(LineChart lineChart){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_PERMISSION);
+        }
+
+        Bitmap bitmap = getBitmapFromView(lineChart);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        String savephotoName = "HBVisualization" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + ".png";
+        SavePhotoTask t = new SavePhotoTask(savephotoName);
+        t.execute(data);
+        Toast.makeText(this, "Image saved to Downloads directory", Toast.LENGTH_SHORT).show();
+    }
+
+    public static Bitmap getBitmapFromView(View view) {
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        Drawable bgDrawable =view.getBackground();
+        if (bgDrawable!=null)
+            bgDrawable.draw(canvas);
+        else
+            canvas.drawColor(Color.WHITE);
+        view.draw(canvas);
+        return returnedBitmap;
+    }
 }

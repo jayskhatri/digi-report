@@ -1,12 +1,14 @@
 package com.digitalpathology.digi_report.ui.my_reports;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.digitalpathology.digi_report.R;
 import com.digitalpathology.digi_report.adapter.ReportAdapter;
+import com.digitalpathology.digi_report.common.HBVisualisationActivity;
+import com.digitalpathology.digi_report.common.ViewReportActivity;
 import com.digitalpathology.digi_report.object.MedicalReport;
 import com.digitalpathology.digi_report.utils.ConnectionDetector;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,6 +47,7 @@ public class MyReportsFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
     private TextView noReports, loadError, title;
+    private Button visualisationBtn;
     private AlertDialog alertDialog;
 
     private ConnectionDetector connectionDetector;
@@ -81,16 +86,26 @@ public class MyReportsFragment extends Fragment {
         recyclerView = getActivity().findViewById(R.id.recycler_view_med_list);
         noReports = (TextView) getActivity().findViewById(R.id.text_view_no_med_report);
         loadError = getActivity().findViewById(R.id.text_view_error_in_loading);
+        visualisationBtn = getActivity().findViewById(R.id.btn_hb_visualization);
         connectionDetector = new ConnectionDetector(getActivity());
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
+
+        //visualization
+        visualisationBtn.setOnClickListener(v->openVisualizationActivity());
 
         //Reading the uploaded reports
         alertDialog = createDialog(getActivity());
         alertDialog.show();
         readReports();
         alertDialog.dismiss();
+    }
+
+    private void openVisualizationActivity(){
+        Intent i = new Intent(getActivity(), HBVisualisationActivity.class);
+//        i.putExtra("ID", id);
+        startActivity(i);
     }
 
     private void readReports(){
@@ -115,6 +130,7 @@ public class MyReportsFragment extends Fragment {
                         recyclerView.setVisibility(View.VISIBLE);
                         mAdapter = new ReportAdapter(reports, getActivity());
                         recyclerView.setAdapter(mAdapter);
+                        visualisationBtn.setVisibility(View.VISIBLE);
                         noReports.setVisibility(View.GONE);
                     } else if(reports.size() == 0){
                         recyclerView.setVisibility(View.GONE);

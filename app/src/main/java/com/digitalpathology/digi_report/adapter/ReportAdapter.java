@@ -132,7 +132,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.MyViewHold
                     }
 
                     share.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///sdcard/"+ report.getReportName() + ".png"));
-                    context.startActivity(Intent.createChooser(share, "Share Image"));
+                    context.startActivity(Intent.createChooser(share, "Share Report"));
 
 //                    Toast.makeText(context, "Report image saved in downloads folder as "+savephotoName, Toast.LENGTH_LONG).show();
                 }).addOnFailureListener(exception -> {

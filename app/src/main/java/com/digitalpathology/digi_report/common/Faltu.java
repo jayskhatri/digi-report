@@ -61,7 +61,7 @@ public class Faltu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hb_visualisation);
 
-        mChart = findViewById(R.id.barChart_view);
+        mChart = findViewById(R.id.lineChart_view);
         connectionDetector = new ConnectionDetector(this);
 
         mChart.setTouchEnabled(true);
