@@ -3,7 +3,7 @@
     <string name="app_name">DigiReport</string>
 
 
-    <string name="email">digireport@gmail.com</string>
+    <string name="email">info.digireport@gmail.com</string>
     <!-- Titles-->
     <string name="text_add_medical">Add your Medical History</string>
     <string name="text_store_medical">Store your medical reports</string>

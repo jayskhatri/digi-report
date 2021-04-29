@@ -140,7 +140,7 @@
             android:id="@+id/emailtoid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="digireport@gmail.com"
+            android:text="@string/email"
             android:textSize="14sp"
             android:fontFamily="@font/circular_std_medium"
             android:textColor="@color/black"
