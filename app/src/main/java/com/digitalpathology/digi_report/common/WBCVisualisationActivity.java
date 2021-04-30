@@ -1,5 +1,9 @@
 package com.digitalpathology.digi_report.common;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -18,13 +22,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import com.digitalpathology.digi_report.R;
 import com.digitalpathology.digi_report.utils.ConnectionDetector;
 import com.digitalpathology.digi_report.utils.HBMarkerView;
+import com.digitalpathology.digi_report.utils.WBCMarkerView;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
@@ -54,26 +55,25 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
-public class HBVisualisationActivity extends AppCompatActivity {
+public class WBCVisualisationActivity extends AppCompatActivity {
 
     private LineChart mChart;
     private ConnectionDetector connectionDetector;
     private Button shareBtn, saveBtn;
     private FirebaseFirestore clouddb = FirebaseFirestore.getInstance();
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-//    private long reference_timestamp = 1451660400;
-    private final static String TAG = HBVisualisationActivity.class.getSimpleName();
+    //    private long reference_timestamp = 1451660400;
+    private final static String TAG = RBCVisualisationActivity.class.getSimpleName();
     private final int REQUEST_PERMISSION = 774;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hb_visualisation);
-
-        //hooks
-        mChart = findViewById(R.id.lineChart_view);
-        shareBtn = findViewById(R.id.btn_back);
-        saveBtn = findViewById(R.id.btn_save_graph);
+        setContentView(R.layout.activity_wbc_visualisation);//hooks
+        mChart = findViewById(R.id.lineChart_view_WBC);
+        shareBtn = findViewById(R.id.btn_share_wbc);
+        saveBtn = findViewById(R.id.btn_save_graph_wbc);
         connectionDetector = new ConnectionDetector(this);
 
         //save chart
@@ -87,9 +87,9 @@ public class HBVisualisationActivity extends AppCompatActivity {
         //chart characteristics
         mChart.setTouchEnabled(true);
         mChart.setPinchZoom(true);
-        mChart.getDescription().setText("This graph shows historic Haemoglobin data");
+        mChart.getDescription().setText("This graph shows historic WBC data");
         //setting marker
-        HBMarkerView mv = new HBMarkerView(getApplicationContext(), R.layout.custom_marker_view);
+        WBCMarkerView mv = new WBCMarkerView(getApplicationContext(), R.layout.custom_marker_view);
         mv.setChartView(mChart);
         mChart.setMarker(mv);
 
@@ -119,13 +119,13 @@ public class HBVisualisationActivity extends AppCompatActivity {
         });
         xAxis.setDrawLimitLinesBehindData(true);
 
-        LimitLine ll1 = new LimitLine(18f, "Maximum Limit");
+        LimitLine ll1 = new LimitLine(10000f, "Maximum Limit");
         ll1.setLineWidth(4f);
         ll1.enableDashedLine(10f, 10f, 0f);
         ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
         ll1.setTextSize(10f);
 
-        LimitLine ll2 = new LimitLine(12f, "Minimum Limit");
+        LimitLine ll2 = new LimitLine(4000f, "Minimum Limit");
         ll2.setLineWidth(4f);
         ll2.enableDashedLine(10f, 10f, 0f);
         ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
@@ -135,8 +135,8 @@ public class HBVisualisationActivity extends AppCompatActivity {
         leftAxis.removeAllLimitLines();
         leftAxis.addLimitLine(ll1);
         leftAxis.addLimitLine(ll2);
-        leftAxis.setAxisMaximum(20f);
-        leftAxis.setAxisMinimum(0f);
+//        leftAxis.setAxisMaximum(20f);
+//        leftAxis.setAxisMinimum(0f);
 //        leftAxis.enableGridDashedLine(10f, 10f, 0f);
         leftAxis.setDrawZeroLine(false);
         leftAxis.setDrawLimitLinesBehindData(false);
@@ -160,8 +160,8 @@ public class HBVisualisationActivity extends AppCompatActivity {
 //                            long newTS = Objects.requireNonNull(new SimpleDateFormat("dd/MM/yyyy").parse(reportDate)).getTime() - reference_timestamp;
                             Map mapHaemo = (Map) document.get("haemogramReport");
                             Map haemoValue = (Map) mapHaemo.get("values");
-                            if (!haemoValue.get("haemoglobin").toString().equals("null")) {
-                                values.add(new Entry(new SimpleDateFormat("dd/MM/yyyy").parse(reportDate).getTime(), Float.parseFloat(String.valueOf(haemoValue.get("haemoglobin")))));
+                            if (haemoValue.get("wbccount")!=null && !haemoValue.get("wbccount").toString().equals("null")) {
+                                values.add(new Entry(new SimpleDateFormat("dd/MM/yyyy").parse(reportDate).getTime(), Float.parseFloat(String.valueOf(haemoValue.get("wbccount")))));
 //                                yYear.add(reportDate);
 //                                Log.d(TAG, "setData year: " + reportDate + ", ts: "+ new SimpleDateFormat("dd/MM/yyyy").parse(reportDate).getTime() + ", hb: " + Float.parseFloat(String.valueOf(haemoValue.get("haemoglobin"))));
                             }
@@ -183,7 +183,7 @@ public class HBVisualisationActivity extends AppCompatActivity {
                         mChart.getData().notifyDataChanged();
                         mChart.notifyDataSetChanged();
                     } else {
-                        set1 = new LineDataSet(values, "Haemoglobin");
+                        set1 = new LineDataSet(values, "WBC (/cmm)");
                         set1.setDrawIcons(false);
                         set1.enableDashedLine(10f, 5f, 0f);
                         set1.enableDashedHighlightLine(10f, 5f, 0f);

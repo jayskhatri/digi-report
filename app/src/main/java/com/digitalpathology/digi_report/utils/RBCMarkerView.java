@@ -10,21 +10,16 @@ import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.github.mikephil.charting.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import io.grpc.okhttp.internal.Util;
-
-
-public class MyMarkerView extends MarkerView {
-
+public class RBCMarkerView extends MarkerView {
     private TextView tvContent, tvDate;
-    private final String TAG = MyMarkerView.class.getSimpleName();
+    private final String TAG = HBMarkerView.class.getSimpleName();
 
-    public MyMarkerView(Context context, int layoutResource) {
+    public RBCMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);
 
         tvContent = (TextView) findViewById(R.id.tvContent);
@@ -40,14 +35,14 @@ public class MyMarkerView extends MarkerView {
 
             CandleEntry ce = (CandleEntry) e;
 
-            tvContent.setText("HB: " + ce.getHigh());
+            tvContent.setText("RBC: " + ce.getHigh());
             tvContent.setText(""+ new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(new Date((long) ce.getX())));
-            Log.d(TAG, "refreshContent1: " + new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(new Date((long) ce.getX())));
+//            Log.d(TAG, "refreshContent1: " + new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(new Date((long) ce.getX())));
         } else {
 
-            tvContent.setText("HB: " + e.getY());
+            tvContent.setText("RBC: " + e.getY());
             tvDate.setText("" + new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(new Date((long) e.getX())));
-            Log.d(TAG, "refreshContent: " + new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(new Date((long) e.getX())));
+//            Log.d(TAG, "refreshContent: " + new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(new Date((long) e.getX())));
         }
 
         super.refreshContent(e, highlight);

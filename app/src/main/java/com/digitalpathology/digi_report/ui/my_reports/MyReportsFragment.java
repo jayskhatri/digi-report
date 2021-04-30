@@ -26,6 +26,7 @@ import com.digitalpathology.digi_report.R;
 import com.digitalpathology.digi_report.adapter.ReportAdapter;
 import com.digitalpathology.digi_report.common.HBVisualisationActivity;
 import com.digitalpathology.digi_report.common.ViewReportActivity;
+import com.digitalpathology.digi_report.common.VisualisationActivity;
 import com.digitalpathology.digi_report.object.MedicalReport;
 import com.digitalpathology.digi_report.utils.ConnectionDetector;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,8 +41,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class MyReportsFragment extends Fragment {
-
-    private MyReportsViewModel myReportsViewModel;
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -58,8 +57,6 @@ public class MyReportsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        myReportsViewModel =
-                new ViewModelProvider(this).get(MyReportsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_my_reports, container, false);
 
         return root;
@@ -103,7 +100,7 @@ public class MyReportsFragment extends Fragment {
     }
 
     private void openVisualizationActivity(){
-        Intent i = new Intent(getActivity(), HBVisualisationActivity.class);
+        Intent i = new Intent(getActivity(), VisualisationActivity.class);
 //        i.putExtra("ID", id);
         startActivity(i);
     }

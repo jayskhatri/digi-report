@@ -11,7 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".common.ForgotPasswordActivity"/>
+        <activity android:name=".common.PlateletsVisualisationActivity"></activity>
+        <activity android:name=".common.WBCVisualisationActivity" />
+        <activity android:name=".common.VisualisationActivity" />
+        <activity android:name=".common.RBCVisualisationActivity" />
+        <activity android:name=".common.ForgotPasswordActivity" />
         <activity android:name=".common.EditReportActivity" />
         <activity android:name=".common.HBVisualisationActivity" />
         <activity android:name=".common.ViewReportActivity" />

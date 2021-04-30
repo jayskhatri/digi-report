@@ -65,7 +65,7 @@
             android:backgroundTint="@color/white"
             android:padding="10dp"
             android:gravity="center_horizontal"
-            android:text="Visualization"
+            android:text="Visualisation"
             android:textColor="@color/colorPrimaryDark"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"

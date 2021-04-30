@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/startup_background_color"
-    tools:context=".common.HBVisualisationActivity">
+    tools:context=".common.WBCVisualisationActivity">
 
     <TextView
-        android:id="@+id/title_hb_visualization"
+        android:id="@+id/title_wbc_visualization"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hemoglobin Visualisation"
+        android:text="WBC Visualisation"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,11 +20,11 @@
         android:fontFamily="@font/circular_std_book"/>
 
     <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/lineChart_view"
+        android:id="@+id/lineChart_view_WBC"
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_marginTop="30sp"
-        app:layout_constraintTop_toBottomOf="@id/title_hb_visualization"
+        app:layout_constraintTop_toBottomOf="@id/title_wbc_visualization"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <LinearLayout
@@ -39,7 +38,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/btn_back"
+            android:id="@+id/btn_share_wbc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -52,7 +51,7 @@
             android:visibility="visible" />
 
         <Button
-            android:id="@+id/btn_save_graph"
+            android:id="@+id/btn_save_graph_wbc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
