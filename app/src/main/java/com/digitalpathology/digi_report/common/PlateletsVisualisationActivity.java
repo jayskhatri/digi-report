@@ -189,8 +189,8 @@ public class PlateletsVisualisationActivity extends AppCompatActivity {
                         set1.setDrawIcons(false);
                         set1.enableDashedLine(10f, 5f, 0f);
                         set1.enableDashedHighlightLine(10f, 5f, 0f);
-                        set1.setColor(Color.RED);
-                        set1.setCircleColor(Color.RED);
+                        set1.setColor(Color.YELLOW);
+                        set1.setCircleColor(Color.YELLOW);
                         set1.setLineWidth(1f);
                         set1.setCircleRadius(3f);
                         set1.setDrawCircleHole(false);
@@ -201,10 +201,10 @@ public class PlateletsVisualisationActivity extends AppCompatActivity {
                         set1.setFormSize(15.f);
 
                         if (Utils.getSDKInt() >= 18) {
-                            Drawable drawable = ContextCompat.getDrawable(this, R.drawable.fade_red);
+                            Drawable drawable = ContextCompat.getDrawable(this, R.drawable.fade_yellow);
                             set1.setFillDrawable(drawable);
                         } else {
-                            set1.setFillColor(Color.RED);
+                            set1.setFillColor(Color.YELLOW);
                         }
 //                        Log.d(TAG, "setData: " + set1.toSimpleString());
                         ArrayList<ILineDataSet> dataSets = new ArrayList<>();

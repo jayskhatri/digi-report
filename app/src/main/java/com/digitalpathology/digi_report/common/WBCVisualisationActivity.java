@@ -187,8 +187,8 @@ public class WBCVisualisationActivity extends AppCompatActivity {
                         set1.setDrawIcons(false);
                         set1.enableDashedLine(10f, 5f, 0f);
                         set1.enableDashedHighlightLine(10f, 5f, 0f);
-                        set1.setColor(Color.DKGRAY);
-                        set1.setCircleColor(Color.DKGRAY);
+                        set1.setColor(Color.BLUE);
+                        set1.setCircleColor(Color.BLUE);
                         set1.setLineWidth(1f);
                         set1.setCircleRadius(3f);
                         set1.setDrawCircleHole(false);
@@ -202,7 +202,7 @@ public class WBCVisualisationActivity extends AppCompatActivity {
                             Drawable drawable = ContextCompat.getDrawable(this, R.drawable.fade_blue);
                             set1.setFillDrawable(drawable);
                         } else {
-                            set1.setFillColor(Color.DKGRAY);
+                            set1.setFillColor(Color.BLUE);
                         }
 //                        Log.d(TAG, "setData: " + set1.toSimpleString());
                         ArrayList<ILineDataSet> dataSets = new ArrayList<>();

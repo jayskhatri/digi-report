@@ -8,4 +8,5 @@
     <color name="grey">#948F8F</color>
     <color name="startup_background_color">#ECF1FA</color>
     <color name="rating_star">#FFDF00</color>
+    <color name="maroon">#880000</color>
 </resources>
