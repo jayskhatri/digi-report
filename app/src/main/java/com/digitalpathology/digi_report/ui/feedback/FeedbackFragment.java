@@ -39,7 +39,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class FeedbackFragment extends Fragment {
 
-    private FeedbackViewModel mViewModel;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TextView totalReports, title;
     private EditText fb;
@@ -106,7 +105,6 @@ public class FeedbackFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(FeedbackViewModel.class);
         con = new ConnectionDetector(getActivity());
         fb = getActivity().findViewById(R.id.edittext_feedback);
         submitBtn = getActivity().findViewById(R.id.btn_submit);
